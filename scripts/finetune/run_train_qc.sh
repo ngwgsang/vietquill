@@ -10,10 +10,10 @@ export PYTHONPATH=$PYTHONPATH:.
 TOKEN=${HF_TOKEN:-"none"}
 
 # Run QC training script
-./venv/Scripts/python.exe src/train/train_qc.py \
-    --dataset_name "ngwgsang/qp" \
+./venv/Scripts/python.exe src/finetune/train_qc.py \
+    --dataset_name "ngwgsang/ViQPC" \
     --base_model "vinai/phobert-base" \
-    --hub_model_id "ngwgsang/phobert-base-qp-1e5-r" \
+    --hub_model_id "ngwgsang/dev-phobert-base-vietquill-qc" \
     --learning_rate 1e-5 \
     --batch_size 32 \
     --epochs 8 \

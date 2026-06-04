@@ -81,7 +81,7 @@ def main():
     # Preprocessing function
     def preprocess_function(examples):
         # Format: "source [SEP] target"
-        inputs = [src + " [SEP] " + tgt for src, tgt in zip(examples['source'], examples['target'])]
+        inputs = [src + " [SEP] " + tgt for src, tgt in zip(examples['sentence1'], examples['sentence2'])]
         model_inputs = tokenizer(inputs, padding="max_length", truncation=True, max_length=args.max_length)
         
         # Labels for multi-output regression
@@ -92,7 +92,7 @@ def main():
     tokenized_datasets = dataset.map(preprocess_function, batched=True)
     
     # Remove unused columns and set format
-    cols_to_remove = ['source', 'target', 'lex', 'syn', 'sem']
+    cols_to_remove = ['sentence1', 'sentence2', 'lex', 'syn', 'sem']
     # Check if columns exist before removing (HuggingFace datasets might vary)
     existing_cols = tokenized_datasets['train'].column_names
     cols_to_remove = [c for c in cols_to_remove if c in existing_cols]
@@ -107,7 +107,7 @@ def main():
         num_labels=3,
         problem_type="regression"
     )
-    
+
     # Training Arguments
     training_args = TrainingArguments(
         output_dir=args.output_dir,
