@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VietQuill - Paraphrase Vietnamese</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VietQuill</h1>
+            <p>Trình viết lại câu tiếng Việt chất lượng cao</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="card">
+                    <label for="input-text">Văn bản gốc:</label>
+                    <textarea id="input-text" placeholder="Nhập câu bạn muốn paraphrase vào đây..."></textarea>
+                    
+                    <div class="controls">
+                        <div class="control-row-top">
+                            <div class="control-group half">
+                                <label for="num-candidates">Số lượng câu (Candidates)</label>
+                                <select id="num-candidates">
+                                    <option value="1">1 câu</option>
+                                    <option value="2">2 câu</option>
+                                    <option value="4" selected>4 câu</option>
+                                    <option value="6">6 câu</option>
+                                </select>
+                            </div>
+                            <div class="control-group half">
+                                <label for="num-beams">Độ rộng tìm kiếm (Beams)</label>
+                                <select id="num-beams">
+                                    <option value="5" selected>5 beams</option>
+                                    <option value="10">10 beams</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="label-row">
+                                <label for="semantic-slider">Semantic (Ngữ nghĩa)</label>
+                                <span id="semantic-val">50</span>
+                            </div>
+                            <input type="range" id="semantic-slider" min="0" max="100" step="5" value="50">
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="label-row">
+                                <label for="syntactic-slider">Syntactic (Cú pháp)</label>
+                                <span id="syntactic-val">50</span>
+                            </div>
+                            <input type="range" id="syntactic-slider" min="0" max="100" step="5" value="50">
+                        </div>
+                        
+                        <div class="control-group">
+                            <div class="label-row">
+                                <label for="lexical-slider">Lexical (Từ vựng)</label>
+                                <span id="lexical-val">50</span>
+                            </div>
+                            <input type="range" id="lexical-slider" min="0" max="100" step="5" value="50">
+                        </div>
+                    </div>
+
+                    <button id="paraphrase-btn">Paraphrase ngay</button>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <div id="loading" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Đang xử lý...</p>
+                </div>
+                <div id="results" class="hidden">
+                    <h3>Kết quả:</h3>
+                    <div id="paraphrase-list">
+                        <!-- Results will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 VietQuill Project - Powered by ViT5</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

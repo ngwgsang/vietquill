@@ -84,8 +84,12 @@ def main():
         inputs = [src + " [SEP] " + tgt for src, tgt in zip(examples['sentence1'], examples['sentence2'])]
         model_inputs = tokenizer(inputs, padding="max_length", truncation=True, max_length=args.max_length)
         
-        # Labels for multi-output regression
-        model_inputs['labels'] = list(zip(examples['lex'], examples['syn'], examples['sem']))
+        # Labels for multi-output regression - Ensure float format and list of lists
+        lex = [float(x) for x in examples['lex']]
+        syn = [float(x) for x in examples['syn']]
+        sem = [float(x) for x in examples['sem']]
+        
+        model_inputs['labels'] = [[l, s, m] for l, s, m in zip(lex, syn, sem)]
         return model_inputs
 
     print("Preprocessing datasets...")
@@ -135,6 +139,7 @@ def main():
         args=training_args,
         train_dataset=tokenized_datasets["train"],
         eval_dataset=tokenized_datasets["test"],
+        tokenizer=tokenizer,
         compute_metrics=compute_metrics,
     )
     
