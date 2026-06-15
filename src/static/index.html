@@ -6,6 +6,7 @@
     <title>VietQuill - Paraphrase Vietnamese</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -15,15 +16,44 @@
         </header>
 
         <main>
-            <div class="input-section">
-                <div class="card">
-                    <label for="input-text">Văn bản gốc:</label>
-                    <textarea id="input-text" placeholder="Nhập câu bạn muốn paraphrase vào đây..."></textarea>
-                    
-                    <div class="controls">
-                        <div class="control-row-top">
-                            <div class="control-group half">
-                                <label for="num-candidates">Số lượng câu (Candidates)</label>
+            <div class="main-grid">
+                <!-- Generator Section -->
+                <section class="generator-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Generator</h3>
+                        </div>
+                        <label for="input-text">Văn bản gốc:</label>
+                        <textarea id="input-text" placeholder="Nhập câu bạn muốn paraphrase vào đây..."></textarea>
+                        
+                        <div class="controls-compact">
+                            <div class="control-group">
+                                <div class="label-row">
+                                    <label for="semantic-slider">SEM</label>
+                                    <span id="semantic-val">50</span>
+                                </div>
+                                <input type="range" id="semantic-slider" min="0" max="100" step="5" value="50">
+                            </div>
+                            
+                            <div class="control-group">
+                                <div class="label-row">
+                                    <label for="syntactic-slider">SYN</label>
+                                    <span id="syntactic-val">50</span>
+                                </div>
+                                <input type="range" id="syntactic-slider" min="0" max="100" step="5" value="50">
+                            </div>
+                            
+                            <div class="control-group">
+                                <div class="label-row">
+                                    <label for="lexical-slider">LEX</label>
+                                    <span id="lexical-val">50</span>
+                                </div>
+                                <input type="range" id="lexical-slider" min="0" max="100" step="5" value="50">
+                            </div>
+                        </div>
+
+                        <div class="action-row">
+                            <div class="control-group flex-1">
                                 <select id="num-candidates">
                                     <option value="1">1 câu</option>
                                     <option value="2">2 câu</option>
@@ -31,42 +61,47 @@
                                     <option value="6">6 câu</option>
                                 </select>
                             </div>
-                            <div class="control-group half">
-                                <label for="num-beams">Độ rộng tìm kiếm (Beams)</label>
-                                <select id="num-beams">
-                                    <option value="5" selected>5 beams</option>
-                                    <option value="10">10 beams</option>
-                                </select>
-                            </div>
+                            <button id="paraphrase-btn">Generate</button>
                         </div>
 
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label for="semantic-slider">Semantic (Ngữ nghĩa)</label>
-                                <span id="semantic-val">50</span>
-                            </div>
-                            <input type="range" id="semantic-slider" min="0" max="100" step="5" value="50">
+                        <!-- Hidden controls -->
+                        <select id="num-beams" class="hidden">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Evaluator Section -->
+                <section class="evaluator-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Evaluator</h3>
+                        </div>
+                        <p class="section-desc">Chọn các chỉ số bạn muốn hiển thị trong bảng kết quả:</p>
+                        
+                        <div class="metric-tags" id="metric-tags">
+                            <div class="metric-tag active" data-metric="semantic_score">SEM</div>
+                            <div class="metric-tag active" data-metric="syntactic_score">SYN</div>
+                            <div class="metric-tag active" data-metric="lexical_score">LEX</div>
+                            <div class="metric-tag active" data-metric="bleu">BLEU</div>
+                            <div class="metric-tag active" data-metric="bertscore">BERTScore</div>
+                            <div class="metric-tag" data-metric="jaccard_diversity">Jaccard</div>
+                            <div class="metric-tag" data-metric="ted">TED</div>
+                            <div class="metric-tag" data-metric="parascore">ParaScore</div>
+                            <div class="metric-tag active" data-metric="overall_score">Overall</div>
                         </div>
                         
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label for="syntactic-slider">Syntactic (Cú pháp)</label>
-                                <span id="syntactic-val">50</span>
+                        <div class="evaluator-info">
+                            <div class="info-item">
+                                <strong>SEM/SYN/LEX</strong>: Điểm số dự đoán từ QC Model.
                             </div>
-                            <input type="range" id="syntactic-slider" min="0" max="100" step="5" value="50">
-                        </div>
-                        
-                        <div class="control-group">
-                            <div class="label-row">
-                                <label for="lexical-slider">Lexical (Từ vựng)</label>
-                                <span id="lexical-val">50</span>
+                            <div class="info-item">
+                                <strong>Metrics</strong>: Các chỉ số tính toán truyền thống (BLEU, BS,...).
                             </div>
-                            <input type="range" id="lexical-slider" min="0" max="100" step="5" value="50">
                         </div>
                     </div>
-
-                    <button id="paraphrase-btn">Paraphrase ngay</button>
-                </div>
+                </section>
             </div>
 
             <div class="output-section">
@@ -86,6 +121,61 @@
         <footer>
             <p>&copy; 2026 VietQuill Project - Powered by ViT5</p>
         </footer>
+    </div>
+
+    <!-- Modal for Word Comparison -->
+    <div id="comparison-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Phân tích so sánh (Analysis)</h3>
+                <button id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body modal-body-scrollable modal-body-split">
+                <!-- Left Column -->
+                <div class="modal-col">
+                    <h4>1. Lexical Comparison (Từ vựng)</h4>
+                    <div class="comparison-container">
+                        <div class="comparison-item">
+                            <label>Original:</label>
+                            <div id="original-comparison" class="text-box"></div>
+                        </div>
+                        <div class="comparison-item">
+                            <label>Paraphrase:</label>
+                            <div id="paraphrase-comparison" class="text-box"></div>
+                        </div>
+                    </div>
+                    <div class="comparison-legend">
+                        <span class="legend-item"><span class="highlight-red"></span> Removed from Original</span>
+                        <span class="legend-item"><span class="highlight-blue"></span> Added in Paraphrase</span>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="modal-col">
+                    <h4>2. Syntactic Comparison (Cú pháp)</h4>
+                    <div class="comparison-legend" style="margin-top: 0.5rem; margin-bottom: 1.5rem;">
+                        <span class="legend-item"><span style="display:inline-block;width:16px;height:16px;border-radius:4px;background:#f1f5f9;border:1px solid #cbd5e1;"></span> Preserved</span>
+                        <span class="legend-item"><span style="display:inline-block;width:16px;height:16px;border-radius:4px;background:#fff7ed;border:2px solid #f97316;"></span> Modified</span>
+                        <span class="legend-item"><span style="display:inline-block;width:16px;height:16px;border-radius:4px;background:#f0fdf4;border:1px solid #22c55e;"></span> Added</span>
+                        <span class="legend-item"><span style="display:inline-block;width:16px;height:16px;border-radius:4px;background:#fef2f2;border:1px solid #ef4444;"></span> Removed</span>
+                    </div>
+                    <div id="tree-loading" class="hidden">
+                        <div class="spinner spinner-small"></div>
+                        <span>Đang trích xuất cây cú pháp...</span>
+                    </div>
+                    <div class="comparison-container" id="tree-container">
+                        <div class="comparison-item">
+                            <label>Original Tree:</label>
+                            <div id="original-tree" class="tree-box svg-container"></div>
+                        </div>
+                        <div class="comparison-item">
+                            <label>Paraphrase Tree:</label>
+                            <div id="paraphrase-tree" class="tree-box svg-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="/static/js/script.js"></script>
