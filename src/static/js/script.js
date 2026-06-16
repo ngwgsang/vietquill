@@ -420,23 +420,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             if(!c1.children) return; // skip leaves
                             let bestMatch = null;
                             let maxScore = -1;
+                            
+                            // 1. Try exact tag match
                             if (map2[c1.name]) {
                                 map2[c1.name].forEach(c2 => {
                                     if(c2.status) return; // already matched
-                                    
-                                    // Heavy bias towards Same Tag (which is already true here)
-                                    // and then Structural Similarity. Content is secondary.
-                                    const st1 = getChildTags(c1);
-                                    const st2 = getChildTags(c2);
-                                    const structuralScore = structuralJaccard(st1, st2);
-                                    
-                                    const l1 = getLeaves(c1);
-                                    const l2 = getLeaves(c2);
-                                    const contentScore = jaccard(l1, l2);
-                                    
-                                    // Use a high base score for tag match + structural tie-breaking
-                                    const score = 10.0 + (structuralScore * 2.0) + (contentScore * 1.0);
-                                    
+                                    const score = jaccard(getLeaves(c1), getLeaves(c2));
                                     if (score > maxScore) {
                                         maxScore = score;
                                         bestMatch = c2;
@@ -444,22 +433,41 @@ document.addEventListener('DOMContentLoaded', () => {
                                 });
                             }
 
-                            if (bestMatch) {
-                                const l1 = getLeaves(c1);
-                                const l2 = getLeaves(bestMatch);
-                                const contentScore = jaccard(l1, l2);
-                                
-                                const st1 = getChildTags(c1);
-                                const st2 = getChildTags(bestMatch);
-                                const structuralScore = structuralJaccard(st1, st2);
+                            // 2. If no exact tag, try content match
+                            if (!bestMatch) {
+                                node2.children.forEach(c2 => {
+                                    if (!c2.children || c2.status) return;
+                                    const score = jaccard(getLeaves(c1), getLeaves(c2));
+                                    if (score >= 0.5 && score > maxScore) {
+                                        maxScore = score;
+                                        bestMatch = c2;
+                                    }
+                                });
+                            }
 
-                                // Logic update: 
-                                // - PRESERVED: Same Tag + Same Content + Same Child Structure
-                                // - MODIFIED: Same Tag + (Changed Content OR Changed Child Structure)
-                                if (contentScore === 1.0 && structuralScore === 1.0) {
-                                    c1.status = 'preserved';
-                                    bestMatch.status = 'preserved';
+                            if (bestMatch) {
+                                const isPreTerm = c1.children.every(c => !c.children);
+                                const tagsMatch = c1.name === bestMatch.name;
+                                
+                                if (tagsMatch) {
+                                    if (!isPreTerm) {
+                                        // Internal node with same tag -> Preserved
+                                        c1.status = 'preserved';
+                                        bestMatch.status = 'preserved';
+                                    } else {
+                                        // Pre-terminal with same tag -> Check if content changed
+                                        const l1 = getLeaves(c1).join(' ');
+                                        const l2 = getLeaves(bestMatch).join(' ');
+                                        if (l1 === l2) {
+                                            c1.status = 'preserved';
+                                            bestMatch.status = 'preserved';
+                                        } else {
+                                            c1.status = 'modified';
+                                            bestMatch.status = 'modified';
+                                        }
+                                    }
                                 } else {
+                                    // Tag differs but content overlaps -> Modified
                                     c1.status = 'modified';
                                     bestMatch.status = 'modified';
                                 }
