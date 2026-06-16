@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Global state
     let currentCandidates = [];
     let currentOriginalText = '';
-    let currentSort = { column: 'overall_score', direction: 'desc' };
+    let currentSort = { column: 'semantic_score', direction: 'desc' };
 
     // Initialize active metrics from DOM
     metricTags.forEach(tag => {
@@ -222,183 +222,119 @@ document.addEventListener('DOMContentLoaded', () => {
             return parse(tokens);
         }
 
-        // --- Helper: Render D3 Tree ---
-        function renderD3Tree(containerElement, treeData) {
-            containerElement.innerHTML = ''; // clear previous
+        // --- Helper: Render Layered Constituent View ---
+        function renderLayeredView(containerElement, treeData) {
+            containerElement.innerHTML = '';
             if (!treeData) {
                 containerElement.innerHTML = '<span style="color:red">Failed to parse tree data.</span>';
                 return;
             }
 
-            const containerRect = containerElement.getBoundingClientRect();
-            // Fallback dimensions if container is hidden/0
-            const width = containerRect.width || 600;
-            const height = 400;
-
-            const margin = { top: 40, right: 20, bottom: 40, left: 20 };
-
-            const svg = d3.select(containerElement)
-                .append('svg')
-                .attr('width', '100%')
-                .attr('height', height)
-                .call(d3.zoom().on("zoom", (event) => {
-                    svgGroup.attr("transform", event.transform);
-                }))
-                .on("dblclick.zoom", null); // disable double click zoom for better UX
-
-            const svgGroup = svg.append('g')
-                .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-            // Creates a hierarchy from the nested JSON object
-            const root = d3.hierarchy(treeData, d => d.children);
-
-            // Compute tree layout
-            // We use standard tree layout, orienting top-to-bottom
-            const treeLayout = d3.tree().nodeSize([60, 60]);
-            
-            function update(source) {
-                const treeData = treeLayout(root);
-                const nodes = treeData.descendants();
-                const links = treeData.descendants().slice(1);
-
-                // Normalize for fixed-depth
-                nodes.forEach(d => { d.y = d.depth * 80; });
-
-                // Find center to align
-                let minX = d3.min(nodes, d => d.x);
-                let maxX = d3.max(nodes, d => d.x);
-                let yOffset = margin.top;
-                let xOffset = (width - (maxX - minX)) / 2 - minX;
-                if(xOffset < margin.left) xOffset = margin.left;
-                
-                // Initial zoom/pan to center the tree
-                if(source === root) {
-                    const transform = d3.zoomIdentity.translate(xOffset, yOffset).scale(0.8);
-                    svg.call(d3.zoom().transform, transform);
-                }
-
-                // ****************** Nodes section ***************************
-                const node = svgGroup.selectAll('g.node')
-                    .data(nodes, d => d.id || (d.id = ++i));
-
-                const nodeEnter = node.enter().append('g')
-                    .attr('class', 'node')
-                    .attr('transform', d => `translate(${d.x},${d.y})`)
-                    .on('click', (event, d) => {
-                        if (d.children) {
-                            d._children = d.children;
-                            d.children = null;
-                        } else {
-                            d.children = d._children;
-                            d._children = null;
-                        }
-                        update(d);
-                    })
-                    .on('mouseover', function(event, d) {
-                        d3.select(this).select('.node-rect').classed('hover', true);
-                        d3.select(this).select('.node-text').classed('hover', true);
-                        // Highlight descendants
-                        const descendants = d.descendants().map(desc => desc.id);
-                        svgGroup.selectAll('.link')
-                            .filter(l => descendants.includes(l.id))
-                            .classed('highlight', true);
-                        svgGroup.selectAll('.node')
-                            .filter(n => descendants.includes(n.id))
-                            .classed('highlight', true);
-                    })
-                    .on('mouseout', function(event, d) {
-                        d3.select(this).select('.node-rect').classed('hover', false);
-                        d3.select(this).select('.node-text').classed('hover', false);
-                        // Remove highlight
-                        svgGroup.selectAll('.link').classed('highlight', false);
-                        svgGroup.selectAll('.node').classed('highlight', false);
-                    });
-
-                // Add Rectangles for non-leaf nodes
-                const rectEnter = nodeEnter.filter(d => d.children || d._children)
-                    .append('rect')
-                    .attr('class', d => `node-rect ${d.data.status ? 'node-' + d.data.status : ''}`)
-                    .attr('width', 50)
-                    .attr('height', 24)
-                    .attr('x', -25)
-                    .attr('y', -12)
-                    .attr('rx', 6)
-                    .attr('ry', 6);
-                
-                rectEnter.append('title')
-                    .text(d => {
-                        if (d.data.status === 'preserved') return "Preserved constituent";
-                        if (d.data.status === 'modified') return "Modified constituent";
-                        if (d.data.status === 'added') return "Added constituent";
-                        if (d.data.status === 'removed') return "Removed constituent";
-                        return "";
-                    });
-
-                // Add labels for the nodes
-                nodeEnter.append('text')
-                    .attr('class', 'node-text')
-                    .attr('dy', '.35em')
-                    .attr('text-anchor', 'middle')
-                    .text(d => d.data.name)
-                    // Adjust styles based on leaf vs non-leaf
-                    .style('font-weight', d => (d.children || d._children) ? '600' : '500')
-                    .style('fill', d => (d.children || d._children) ? '#1e293b' : '#0f172a');
-                
-                // Style leaf nodes specifically
-                nodeEnter.filter(d => !d.children && !d._children)
-                    .select('.node-text')
-                    .attr('class', 'node-text leaf-text');
-
-                // UPDATE
-                const nodeUpdate = nodeEnter.merge(node);
-                nodeUpdate.transition().duration(200)
-                    .attr('transform', d => `translate(${d.x},${d.y})`);
-
-                // Update rect appearance based on collapse state (add class instead of inline styles)
-                nodeUpdate.select('.node-rect')
-                    .classed('node-collapsed', d => !!d._children)
-                    .attr('class', d => `node-rect ${d._children ? 'node-collapsed' : ''} ${d.data.status ? 'node-' + d.data.status : ''}`);
-
-                // Remove exiting nodes
-                node.exit().transition().duration(200)
-                    .attr('transform', d => `translate(${source.x},${source.y})`)
-                    .remove();
-
-                // ****************** links section ***************************
-                const link = svgGroup.selectAll('path.link')
-                    .data(links, d => d.id);
-
-                const linkEnter = link.enter().insert('path', "g")
-                    .attr('class', 'link')
-                    .attr('d', d => {
-                        const o = {x: source.x0 || source.x, y: source.y0 || source.y};
-                        return diagonal(o, o);
-                    });
-
-                const linkUpdate = linkEnter.merge(link);
-                linkUpdate.transition().duration(200)
-                    .attr('d', d => diagonal(d, d.parent));
-
-                link.exit().transition().duration(200)
-                    .attr('d', d => {
-                        const o = {x: source.x, y: source.y};
-                        return diagonal(o, o);
-                    })
-                    .remove();
-
-                // Store old positions for transition
-                nodes.forEach(d => {
-                    d.x0 = d.x;
-                    d.y0 = d.y;
-                });
-                
-                function diagonal(s, d) {
-                    return `M ${s.x} ${s.y} C ${s.x} ${(s.y + d.y) / 2}, ${d.x} ${(s.y + d.y) / 2}, ${d.x} ${d.y}`;
-                }
+            // Function to get the leaf text (content) of a node
+            function getLeafText(n) {
+                if (!n.children || n.children.length === 0) return n.name;
+                return n.children.map(getLeafText).join(' ');
             }
 
-            let i = 0; // for node IDs
-            update(root);
+            // Step 1: Assign 'position' to each leaf node, and 'start/end' to each constituent
+            let leafCount = 0;
+            function assignIndices(node) {
+                if (!node.children || node.children.length === 0) {
+                    node.start = leafCount;
+                    node.end = leafCount;
+                    leafCount++;
+                    return;
+                }
+                node.children.forEach(assignIndices);
+                node.start = node.children[0].start;
+                node.end = node.children[node.children.length - 1].end;
+            }
+            assignIndices(treeData);
+
+            const totalLeaves = leafCount;
+
+            // Step 2: Extract layers, skipping ROOT/S/SQ
+            const layers = [];
+            function traverse(node, depth) {
+                if (!node || !node.children || node.children.length === 0) return;
+                
+                const skipTags = ['ROOT', 'S', 'SQ'];
+                if (!skipTags.includes(node.name)) {
+                    if (!layers[depth]) layers[depth] = [];
+                    layers[depth].push(node);
+                }
+                node.children.forEach(child => traverse(child, depth + 1));
+            }
+            traverse(treeData, 0);
+
+            const cleanLayers = layers.filter(l => l && l.length > 0);
+            if (cleanLayers.length === 0) {
+                containerElement.innerHTML = '<span style="color:var(--text-muted)">No constituents to display.</span>';
+                return;
+            }
+
+            // Step 3: Render each layer using the leaf indices for grid positioning
+            cleanLayers.forEach((nodes, index) => {
+                const layerDiv = document.createElement('div');
+                layerDiv.className = 'layer-row';
+                
+                const label = document.createElement('div');
+                label.className = 'layer-label';
+                label.textContent = `Layer ${index + 1}`;
+                layerDiv.appendChild(label);
+                
+                const nodesContainer = document.createElement('div');
+                nodesContainer.className = 'layer-nodes';
+                // Grid columns based on total leaves
+                nodesContainer.style.gridTemplateColumns = `repeat(${totalLeaves}, 1fr)`;
+                
+                // Keep track of current grid position to fill gaps
+                let currentPos = 0;
+
+                nodes.forEach(node => {
+                    // Add placeholders for the gap before this node
+                    while (currentPos < node.start) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'constituent-node placeholder';
+                        placeholder.innerHTML = '&nbsp;';
+                        nodesContainer.appendChild(placeholder);
+                        currentPos++;
+                    }
+
+                    // Create the actual node
+                    const nodeDiv = document.createElement('div');
+                    nodeDiv.className = `constituent-node node-status-${node.status || 'preserved'}`;
+                    // Span columns from start to end
+                    const spanWidth = node.end - node.start + 1;
+                    nodeDiv.style.gridColumn = `span ${spanWidth}`;
+                    
+                    const content = document.createElement('span');
+                    content.className = 'node-content';
+                    content.textContent = node.name;
+                    nodeDiv.appendChild(content);
+                    
+                    const subtext = document.createElement('span');
+                    subtext.className = 'node-subtext';
+                    subtext.textContent = getLeafText(node);
+                    subtext.title = subtext.textContent;
+                    nodeDiv.appendChild(subtext);
+                    
+                    nodesContainer.appendChild(nodeDiv);
+                    currentPos += spanWidth;
+                });
+
+                // Add placeholders for the remaining gap at the end
+                while (currentPos < totalLeaves) {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'constituent-node placeholder';
+                    placeholder.innerHTML = '&nbsp;';
+                    nodesContainer.appendChild(placeholder);
+                    currentPos++;
+                }
+                
+                layerDiv.appendChild(nodesContainer);
+                containerElement.appendChild(layerDiv);
+            });
         }
 
         // Show modal immediately with lexical changes and loading state for tree
@@ -442,6 +378,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     return intersection.size / union.size;
                 }
 
+                // Helper to extract child tags for structural comparison
+                function getChildTags(node) {
+                    if (!node || !node.children) return [];
+                    return node.children.filter(c => c.children).map(c => c.name);
+                }
+
+                function structuralJaccard(tags1, tags2) {
+                    if (tags1.length === 0 && tags2.length === 0) return 1.0;
+                    const set1 = new Set(tags1);
+                    const set2 = new Set(tags2);
+                    const intersection = new Set([...set1].filter(x => set2.has(x)));
+                    const union = new Set([...set1, ...set2]);
+                    return intersection.size / union.size;
+                }
+
                 // Recursively classify nodes
                 function compareSubtrees(node1, node2) {
                     // Collect nodes by name at current level
@@ -472,9 +423,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (map2[c1.name]) {
                                 map2[c1.name].forEach(c2 => {
                                     if(c2.status) return; // already matched
+                                    
+                                    // Heavy bias towards Same Tag (which is already true here)
+                                    // and then Structural Similarity. Content is secondary.
+                                    const st1 = getChildTags(c1);
+                                    const st2 = getChildTags(c2);
+                                    const structuralScore = structuralJaccard(st1, st2);
+                                    
                                     const l1 = getLeaves(c1);
                                     const l2 = getLeaves(c2);
-                                    const score = jaccard(l1, l2);
+                                    const contentScore = jaccard(l1, l2);
+                                    
+                                    // Use a high base score for tag match + structural tie-breaking
+                                    const score = 10.0 + (structuralScore * 2.0) + (contentScore * 1.0);
+                                    
                                     if (score > maxScore) {
                                         maxScore = score;
                                         bestMatch = c2;
@@ -482,17 +444,29 @@ document.addEventListener('DOMContentLoaded', () => {
                                 });
                             }
 
-                            if (maxScore === 1.0) {
-                                c1.status = 'preserved';
-                                bestMatch.status = 'preserved';
-                                compareSubtrees(c1, bestMatch);
-                            } else if (maxScore > 0.0) {
-                                c1.status = 'modified';
-                                bestMatch.status = 'modified';
+                            if (bestMatch) {
+                                const l1 = getLeaves(c1);
+                                const l2 = getLeaves(bestMatch);
+                                const contentScore = jaccard(l1, l2);
+                                
+                                const st1 = getChildTags(c1);
+                                const st2 = getChildTags(bestMatch);
+                                const structuralScore = structuralJaccard(st1, st2);
+
+                                // Logic update: 
+                                // - PRESERVED: Same Tag + Same Content + Same Child Structure
+                                // - MODIFIED: Same Tag + (Changed Content OR Changed Child Structure)
+                                if (contentScore === 1.0 && structuralScore === 1.0) {
+                                    c1.status = 'preserved';
+                                    bestMatch.status = 'preserved';
+                                } else {
+                                    c1.status = 'modified';
+                                    bestMatch.status = 'modified';
+                                }
+                                
                                 compareSubtrees(c1, bestMatch);
                             } else {
                                 c1.status = 'removed';
-                                // recursively mark all children as removed
                                 function markRemoved(n) {
                                     if(n.children) {
                                         n.status = 'removed';
@@ -510,7 +484,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             if(!c2.children) return; // skip leaves
                             if (!c2.status) {
                                 c2.status = 'added';
-                                // recursively mark all children as added
                                 function markAdded(n) {
                                     if(n.children) {
                                         n.status = 'added';
@@ -533,8 +506,8 @@ document.addEventListener('DOMContentLoaded', () => {
                      compareSubtrees(tree1, tree2);
                 }
 
-                renderD3Tree(originalTree, tree1);
-                renderD3Tree(paraphraseTree, tree2);
+                renderLayeredView(originalTree, tree1);
+                renderLayeredView(paraphraseTree, tree2);
             } else {
                 originalTree.innerHTML = '<span style="color:red">Error loading tree.</span>';
                 paraphraseTree.innerHTML = '<span style="color:red">Error loading tree.</span>';
@@ -568,7 +541,6 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: 'JAC', key: 'jaccard_diversity', title: 'Jaccard Diversity' },
             { label: 'TED', key: 'ted', title: 'Tree Edit Distance' },
             { label: 'PARA', key: 'parascore', title: 'ParaScore' },
-            { label: 'Score', key: 'overall_score', title: 'Overall Score' },
             { label: '', key: null, always: true }
         ];
 
@@ -600,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const sorted = sortCandidates(currentCandidates, currentSort.column, currentSort.direction);
                     paraphraseList.innerHTML = '';
-                    paraphraseList.appendChild(renderResultsTable(sorted, originalText));
+                    paraphraseList.appendChild(renderResultsTable(sorted, currentOriginalText));
                 });
             }
             
@@ -637,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             rowHtml += `
                 <td>
-                    <button class="table-copy-btn" title="Sao chép">
+                    <button class="table-copy-btn" title="Copy">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
@@ -650,7 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Text cell click listener for comparison
             const textCell = tr.querySelector('.text-cell');
             if (textCell) {
-                textCell.title = "Nhấn để xem khác biệt từ vựng";
+                textCell.title = "Click to view lexical differences";
                 textCell.addEventListener('click', () => {
                     compareWords(originalText, candidate.text);
                 });
@@ -686,7 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
     paraphraseBtn.addEventListener('click', async () => {
         const text = inputText.value.trim();
         if (!text) {
-            alert('Vui lòng nhập văn bản gốc!');
+            alert('Please enter the input text!');
             return;
         }
 
@@ -717,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 currentCandidates = data.candidates;
                 currentOriginalText = text; // Store globally
-                currentSort = { column: 'overall_score', direction: 'desc' }; // Default sort
+                currentSort = { column: 'semantic_score', direction: 'desc' }; // Default sort
                 
                 const sorted = sortCandidates(currentCandidates, currentSort.column, currentSort.direction);
                 paraphraseList.innerHTML = '';
@@ -729,11 +701,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Smooth scroll to results
                 resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-                alert('Lỗi: ' + (data.detail || 'Không thể kết nối đến máy chủ'));
+                alert('Error: ' + (data.detail || 'Could not connect to the server'));
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Đã xảy ra lỗi khi gọi API');
+            alert('An error occurred while calling the API');
         } finally {
             loadingDiv.classList.add('hidden');
             paraphraseBtn.disabled = false;

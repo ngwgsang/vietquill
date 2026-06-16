@@ -1,20 +1,47 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VietQuill - Paraphrase Vietnamese</title>
+    <title>VietQuill - Vietnamese Paraphrase Generation</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>VietQuill</h1>
-            <p>Trình viết lại câu tiếng Việt chất lượng cao</p>
-        </header>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="site-title">VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese</h1>
+                <div class="authors">
+                    <span class="author">Sang Quang Nguyen</span>, 
+                    <span class="author">Kiet Van Nguyen</span>
+                </div>
+                <div class="affiliations">
+                    <span>University of Information Technology, Vietnam National University, Ho Chi Minh City, Vietnam</span>
+                </div>
+                <div class="header-links">
+                    <a href="https://github.com/" target="_blank" class="link-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        GitHub
+                    </a>
+                    <a href="#" target="_blank" class="link-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Paper
+                    </a>
+                    <a href="#" target="_blank" class="link-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                        DOI
+                    </a>
+                </div>
+                <p class="site-description">
+                    VietQuill is a quality-controlled Vietnamese paraphrase generation framework that enables explicit control over lexical overlap, syntactic similarity, and semantic preservation. The system employs a ViT5 model integrated with a specialized Quality Control (QC) evaluator for Vietnamese.
+                </p>
+            </div>
+        </div>
+    </header>
 
+    <div class="container">
         <main>
             <div class="main-grid">
                 <!-- Generator Section -->
@@ -23,8 +50,8 @@
                         <div class="card-header">
                             <h3>Generator</h3>
                         </div>
-                        <label for="input-text">Văn bản gốc:</label>
-                        <textarea id="input-text" placeholder="Nhập câu bạn muốn paraphrase vào đây..."></textarea>
+                        <label for="input-text">Input Text:</label>
+                        <textarea id="input-text" placeholder="Enter the sentence you want to paraphrase here..."></textarea>
                         
                         <div class="controls-compact">
                             <div class="control-group">
@@ -55,10 +82,10 @@
                         <div class="action-row">
                             <div class="control-group flex-1">
                                 <select id="num-candidates">
-                                    <option value="1">1 câu</option>
-                                    <option value="2">2 câu</option>
-                                    <option value="4" selected>4 câu</option>
-                                    <option value="6">6 câu</option>
+                                    <option value="1">1 sentence</option>
+                                    <option value="2">2 sentences</option>
+                                    <option value="4" selected>4 sentences</option>
+                                    <option value="6">6 sentences</option>
                                 </select>
                             </div>
                             <button id="paraphrase-btn">Generate</button>
@@ -78,7 +105,7 @@
                         <div class="card-header">
                             <h3>Evaluator</h3>
                         </div>
-                        <p class="section-desc">Chọn các chỉ số bạn muốn hiển thị trong bảng kết quả:</p>
+                        <p class="section-desc">Select the metrics you want to display in the results table:</p>
                         
                         <div class="metric-tags" id="metric-tags">
                             <div class="metric-tag active" data-metric="semantic_score">SEM</div>
@@ -89,15 +116,14 @@
                             <div class="metric-tag" data-metric="jaccard_diversity">Jaccard</div>
                             <div class="metric-tag" data-metric="ted">TED</div>
                             <div class="metric-tag" data-metric="parascore">ParaScore</div>
-                            <div class="metric-tag active" data-metric="overall_score">Overall</div>
                         </div>
                         
                         <div class="evaluator-info">
                             <div class="info-item">
-                                <strong>SEM/SYN/LEX</strong>: Điểm số dự đoán từ QC Model.
+                                <strong>SEM/SYN/LEX</strong>: Predicted scores from the QC Model.
                             </div>
                             <div class="info-item">
-                                <strong>Metrics</strong>: Các chỉ số tính toán truyền thống (BLEU, BS,...).
+                                <strong>Metrics</strong>: Traditional computational metrics (BLEU, BS, etc.).
                             </div>
                         </div>
                     </div>
@@ -107,33 +133,44 @@
             <div class="output-section">
                 <div id="loading" class="hidden">
                     <div class="spinner"></div>
-                    <p>Đang xử lý...</p>
+                    <p>Processing...</p>
                 </div>
                 <div id="results" class="hidden">
-                    <h3>Kết quả:</h3>
+                    <h3>Results:</h3>
                     <div id="paraphrase-list">
                         <!-- Results will be injected here -->
                     </div>
                 </div>
             </div>
         </main>
-
-        <footer>
-            <p>&copy; 2026 VietQuill Project - Powered by ViT5</p>
-        </footer>
     </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <span class="footer-logo">VietQuill</span>
+                <nav class="footer-nav">
+                    <a href="#">About</a>
+                    <a href="#">Research</a>
+                    <a href="https://github.com/">GitHub</a>
+                    <a href="#">Contact</a>
+                </nav>
+                <p class="copyright">&copy; 2026 VietQuill Project. All rights reserved. <br> Powered by ViT5 and Quality Control Models.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Modal for Word Comparison -->
     <div id="comparison-modal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Phân tích so sánh (Analysis)</h3>
+                <h3>Analysis & Comparison</h3>
                 <button id="close-modal">&times;</button>
             </div>
             <div class="modal-body modal-body-scrollable modal-body-split">
                 <!-- Left Column -->
                 <div class="modal-col">
-                    <h4>1. Lexical Comparison (Từ vựng)</h4>
+                    <h4>1. Lexical Comparison</h4>
                     <div class="comparison-container">
                         <div class="comparison-item">
                             <label>Original:</label>
@@ -152,7 +189,7 @@
 
                 <!-- Right Column -->
                 <div class="modal-col">
-                    <h4>2. Syntactic Comparison (Cú pháp)</h4>
+                    <h4>2. Syntactic Comparison</h4>
                     <div class="comparison-legend" style="margin-top: 0.5rem; margin-bottom: 1.5rem;">
                         <span class="legend-item"><span style="display:inline-block;width:16px;height:16px;border-radius:4px;background:#f1f5f9;border:1px solid #cbd5e1;"></span> Preserved</span>
                         <span class="legend-item"><span style="display:inline-block;width:16px;height:16px;border-radius:4px;background:#fff7ed;border:2px solid #f97316;"></span> Modified</span>
@@ -161,7 +198,7 @@
                     </div>
                     <div id="tree-loading" class="hidden">
                         <div class="spinner spinner-small"></div>
-                        <span>Đang trích xuất cây cú pháp...</span>
+                        <span>Extracting parse trees...</span>
                     </div>
                     <div class="comparison-container" id="tree-container">
                         <div class="comparison-item">
