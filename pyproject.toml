@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vietquill"
+version = "0.1.0"
+description = "A toolkit for Vietnamese Paraphrase Generation and Evaluation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+authors = [
+{ name = "Nguyen Quang Sang" }
+]
+
+keywords = [
+"nlp",
+"vietnamese",
+"paraphrase",
+"generation",
+"evaluation",
+"huggingface"
+]
+
+classifiers = [
+"Development Status :: 3 - Alpha",
+"Intended Audience :: Science/Research",
+"License :: OSI Approved :: MIT License",
+"Programming Language :: Python :: 3",
+"Programming Language :: Python :: 3.10",
+"Programming Language :: Python :: 3.11",
+"Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+dependencies = [
+"datasets>=3.0.0",
+"huggingface_hub>=0.30.0"
+]
+
+[project.optional-dependencies]
+dev = [
+"build",
+"twine",
+"pytest"
+]
+
+[project.urls]
+Homepage = "https://github.com/ngwgsang/vietquill"
+Repository = "https://github.com/ngwgsang/vietquill"
+Issues = "https://github.com/ngwgsang/vietquill/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
