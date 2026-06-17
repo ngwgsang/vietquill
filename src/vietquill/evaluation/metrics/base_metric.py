@@ -1,10 +1,3 @@
-"""
-VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language
-Copyright (C) 2026 - Sang Quang Nguyen
-
-This script is part of VietQuill.
-"""
-
 from abc import ABC, abstractmethod
 
 class BaseMetric(ABC):

@@ -34,8 +34,20 @@ classifiers = [
 ]
 
 dependencies = [
-"datasets>=3.0.0",
-"huggingface_hub>=0.30.0"
+    "datasets>=3.0.0",
+    "huggingface_hub>=0.30.0",
+    "pydantic",
+    "torch",
+    "transformers==4.51.3",
+    "bert-score",
+    "stanza",
+    "apted",
+    "underthesea",
+    "pyvi",
+    "nltk",
+    "parascore",
+    "tiktoken",
+    "sentencepiece",
 ]
 
 [project.optional-dependencies]

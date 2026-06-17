@@ -1,20 +1,4 @@
-"""
-VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language
-Copyright (C) 2026 - Sang Quang Nguyen
-
-This script is part of VietQuill.
-"""
-
-import argparse
-import sys
-import os
-
-# Add the project root to sys.path to allow imports from src
-root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-if root_path not in sys.path:
-    sys.path.insert(0, root_path)
-
-from src.utils.metrics.base_metric import BaseMetric
+from vietquill.evaluation.metrics.base_metric import BaseMetric
 
 try:
     from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
@@ -95,43 +79,3 @@ class BLEUMetric(BaseMetric):
         Reset the metric state.
         """
         self.scores = []
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Compute BLEU score between two sentences."
-    )
-
-    parser.add_argument(
-        "--text1",
-        type=str,
-        required=True,
-        help="Reference sentence"
-    )
-
-    parser.add_argument(
-        "--text2",
-        type=str,
-        required=True,
-        help="Candidate sentence"
-    )
-
-    parser.add_argument(
-        "--tokenizer",
-        type=str,
-        default="whitespace",
-        choices=["whitespace", "underthesea", "nltk"],
-        help="Tokenizer type"
-    )
-
-    args = parser.parse_args()
-
-    metric = BLEUMetric(tokenizer=args.tokenizer)
-
-    score_val = metric.score(args.text1, args.text2)
-
-    print("---" * 30)
-    print(f"Tokenizer : {args.tokenizer}")
-    print(f"Reference : {args.text1}")
-    print(f"Candidate : {args.text2}")
-    print(f"BLEU-4 Score: {score_val:.4f}")

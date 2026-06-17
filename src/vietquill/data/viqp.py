@@ -1,6 +1,8 @@
 from datasets import load_dataset
-from .base import BaseDataset
-from .registry import DATASET_REGISTRY
+from vietquill.data.base import BaseDataset
+from vietquill.data.registry import DATASET_REGISTRY
+from vietquill.data.schema import ParaphraseSchema
+from vietquill.utils import generate_pair_id
 
 class ViQPDataset(BaseDataset):
     """
@@ -12,15 +14,15 @@ class ViQPDataset(BaseDataset):
     def load(self):
         return load_dataset(self.HF_REPO)
 
-    def load_questions(self):
+    def load_pairs(self):
 
         ds = self.load()
 
         return ds.map(
-            lambda x: {
-                "pair_id": x["pair_id"],
-                "sentence1": x["original_text"],
-                "sentence2": x["paraphrase_text"]
-            }
+            lambda x: ParaphraseSchema(
+                pair_id=generate_pair_id(x["original_text"], x["paraphrase_text"]),
+                sentence1=x["original_text"],
+                sentence2=x["paraphrase_text"]
+            ).model_dump()
         )
     

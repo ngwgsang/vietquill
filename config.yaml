@@ -1,0 +1,30 @@
+models:
+  paraphraser:
+    question: "ngwgsang/vietquill-vit5-base-question-tsubaki"
+    sentence: "ngwgsang/vietquill-vit5-base-sentence-tsubaki"
+  estimators:
+    question: "ngwgsang/vietquill-velectra-question-estimator-tsubaki"
+    sentence: "ngwgsang/vietquill-velectra-sentence-estimator-tsubaki"
+
+generation:
+  max_length: 128
+  num_beams: 10
+  num_candidates: 3
+  early_stopping: true
+  no_repeat_ngram_size: 2
+  do_sample: true
+  top_k: 50
+  top_p: 0.95
+  temperature: 1.0
+
+evaluation:
+  bertscore:
+    model: "vinai/phobert-base"
+    lang: "vi"
+    num_layers: 12
+    batch_size: 16
+  parascore:
+    model: "vinai/phobert-base"
+    lang: "vi"
+    num_layers: 12
+    batch_size: 16
