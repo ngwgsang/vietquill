@@ -8,7 +8,7 @@
   <br/>
 </p>
 
-<p align="center">Open-source Vietnamese Paraphrase Toolkit</p>
+<p align="center">An Open-Source Toolkit for Vietnamese Paraphrasing</p>
 
 
 ![PyPI](https://img.shields.io/pypi/v/vietquill?color=EAB308)
