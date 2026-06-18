@@ -1,67 +1,45 @@
 import sys
 import os
-import random
-import time
-
-# Add project root to sys.path to allow imports from src
-root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-if root_path not in sys.path:
-    sys.path.insert(0, root_path)
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import torch
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import uvicorn
-from src.utils.estimators import QCModelEstimator
-from src.utils.quality_evaluator import QualityEvaluator
 
-# FLAG để chuyển đổi giữa mô hình thật và mock (để test UI nhanh)
-_USE_MOCK = False
+# Sử dụng trực tiếp thư viện vietquill
+from vietquill import AutoModelForControllableParaphraseGeneration, AutoModelForParaphraseQualityEstimation
+from vietquill.evaluation.metrics.bleu_metric import BLEUMetric
+from vietquill.evaluation.metrics.bertscore_metric import BERTScoreMetric
+from vietquill.evaluation.metrics.jaccard_metric import JaccardMetric
+from vietquill.evaluation.metrics.ted_metric import TEDMetric
+from vietquill.evaluation.metrics.parascore_metric import ParaScoreMetric
 
-class MockParaphraser:
-    def __init__(self):
-        print("[MOCK] Initializing Mock Paraphraser...")
-        
-    def generate(self, text, num_candidates=4, **kwargs):
-        # Tạo ra các câu giả lập bằng cách xáo trộn hoặc thay đổi nhẹ câu gốc
-        words = text.split()
-        candidates = []
-        for i in range(num_candidates):
-            random.shuffle(words)
-            candidates.append(" ".join(words) + f" (Mock variant {i+1})")
-        return candidates
-
-class MockEstimator:
-    def __init__(self):
-        print("[MOCK] Initializing Mock Estimator...")
-        
-    def estimate(self, source, candidate):
-        return {
-            "lexical_score": round(random.uniform(40, 95), 2),
-            "syntactic_score": round(random.uniform(40, 95), 2),
-            "semantic_score": round(random.uniform(40, 95), 2),
-        }
-
-class MockQualityEvaluator:
-    def __init__(self):
-        print("[MOCK] Initializing Mock Quality Evaluator...")
+class DemoQualityEvaluator:
+    def __init__(self, device="cpu"):
+        print("[*] Khởi tạo các metrics truyền thống (BLEU, BERTScore, Jaccard, TED, ParaScore)...")
+        self.bleu = BLEUMetric()
+        self.bertscore = BERTScoreMetric(device=device)
+        self.jaccard = JaccardMetric()
+        self.ted = TEDMetric()
+        self.parascore = ParaScoreMetric(batch_size=1)
         
     def evaluate(self, source, candidate):
-        return {
-            "bleu": round(random.uniform(30, 90), 2),
-            "bertscore": round(random.uniform(70, 98), 2),
-            "jaccard_diversity": round(random.uniform(10, 60), 2),
-            "ted": round(random.uniform(20, 80), 2),
-            "parascore": round(random.uniform(50, 95), 2)
-        }
+        try:
+            return {
+                "bleu": round(self.bleu.score(source, candidate) * 100, 2),
+                "bertscore": round(self.bertscore.score(source, candidate) * 100, 2),
+                "jaccard_diversity": round((1 - self.jaccard.score(source, candidate)) * 100, 2),
+                "ted": round(self.ted.score(source, candidate) * 100, 2),
+                "parascore": round(self.parascore.score_free(source, candidate) * 100, 2)
+            }
+        except Exception as e:
+            print(f"Lỗi tính metric: {e}")
+            return {"bleu": 0, "bertscore": 0, "jaccard_diversity": 0, "ted": 0, "parascore": 0}
 
-app = FastAPI(title="VietQuill Paraphrase API", description="API demo cho task paraphrase sử dụng mô hình vietquill-vit5-base-viqp-3e5 và velectra-base-qc-question-3e5")
+app = FastAPI(title="VietQuill Paraphrase API", description="API demo cho task paraphrase sử dụng thư viện VietQuill")
 
-# ... (CORS configuration remains same)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -70,14 +48,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Tên mô hình (Sử dụng đường dẫn local)
-PARAPHRASER_MODEL = os.path.join(root_path, "models", "vietquill-vit5-base-viqp-3e5")
-ESTIMATOR_MODEL = os.path.join(root_path, "models", "velectra-base-qc-question-3e5")
-
-# Biến toàn cục cho model, tokenizer và estimator
-tokenizer = None
 model = None
-device = None
 estimator = None
 quality_evaluator = None
 
@@ -95,39 +66,24 @@ class TreeRequest(BaseModel):
 
 @app.on_event("startup")
 async def startup_event():
-    global tokenizer, model, device, estimator, quality_evaluator
+    global model, estimator, quality_evaluator
     print("\n" + "="*50)
-    print(f"KHỞI TẠO HỆ THỐNG VIETQUILL {'(MOCK MODE)' if _USE_MOCK else ''}")
+    print(f"KHỞI TẠO HỆ THỐNG VIETQUILL")
     print("="*50)
-    
-    if _USE_MOCK:
-        device = "cpu"
-        model = MockParaphraser()
-        estimator = MockEstimator()
-        quality_evaluator = MockQualityEvaluator()
-        print("[OK] Đã khởi tạo Mock Components.")
-        return
 
     try:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        print(f"[*] Thiết bị sử dụng: {device.upper()}")
+        print("[*] Đang khởi tạo Generator (AutoModelForControllableParaphraseGeneration)...")
+        model = AutoModelForControllableParaphraseGeneration()
+        print("[OK] Hoàn tất Generator.")
         
-        # Load Paraphraser
-        print(f"[*] Đang tải Paraphraser từ: {PARAPHRASER_MODEL}...")
-        tokenizer = AutoTokenizer.from_pretrained(PARAPHRASER_MODEL)
-        model = AutoModelForSeq2SeqLM.from_pretrained(PARAPHRASER_MODEL)
-        model.to(device)
-        print(f"[OK] Đã tải xong Paraphraser.")
-        
-        # Initialize Estimator
-        print(f"[*] Đang tải Estimator từ: {ESTIMATOR_MODEL}...")
-        estimator = QCModelEstimator(model_path=ESTIMATOR_MODEL, device=device)
-        print(f"[OK] Đã tải xong Estimator.")
+        print("[*] Đang khởi tạo Estimator (AutoModelForParaphraseQualityEstimation)...")
+        estimator = AutoModelForParaphraseQualityEstimation()
+        print("[OK] Hoàn tất Estimator.")
 
-        # Initialize Quality Evaluator
-        print(f"[*] Đang khởi tạo Dashboard Evaluator...")
-        quality_evaluator = QualityEvaluator(device=device)
-        print(f"[OK] Đã khởi tạo xong Dashboard Evaluator.")
+        print("[*] Đang khởi tạo Dashboard Evaluator...")
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        quality_evaluator = DemoQualityEvaluator(device=device)
+        print("[OK] Hoàn tất Dashboard Evaluator.")
         
         print("\n" + "="*50)
         print("HỆ THỐNG ĐÃ SẴN SÀNG PHỤC VỤ")
@@ -146,53 +102,20 @@ async def generate_paraphrase(request: ParaphraseRequest):
          raise HTTPException(status_code=503, detail="Hệ thống đang được khởi tạo hoặc chưa sẵn sàng")
     
     try:
-        if _USE_MOCK:
-            time.sleep(1) # Giả lập delay
-            candidates_text = model.generate(request.text, request.num_candidates)
-        else:
-            # Chuẩn hoá (làm tròn) về bội số gần nhất của 5
-            sem_norm = round(request.semantic / 5) * 5
-            syn_norm = round(request.syntactic / 5) * 5
-            lex_norm = round(request.lexical / 5) * 5
-            
-            # Prefix cho task
-            input_text = f"paraphrase: SEM_{sem_norm} SYN_{syn_norm} LEX_{lex_norm} {request.text}"
-            
-            # Tokenize
-            encoding = tokenizer(
-                input_text, 
-                return_tensors="pt", 
-                padding=True, 
-                truncation=True, 
-                max_length=256
-            )
-            input_ids = encoding["input_ids"].to(device)
-            attention_mask = encoding["attention_mask"].to(device)
-            
-            # Generate
-            outputs = model.generate(
-                input_ids=input_ids,
-                attention_mask=attention_mask,
-                max_length=256,
-                num_beams=max(request.num_beams, request.num_candidates),
-                num_return_sequences=request.num_candidates,
-                early_stopping=True,
-                no_repeat_ngram_size=2
-            )
-            
-            # Decode
-            candidates_text = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+        candidates_text = model.paraphrase(
+            request.text, 
+            semantic=request.semantic,
+            syntactic=request.syntactic,
+            lexical=request.lexical,
+            num_candidates=request.num_candidates,
+            num_beams=request.num_beams
+        )
         
-        # Evaluate each candidate
         results = []
         for cand in candidates_text:
-            # 1. Model-based scores (from QC Model)
             qc_scores = estimator.estimate(request.text, cand)
-            
-            # 2. Metric-based scores (for Dashboard)
             metric_scores = quality_evaluator.evaluate(request.text, cand)
             
-            # Calculate Overall Score (Average of all metrics for now, or just semantic)
             overall_score = round(
                 (qc_scores["semantic_score"] + qc_scores["syntactic_score"] + qc_scores["lexical_score"]) / 3, 
                 2
@@ -205,7 +128,6 @@ async def generate_paraphrase(request: ParaphraseRequest):
                 "overall_score": overall_score
             })
             
-        # Determine "best" (highest overall score)
         if results:
             best_idx = 0
             max_overall = -1
@@ -227,14 +149,7 @@ async def generate_paraphrase(request: ParaphraseRequest):
 @app.post("/api/tree")
 async def get_trees(request: TreeRequest):
     try:
-        if _USE_MOCK:
-            time.sleep(0.5)
-            return {
-                "original_tree": f"(S (NP {request.original}) (VP (V mock) (NP tree)) )",
-                "paraphrase_tree": f"(S (NP {request.paraphrase}) (VP (V mock) (NP tree)) )"
-            }
-            
-        from src.utils.metrics.ted_metric import _init_vi_pipeline
+        from vietquill.evaluation.metrics.ted_metric import _init_vi_pipeline
         nlp = _init_vi_pipeline()
         
         doc1 = nlp(request.original)
@@ -260,7 +175,6 @@ async def read_root():
     with open(static_path, "r", encoding="utf-8") as f:
         return f.read()
 
-# Phục vụ thư mục static
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 os.makedirs(static_dir, exist_ok=True)
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
