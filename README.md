@@ -8,6 +8,8 @@
   <br/>
 </p>
 
+<p align="center">Open-source Vietnamese Paraphrase Toolkit</p>
+
 
 ![PyPI](https://img.shields.io/pypi/v/vietquill?color=EAB308)
 ![Python](https://img.shields.io/pypi/pyversions/vietquill?color=EAB308)
@@ -17,9 +19,8 @@
 ![Task](https://img.shields.io/badge/Task-Paraphrase%20Generation-EAB308)
 [![Models](https://img.shields.io/badge/🤗-Models-EAB308)](https://huggingface.co/collections/ngwgsang/vietquill)
 
-# VietQuill: A Unified Framework for Controllable Vietnamese Paraphrase Generation and Quality Estimation
-
 English | [Tiếng Việt](i18n/README_vi.md)
+
 
 VietQuill is a unified framework for controllable Vietnamese paraphrase generation and quality estimation, supporting both research and production applications.
 
