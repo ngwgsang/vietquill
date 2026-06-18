@@ -144,7 +144,7 @@ Please CITE our paper when VietQuill is used to help produce published results o
 ```bibtex
 @software{sang2026vietquill,
   author = {Nguyen Quang Sang},
-  title = {VietQuill: A Toolkit for Vietnamese Paraphrase Generation and Evaluation},
+  title = {VietQuill: An Open-Source Toolkit for Vietnamese Paraphrasing},
   year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},
