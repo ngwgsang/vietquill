@@ -3,25 +3,30 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from vietquill.utils.config import get_config
 from vietquill.config import MODELS, GENERATION
 
-class AutoModelForParaphraseGeneration:
+class AutoModelForControllableParaphraseGeneration:
     def __init__(self, hub_id: str = None, device: str = None):
         """
-        Initializes the Paraphraser for general paraphrase generation.
+        Initializes the Quality Control Paraphraser with support for both sentence and question models.
 
         Args:
-            hub_id: Path or HF name for the model repo.
+            hub_id: Path or HF name for the unified model repo.
             device: Device to run the model on.
         """
-        self.hub_id = hub_id or get_config("models.paraphraser.uncontrol_hub_id", MODELS["paraphraser"]["uncontrol_hub_id"])
+        self.hub_id = hub_id or get_config("models.paraphraser.hub_id", MODELS["paraphraser"]["hub_id"])
         self.device = device if device else ("cuda" if torch.cuda.is_available() else "cpu")
         
         print(f"Loading tokenizer from {self.hub_id}...")
         self.tokenizer = AutoTokenizer.from_pretrained(self.hub_id)
         
-        print(f"Loading model from {self.hub_id}...")
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(self.hub_id)
-        self.model.to(self.device)
-        self.model.eval()
+        print(f"Loading model from {self.hub_id}/sentence...")
+        self.model_sentence = AutoModelForSeq2SeqLM.from_pretrained(self.hub_id, subfolder="sentence")
+        self.model_sentence.to(self.device)
+        self.model_sentence.eval()
+        
+        print(f"Loading model from {self.hub_id}/question...")
+        self.model_question = AutoModelForSeq2SeqLM.from_pretrained(self.hub_id, subfolder="question")
+        self.model_question.to(self.device)
+        self.model_question.eval()
 
     def _postprocess(self, text: str, candidates: list, num_candidates: int) -> list:
         """
@@ -43,39 +48,62 @@ class AutoModelForParaphraseGeneration:
 
     def paraphrase(self, text: str, **kwargs) -> list:
         """
-        Generates paraphrases without control constraints.
+        Generates paraphrases with quality control constraints.
+        Automatically detects if the input is a question and uses the corresponding model.
         
         Args:
             text: Input text to paraphrase.
-            **kwargs: Generation parameters.
+            **kwargs: Generation parameters and control values.
+                - semantic (int): Semantic control (0-100), default 90.
+                - syntactic (int): Syntactic control (0-100), default 85.
+                - lexical (int): Lexical control (0-100), default 80.
                 - num_candidates (int): Number of sequences to return.
+                - num_beams (int): Number of beams.
                 - max_length (int): Max length.
                 - and any other transformers.GenerationConfig parameters.
             
         Returns:
             List of paraphrased strings.
         """
-        # Add prefix for the task
-        input_text = f"paraphrase: {text}"
+        # Detect question based on '?'
+        is_question = text.strip().endswith("?")
+        
+        if is_question:
+            model = self.model_question
+        else:
+            model = self.model_sentence
+
+        # Extract control values
+        semantic = kwargs.pop("semantic", 90)
+        syntactic = kwargs.pop("syntactic", 85)
+        lexical = kwargs.pop("lexical", 80)
+
+        # Normalize control values to nearest multiple of 5
+        sem_norm = round(semantic / 5) * 5
+        syn_norm = round(syntactic / 5) * 5
+        lex_norm = round(lexical / 5) * 5
+        
+        # Format input with control prefix (SEM_x SYN_y LEX_z : text)
+        input_text = f"SEM_{sem_norm} SYN_{syn_norm} LEX_{lex_norm} : {text}"
         
         # Default parameters from config
         max_length = kwargs.get("max_length", get_config("generation.max_length", GENERATION["max_length"]))
         num_candidates = kwargs.pop("num_candidates", get_config("generation.num_candidates", GENERATION["num_candidates"]))
+        num_beams = kwargs.pop("num_beams", get_config("generation.num_beams", GENERATION["num_beams"]))
         
         # Generate more sequences than requested to handle duplicates/identity mapping
         actual_num_return = num_candidates + 2
+        actual_num_beams = max(num_beams, actual_num_return)
         
         gen_kwargs = {
             "max_length": max_length,
             "num_return_sequences": actual_num_return,
-            "do_sample": kwargs.pop("do_sample", get_config("generation.do_sample", GENERATION["do_sample"])),
-            "top_k": kwargs.pop("top_k", get_config("generation.top_k", GENERATION["top_k"])),
-            "top_p": kwargs.pop("top_p", get_config("generation.top_p", GENERATION["top_p"])),
-            "temperature": kwargs.pop("temperature", get_config("generation.temperature", GENERATION["temperature"])),
+            "num_beams": actual_num_beams,
+            "early_stopping": get_config("generation.early_stopping", GENERATION["early_stopping"]),
             "no_repeat_ngram_size": get_config("generation.no_repeat_ngram_size", GENERATION["no_repeat_ngram_size"])
         }
         
-        # Override defaults with any remaining kwargs
+        # Override defaults with any provided kwargs
         gen_kwargs.update(kwargs)
         
         # Tokenize
@@ -91,7 +119,7 @@ class AutoModelForParaphraseGeneration:
         
         # Generate
         with torch.no_grad():
-            outputs = self.model.generate(
+            outputs = model.generate(
                 input_ids=input_ids,
                 attention_mask=attention_mask,
                 **gen_kwargs

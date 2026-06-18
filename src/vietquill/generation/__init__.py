@@ -1,7 +1,7 @@
-from vietquill.generation.quality_control_paraphraser import QualityControlParaphraser
-from vietquill.generation.uncontrol_paraphraser import UncontrolParaphraser
+from vietquill.generation.controllable_paraphraser import AutoModelForControllableParaphraseGeneration
+from vietquill.generation.uncontrol_paraphraser import AutoModelForParaphraseGeneration
 
 __all__ = [
-    "QualityControlParaphraser",
-    "UncontrolParaphraser"
+    "AutoModelForControllableParaphraseGeneration",
+    "AutoModelForParaphraseGeneration"
 ]

@@ -7,6 +7,7 @@ except ImportError:
     bert_score_func = None
 
 from vietquill.utils.config import get_config
+from vietquill.config import EVALUATION
 
 class BERTScoreMetric(BaseMetric):
     """
@@ -19,10 +20,10 @@ class BERTScoreMetric(BaseMetric):
                 "Run: pip install bert-score"
             )
         
-        self.model_type = model_type or get_config("models.metrics.bertscore", "vinai/phobert-base")
-        self.lang = lang or get_config("evaluation.bertscore.lang", "vi")
+        self.model_type = model_type or get_config("evaluation.bertscore.model", EVALUATION["bertscore"]["model"])
+        self.lang = lang or get_config("evaluation.bertscore.lang", EVALUATION["bertscore"]["lang"])
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
-        self.num_layers = num_layers or get_config("evaluation.bertscore.num_layers", 12)
+        self.num_layers = num_layers or get_config("evaluation.bertscore.num_layers", EVALUATION["bertscore"]["num_layers"])
         
         self.f1_scores = []
 

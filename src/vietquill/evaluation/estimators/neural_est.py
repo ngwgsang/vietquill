@@ -2,54 +2,40 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from vietquill.evaluation.estimators.base_est import BaseEstimator
 from vietquill.utils.config import get_config
+from vietquill.config import MODELS
 
-class NeuralEstimator(BaseEstimator):
+class AutoModelForParaphraseQualityEstimation(BaseEstimator):
     """
     Estimator that uses trained Sequence Classification models (Regression) 
     to predict Lexical, Syntactic, and Semantic scores.
-    Supports both sentence and question specialized models.
+    Supports both sentence and question specialized models loaded from a unified repo.
     """
 
-    def __init__(self, sentence_model: str = None, question_model: str = None, device: str = None, **kwargs):
+    def __init__(self, hub_id: str = None, device: str = None, **kwargs):
         """
-        Initializes the Neural Estimator with support for both sentence and question models.
+        Initializes the Quality Estimation Model with support for both sentence and question models.
 
         Args:
-            sentence_model: Path or HF name for sentence estimator.
-            question_model: Path or HF name for question estimator.
+            hub_id: Path or HF name for the unified model repo.
             device: Device to run the models on.
         """
-        self.sentence_model_name = sentence_model or get_config("models.estimators.sentence")
-        self.question_model_name = question_model or get_config("models.estimators.question")
+        self.hub_id = hub_id or get_config("models.estimators.hub_id", MODELS["estimators"]["hub_id"])
         self.device = device if device else ("cuda" if torch.cuda.is_available() else "cpu")
         
-        super().__init__(model=self.sentence_model_name, **kwargs)
+        print(f"Loading tokenizer from {self.hub_id}...")
+        self.tokenizer = AutoTokenizer.from_pretrained(self.hub_id)
         
-        self.tokenizer_sentence = None
-        self.model_sentence = None
-        self.tokenizer_question = None
-        self.model_question = None
+        print(f"Loading sentence estimator from {self.hub_id}/sentence...")
+        self.model_sentence = AutoModelForSequenceClassification.from_pretrained(self.hub_id, subfolder="sentence")
+        self.model_sentence.to(self.device)
+        self.model_sentence.eval()
+        
+        print(f"Loading question estimator from {self.hub_id}/question...")
+        self.model_question = AutoModelForSequenceClassification.from_pretrained(self.hub_id, subfolder="question")
+        self.model_question.to(self.device)
+        self.model_question.eval()
 
-    def load_model(self, model_type: str = "all"):
-        """
-        Loads the tokenizer and model onto the specified device.
-        
-        Args:
-            model_type: "sentence", "question", or "all".
-        """
-        if model_type in ["all", "sentence"] and self.model_sentence is None:
-            print(f"Loading Sentence Estimator from {self.sentence_model_name}...")
-            self.tokenizer_sentence = AutoTokenizer.from_pretrained(self.sentence_model_name)
-            self.model_sentence = AutoModelForSequenceClassification.from_pretrained(self.sentence_model_name)
-            self.model_sentence.to(self.device)
-            self.model_sentence.eval()
-            
-        if model_type in ["all", "question"] and self.model_question is None:
-            print(f"Loading Question Estimator from {self.question_model_name}...")
-            self.tokenizer_question = AutoTokenizer.from_pretrained(self.question_model_name)
-            self.model_question = AutoModelForSequenceClassification.from_pretrained(self.question_model_name)
-            self.model_question.to(self.device)
-            self.model_question.eval()
+        super().__init__(model=self.hub_id, **kwargs)
 
     def estimate(self, sentence1, sentence2):
         """
@@ -67,19 +53,13 @@ class NeuralEstimator(BaseEstimator):
         is_question = sentence1.strip().endswith("?")
         
         if is_question:
-            if self.model_question is None:
-                self.load_model("question")
             model = self.model_question
-            tokenizer = self.tokenizer_question
         else:
-            if self.model_sentence is None:
-                self.load_model("sentence")
             model = self.model_sentence
-            tokenizer = self.tokenizer_sentence
 
         input_text = f"{sentence1} [SEP] {sentence2}"
         
-        inputs = tokenizer(
+        inputs = self.tokenizer(
             input_text, 
             return_tensors="pt", 
             padding=True, 
@@ -91,8 +71,13 @@ class NeuralEstimator(BaseEstimator):
             outputs = model(**inputs)
             predictions = outputs.logits.cpu().numpy()[0]
             
+        # Clip scores to [0, 100] range
+        lexical_score = max(0.0, min(100.0, float(predictions[0])))
+        syntactic_score = max(0.0, min(100.0, float(predictions[1])))
+        semantic_score = max(0.0, min(100.0, float(predictions[2])))
+            
         return {
-            "lexical_score": round(float(predictions[0]), 2),
-            "syntactic_score": round(float(predictions[1]), 2),
-            "semantic_score": round(float(predictions[2]), 2),
+            "lexical_score": round(lexical_score, 2),
+            "syntactic_score": round(syntactic_score, 2),
+            "semantic_score": round(semantic_score, 2),
         }

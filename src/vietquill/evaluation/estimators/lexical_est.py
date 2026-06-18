@@ -22,4 +22,4 @@ class LexicalEstimator(BaseEstimator):
             dict: A dictionary containing the estimated lexical score.
         """
         lexical_score = self.lexical_metric.score(sentence1, sentence2)
-        return {"lexical_score": round(( 1 - lexical_score ) * 100, 2)}
+        return {"lexical_score": round(lexical_score * 100, 2)}

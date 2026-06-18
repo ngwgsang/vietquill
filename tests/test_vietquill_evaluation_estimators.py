@@ -1,4 +1,10 @@
-from vietquill.evaluation import LexicalEstimator, SemanticEstimator, SyntacticEstimator, NeuralEstimator
+from vietquill.evaluation import (
+    LexicalEstimator, 
+    SemanticEstimator, 
+    SyntacticEstimator, 
+)
+
+from vietquill import AutoModelForParaphraseQualityEstimation
 
 SENTENCE1 = "Tôi thích học lập trình."
 SENTENCE2 = "Tôi yêu thích việc xử lý ngôn ngữ tự nhiên."
@@ -28,8 +34,8 @@ def test_syntactic_estimator():
     print(f"Syntactic Estimator Result: {result}")
 
 def test_neural_estimator():
-    print("Testing NeuralEstimator...")
-    estimator = NeuralEstimator()
+    print("Testing AutoModelForParaphraseQualityEstimation...")
+    estimator = AutoModelForParaphraseQualityEstimation()
     result = estimator.estimate(SENTENCE1, SENTENCE2)
     assert "syntactic_score" in result
     assert isinstance(result["syntactic_score"], (float, int))

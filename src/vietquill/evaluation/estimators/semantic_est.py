@@ -1,6 +1,7 @@
 from vietquill.evaluation.estimators.base_est import BaseEstimator
 from vietquill.evaluation.metrics.bertscore_metric import BERTScoreMetric
 from vietquill.utils.config import get_config
+from vietquill.config import EVALUATION
 
 class SemanticEstimator(BaseEstimator):
     """
@@ -8,8 +9,8 @@ class SemanticEstimator(BaseEstimator):
     """
 
     def __init__(self, model_type=None, device=None, num_layers=None, **kwargs):
-        self.model_type = model_type or get_config("models.estimators.semantic", "vinai/phobert-base")
-        self.num_layers = num_layers or get_config("evaluation.bertscore.num_layers", 12)
+        self.model_type = model_type or get_config("evaluation.bertscore.model", EVALUATION["bertscore"]["model"])
+        self.num_layers = num_layers or get_config("evaluation.bertscore.num_layers", EVALUATION["bertscore"]["num_layers"])
         
         super().__init__(model=self.model_type, **kwargs)
         self.bertscore_metric = BERTScoreMetric(model_type=self.model_type, device=device, num_layers=self.num_layers)

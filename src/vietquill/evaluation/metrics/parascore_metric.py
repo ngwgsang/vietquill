@@ -7,6 +7,7 @@ except ImportError:
 
 
 from vietquill.utils.config import get_config
+from vietquill.config import EVALUATION
 
 class ParaScoreMetric(BaseMetric):
     """
@@ -30,10 +31,10 @@ class ParaScoreMetric(BaseMetric):
                 "Run: pip install parascore"
             )
 
-        self.lang = lang or get_config("evaluation.parascore.lang", "vi")
-        self.model_type = model_type or get_config("models.metrics.parascore", "vinai/phobert-base")
-        self.num_layers = num_layers or get_config("evaluation.parascore.num_layers", 12)
-        self.batch_size = batch_size or get_config("evaluation.parascore.batch_size", 16)
+        self.lang = lang or get_config("evaluation.parascore.lang", EVALUATION["parascore"]["lang"])
+        self.model_type = model_type or get_config("evaluation.parascore.model", EVALUATION["parascore"]["model"])
+        self.num_layers = num_layers or get_config("evaluation.parascore.num_layers", EVALUATION["parascore"]["num_layers"])
+        self.batch_size = batch_size or get_config("evaluation.parascore.batch_size", EVALUATION["parascore"]["batch_size"])
 
         self.scorer = ParaScorer(
             lang=self.lang,

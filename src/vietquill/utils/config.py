@@ -1,9 +1,11 @@
 import os
 import yaml
+import copy
+from vietquill.config import DEFAULT_CONFIG
 
 def load_config(config_path=None):
     """
-    Loads configuration from a YAML file.
+    Loads configuration from a YAML file, falling back to defaults.
     
     Args:
         config_path (str): Path to the config file. If None, looks for config.yaml in the project root.
@@ -16,17 +18,28 @@ def load_config(config_path=None):
         root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
         config_path = os.path.join(root_dir, "config.yaml")
         
+    # Start with a deep copy of the default config
+    config = copy.deepcopy(DEFAULT_CONFIG)
+    
     if not os.path.exists(config_path):
-        print(f"Warning: Config file not found at {config_path}. Using empty config.")
-        return {}
+        return config
         
     with open(config_path, "r", encoding="utf-8") as f:
         try:
-            config = yaml.safe_load(f)
-            return config if config else {}
+            user_config = yaml.safe_load(f)
+            if user_config:
+                # Recursively merge user_config into config
+                def merge(base, update):
+                    for k, v in update.items():
+                        if isinstance(v, dict) and k in base and isinstance(base[k], dict):
+                            merge(base[k], v)
+                        else:
+                            base[k] = v
+                merge(config, user_config)
+            return config
         except yaml.YAMLError as e:
             print(f"Error parsing YAML config: {e}")
-            return {}
+            return config
 
 # Global config instance
 _CONFIG = load_config()

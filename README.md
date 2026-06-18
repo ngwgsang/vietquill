@@ -1,6 +1,6 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/vietquill-dark.png">
+    <source media="(prefers-color-scheme: dark)" srcset="">
     <source media="(prefers-color-scheme: light)" srcset=".github/assets/vietquill-light.png">
     <img alt="VietQuill: A toolkit for Vietnamese Paraphrase Generation and Evaluation" src=".github/assets/vietquill-light.png" height="100" style="max-width: 100%;">
   </picture>
@@ -8,17 +8,20 @@
   <br/>
 </p>
 
-<p align="center">
-    <a href="https://github.com/ngwgsang/vietquill/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/huggingface/transformers.svg?color=blue"></a>
-    <a href="https://github.com/ngwgsang/vietquill/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/huggingface/transformers.svg"></a>
-    <a href="https://zenodo.org/badge/latestdoi/155220641"><img src="https://zenodo.org/badge/155220641.svg" alt="DOI"></a>
-</p>
 
-# VietQuill: A toolkit for Vietnamese Paraphrase Generation and Evaluation
+![PyPI](https://img.shields.io/pypi/v/vietquill?color=EAB308)
+![Python](https://img.shields.io/pypi/pyversions/vietquill?color=EAB308)
+![License](https://img.shields.io/github/license/ngwgsang/vietquill?color=525252)
+
+![Vietnamese](https://img.shields.io/badge/Language-Vietnamese-525252)
+![Task](https://img.shields.io/badge/Task-Paraphrase%20Generation-EAB308)
+[![Models](https://img.shields.io/badge/🤗-Models-EAB308)](https://huggingface.co/collections/ngwgsang/vietquill)
+
+# VietQuill: A Unified Framework for Controllable Vietnamese Paraphrase Generation and Quality Estimation
 
 English | [Tiếng Việt](i18n/README_vi.md)
 
-VietQuill is a unified framework for Vietnamese paraphrase generation, evaluation, and quality control, supporting both research and production applications.
+VietQuill is a unified framework for controllable Vietnamese paraphrase generation and quality estimation, supporting both research and production applications.
 
 It centralizes datasets, generation methods, augmentation techniques, and evaluation metrics into a consistent interface, enabling researchers and practitioners to develop, benchmark, and deploy paraphrase systems with minimal effort. VietQuill aims to serve as a common foundation for the Vietnamese paraphrase generation ecosystem, promoting reproducible research, standardized evaluation, and the development of high-quality paraphrase technologies for education, information retrieval, question answering, conversational AI, and other natural language processing applications.
 
@@ -44,18 +47,16 @@ pip install vietquill
 
 ### Paraphrase Generate
 
-Using `QualityControlParaphraser` for fine-grained control over lexical, semantic, and syntactic attributes.
+Using `AutoModelForControllableParaphraseGeneration` for fine-grained control over lexical, semantic, and syntactic attributes.
 
 ```python
-from vietquill.generation import QualityControlParaphraser
+from vietquill import AutoModelForControllableParaphraseGeneration
 
-paraphraser = QualityControlParaphraser()
-paraphraser.load_model(model_type="all") # "all" or "question" or "sentence"
+paraphraser = AutoModelForControllableParaphraseGeneration()
 
 sentences = [
     "Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
     "Thủ đô của nước Pháp là thành phố nào?",
-    "Quán phở nào ngon nhất ở khu vực Hà Nội?",
 ]
 
 for sentence in sentences:
@@ -67,51 +68,66 @@ for sentence in sentences:
 # >>> Paraphrase: ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.', 'Hôm nay trời đẹp quá, tôi muốn đi dạo công viên.']
 # >>> Original: Thủ đô của nước Pháp là thành phố nào?
 # >>> Paraphrase: ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?']
-# >>> Original: Quán phở nào ngon nhất ở khu vực Hà Nội?
-# >>> Paraphrase: ['Ở Hà Nội, quán phở nào ngon nhất?', 'Món ăn nào là món ăn ngon nhất ở Hà Nội?']
+```
+
+Using `lexical`, `syntactic`, `semantic` for tunning paraphrase quality and diversity.
+
+```python
+from vietquill import AutoModelForControllableParaphraseGeneration
+
+paraphraser = AutoModelForControllableParaphraseGeneration()
+sentence = "Tôi rất thích ăn phở vào buổi sáng và uống một cốc cà phê nóng."
+
+# Generate with specific control levels
+paraphrase = paraphraser.paraphrase(sentence, lexical=90, syntactic=70, semantic=70, num_candidates=2)
+print(paraphrase)
+# >>> ['Bữa sáng tôi ăn phở, uống một cốc cà phê nóng.', 'Bữa sáng tôi ăn phở và một cốc cà phê nóng.']
 ```
 
 ### Paraphrase Evaluate
 
 Evaluate the quality of generated paraphrases using various metrics and estimators.
 
-#### Metrics and Metric-based Estimator
-
 ```python
 from vietquill.evaluation import BLEUMetric, LexicalEstimator
-
-# Reference and candidate sentences
-original = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
-paraphrase = "Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."
-
-# 1. Traditional Metrics
-bleu = BLEUMetric()
-score = bleu.score(original, paraphrase)
-# >>> 0.1543
-
-# 2. Aspect Estimators (Lexical, Semantic, Syntactic)
-lex_est = LexicalEstimator()
-estimation = lex_est.estimate(original, paraphrase)
-# >>> { "lexical_score": 84.21 }
+original = "Hôm nay trời đẹp quá."
+paraphrase = "Hôm nay trời đẹp ghê."
+metric = BLEUMetric()
+result = metric.score(original, paraphrase)
+print(result)
+# >>> 0.668740304976422
 ```
-
-#### Neural-based Estimator
 
 ```python
-from vietquill.evaluation import NeuralEstimator
+from vietquill.evaluation import LexicalEstimator
+original = "Hôm nay trời đẹp quá."
+paraphrase = "Hôm nay trời đẹp ghê."
+lex_est = LexicalEstimator()
+result = lex_est.estimate(original, paraphrase)
+print(result)
+# >>> {'lexical_score': 66.67}
+```
+
+```python
+from vietquill import AutoModelForParaphraseQualityEstimation
 
 original = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
 paraphrase = "Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."
 
-estimator = NeuralEstimator()
+estimator = AutoModelForParaphraseQualityEstimation()
 result = estimator.estimate(original, paraphrase)
 print(result)
-# >>> {
-# >>>     "lexical_score": 82.5,
-# >>>     "syntactic_score": 55.0,
-# >>>     "semantic_score": 95.2
-# >>> }
+# >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
+
+## Model list
+
+| Model                                  | Architecture                     | Size     |
+| :------------------------------------- | :------------------------------- | :------- |
+| `vietquill-vit5-base-tsubaki`          | T5-base (~440M parameters)       | 4.19 GB* |
+| `vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M parameters) | 1.64 GB* |
+
+* Each Hub repository bundles both **sentence** and **question** variants in a single model package.
 
 ## Why should I use VietQuill?
 
@@ -124,6 +140,13 @@ VietQuill is designed to be the most comprehensive and effective toolkit for Vie
 
 Please CITE our paper when VietQuill is used to help produce published results or is incorporated into other software.
 
-```
-TODO
+```bibtex
+@software{sang2026vietquill,
+  author = {Nguyen Quang Sang},
+  title = {VietQuill: A Toolkit for Vietnamese Paraphrase Generation and Evaluation},
+  year = {2026},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/ngwgsang/vietquill}}
+}
 ```
