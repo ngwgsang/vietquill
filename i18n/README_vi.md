@@ -2,13 +2,13 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png">
-    <img alt="VietQuill: Bộ công cụ mã nguồn mở dành cho Sinh câu đồng nghĩa Tiếng Việt" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
+    <img alt="VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
   </picture>
   <br/>
   <br/>
 </p>
 
-<p align="center">Bộ công cụ mã nguồn mở dành cho Sinh câu đồng nghĩa Tiếng Việt</p>
+<p align="center">VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation</p>
 
 
 ![PyPI](https://img.shields.io/pypi/v/vietquill?color=EAB308)
@@ -190,7 +190,7 @@ Vui lòng TRÍCH DẪN bài báo của chúng tôi khi VietQuill được sử d
 ```bibtex
 @software{sang2026vietquill,
   author = {Sang Quang Nguyen and Kiet Van Nguyen},
-  title = {VietQuill: An Open-Source Toolkit for Vietnamese Paraphrasing},
+  title = {VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation},
   year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},

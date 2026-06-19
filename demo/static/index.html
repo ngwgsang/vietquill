@@ -12,7 +12,7 @@
     <header class="site-header">
         <div class="container">
             <div class="header-content">
-                <h1 class="site-title">VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese</h1>
+                <h1 class="site-title">VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation</h1>
                 <div class="authors">
                     <span class="author">Sang Quang Nguyen</span>, 
                     <span class="author">Kiet Van Nguyen</span>
@@ -53,29 +53,51 @@
                         <label for="input-text">Input Text:</label>
                         <textarea id="input-text" placeholder="Enter the sentence you want to paraphrase here..."></textarea>
                         
-                        <div class="controls-compact">
+                        <!-- Mode Selector (Manual vs Preset) -->
+                        <div class="mode-selector">
+                            <label class="mode-option">
+                                <input type="radio" name="generation-mode" value="preset" checked>
+                                <span>Automation Preset</span>
+                            </label>
+                            <label class="mode-option">
+                                <input type="radio" name="generation-mode" value="manual">
+                                <span>Manual Config</span>
+                            </label>
+                        </div>
+
+                        <!-- Preset Style Selector -->
+                        <div class="preset-selector-group" id="preset-selector-group">
+                            <label for="style-select">Preset Style:</label>
+                            <select id="style-select">
+                                <option value="balanced" selected>Balanced</option>
+                                <option value="conservative">Conservative</option>
+                                <option value="diverse">Diverse</option>
+                            </select>
+                        </div>
+
+                        <div class="controls-compact hidden">
                             <div class="control-group">
                                 <div class="label-row">
                                     <label for="semantic-slider">SEM</label>
-                                    <span id="semantic-val">50</span>
+                                    <span id="semantic-val">80</span>
                                 </div>
-                                <input type="range" id="semantic-slider" min="0" max="100" step="5" value="50">
+                                <input type="range" id="semantic-slider" min="0" max="100" step="5" value="80">
                             </div>
                             
                             <div class="control-group">
                                 <div class="label-row">
                                     <label for="syntactic-slider">SYN</label>
-                                    <span id="syntactic-val">50</span>
+                                    <span id="syntactic-val">80</span>
                                 </div>
-                                <input type="range" id="syntactic-slider" min="0" max="100" step="5" value="50">
+                                <input type="range" id="syntactic-slider" min="0" max="100" step="5" value="80">
                             </div>
                             
                             <div class="control-group">
                                 <div class="label-row">
                                     <label for="lexical-slider">LEX</label>
-                                    <span id="lexical-val">50</span>
+                                    <span id="lexical-val">80</span>
                                 </div>
-                                <input type="range" id="lexical-slider" min="0" max="100" step="5" value="50">
+                                <input type="range" id="lexical-slider" min="0" max="100" step="5" value="80">
                             </div>
                         </div>
 
@@ -148,7 +170,7 @@
     <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
-                <span class="footer-logo">VietQuill</span>
+                <!-- <span class="footer-logo">VietQuill</span> -->
                 <nav class="footer-nav">
                     <a href="#">About</a>
                     <a href="#">Research</a>

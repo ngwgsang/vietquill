@@ -11,6 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const lexicalVal = document.getElementById('lexical-val');
     
     const paraphraseBtn = document.getElementById('paraphrase-btn');
+    
+    // Mode UI Toggles
+    const modePresetRadio = document.querySelector('input[name="generation-mode"][value="preset"]');
+    const modeManualRadio = document.querySelector('input[name="generation-mode"][value="manual"]');
+    const presetSelectorGroup = document.getElementById('preset-selector-group');
+    const controlsCompact = document.querySelector('.controls-compact');
+    const styleSelect = document.getElementById('style-select');
+
+    function updateModeUI() {
+        if (modePresetRadio.checked) {
+            presetSelectorGroup.classList.remove('hidden');
+            controlsCompact.classList.add('hidden');
+        } else {
+            presetSelectorGroup.classList.add('hidden');
+            controlsCompact.classList.remove('hidden');
+        }
+    }
+
+    document.querySelectorAll('input[name="generation-mode"]').forEach(radio => {
+        radio.addEventListener('change', updateModeUI);
+    });
+    
+    // Initialize UI state on page load
+    updateModeUI();
     const loadingDiv = document.getElementById('loading');
     const resultsDiv = document.getElementById('results');
     const paraphraseList = document.getElementById('paraphrase-list');
@@ -674,14 +698,20 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsDiv.classList.add('hidden');
         paraphraseBtn.disabled = true;
 
+        const isPreset = modePresetRadio.checked;
         const requestData = {
             text: text,
-            semantic: parseInt(semanticSlider.value),
-            syntactic: parseInt(syntacticSlider.value),
-            lexical: parseInt(lexicalSlider.value),
             num_candidates: parseInt(numCandidatesSelect.value),
             num_beams: parseInt(numBeamsSelect.value)
         };
+
+        if (isPreset) {
+            requestData.style = styleSelect.value;
+        } else {
+            requestData.semantic = parseInt(semanticSlider.value);
+            requestData.syntactic = parseInt(syntacticSlider.value);
+            requestData.lexical = parseInt(lexicalSlider.value);
+        }
 
         try {
             const response = await fetch('/api/paraphrase', {

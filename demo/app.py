@@ -56,9 +56,10 @@ class ParaphraseRequest(BaseModel):
     text: str
     num_candidates: int = 4
     num_beams: int = 5
-    semantic: int = 50
-    syntactic: int = 50
-    lexical: int = 50
+    semantic: int = 80
+    syntactic: int = 80
+    lexical: int = 80
+    style: str = None
 
 class TreeRequest(BaseModel):
     original: str
@@ -102,13 +103,20 @@ async def generate_paraphrase(request: ParaphraseRequest):
          raise HTTPException(status_code=503, detail="Hệ thống đang được khởi tạo hoặc chưa sẵn sàng")
     
     try:
+        kwargs = {
+            "num_candidates": request.num_candidates,
+            "num_beams": request.num_beams
+        }
+        if request.style and request.style.strip():
+            kwargs["style"] = request.style
+        else:
+            kwargs["semantic"] = request.semantic
+            kwargs["syntactic"] = request.syntactic
+            kwargs["lexical"] = request.lexical
+
         candidates_text = model.paraphrase(
             request.text, 
-            semantic=request.semantic,
-            syntactic=request.syntactic,
-            lexical=request.lexical,
-            num_candidates=request.num_candidates,
-            num_beams=request.num_beams
+            **kwargs
         )
         
         results = []

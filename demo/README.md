@@ -31,3 +31,10 @@ Open your browser and navigate to `http://127.0.0.1:8000` to interact with the V
 - **Real-time Quality Estimation:** Automatically evaluates generated paraphrases using the built-in Neural Estimator.
 - **Metric Dashboard:** Computes traditional metrics (BLEU, BERTScore, Jaccard, TED, ParaScore) for comprehensive quality assessment.
 - **Tree Visualization:** Compares the constituency parse trees of the original and paraphrased sentences.
+
+
+## Demo
+
+![Screen 1](https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/screens/screenshot_1.jpeg)
+
+![Screen 2](https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/screens/screenshot_2.jpeg)

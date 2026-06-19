@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "vietquill"
 dynamic = ["version"]
-description = "VietQuill: An Open-Source Toolkit for Vietnamese Paraphrasing"
+description = "VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
