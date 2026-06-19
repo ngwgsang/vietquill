@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="../.github/assets/vietquill-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="../.github/assets/vietquill-light.png">
-    <img alt="VietQuill: Bộ công cụ Tạo và Đánh giá Câu đồng nghĩa Tiếng Việt" src="../.github/assets/vietquill-light.png" height="100" style="max-width: 100%;">
+    <source media="(prefers-color-scheme: dark)" srcset="../.github/assets/logo/vietquill-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="../.github/assets/logo/vietquill-light.png">
+    <img alt="VietQuill: Bộ công cụ Tạo và Đánh giá Câu đồng nghĩa Tiếng Việt" src="../.github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
   </picture>
   <br/>
   <br/>

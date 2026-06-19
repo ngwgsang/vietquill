@@ -1,7 +1,7 @@
-from .generation import AutoModelForControllableParaphraseGeneration
-from .evaluation import AutoModelForParaphraseQualityEstimation
+from vietquill.generation import AutoModelForControllableParaphraseGeneration
+from vietquill.evaluation import AutoModelForParaphraseQualityEstimation
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 __all__ = [
     "AutoModelForControllableParaphraseGeneration",

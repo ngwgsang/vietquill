@@ -1,7 +1,6 @@
 """
 Default configuration for VietQuill.
-This file contains the default settings that are used when config.yaml is not available.
-Other modules can import specific configuration sections from here.
+This file contains the default settings.
 """
 
 MODELS = {
@@ -17,7 +16,7 @@ MODELS = {
 GENERATION = {
     "max_length": 128,
     "num_beams": 10,
-    "num_candidates": 3,
+    "num_candidates": 1,
     "early_stopping": True,
     "no_repeat_ngram_size": 2,
     "do_sample": True,
