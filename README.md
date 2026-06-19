@@ -1,15 +1,14 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/logo/vietquill-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset=".github/assets/logo/vietquill-light.png">
-    <img alt="VietQuill: A toolkit for Vietnamese Paraphrase Generation and Evaluation" src=".github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png">
+    <img alt="An Open-Source Toolkit for Vietnamese Paraphrasing" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
   </picture>
   <br/>
   <br/>
 </p>
 
 <p align="center">An Open-Source Toolkit for Vietnamese Paraphrasing</p>
-
 
 ![PyPI](https://img.shields.io/pypi/v/vietquill?color=EAB308)
 ![Python](https://img.shields.io/pypi/pyversions/vietquill?color=EAB308)
@@ -53,22 +52,39 @@ Using `AutoModelForControllableParaphraseGeneration` for fine-grained control ov
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
 
-paraphraser = AutoModelForControllableParaphraseGeneration()
+model = AutoModelForControllableParaphraseGeneration()
+result = model.paraphrase("Hôm nay trời đẹp quá, mình muốn đi dạo công viên.")
+print(result)
+# >>> ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']
+```
 
+Generate multiple paraphrase candidates using the `num_candidates` parameter.
+
+```python
+from vietquill import AutoModelForControllableParaphraseGeneration
+
+model = AutoModelForControllableParaphraseGeneration()
+result = model.paraphrase("Thủ đô của nước Pháp là thành phố nào?", num_candidates=3)
+print(result)
+# >>> ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?', 'Nước Pháp có thủ đô là thành phố tên là gì?']
+```
+
+If you have multiple sentences and want to leverage the power of GPU acceleration, you should use `paraphrases` for batch generation:
+
+```python
+from vietquill import AutoModelForControllableParaphraseGeneration
+
+model = AutoModelForControllableParaphraseGeneration()
 sentences = [
     "Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
     "Thủ đô của nước Pháp là thành phố nào?",
+    # ... many sentences here ...
 ]
 
-for sentence in sentences:
-    paraphrase = paraphraser.paraphrase(sentence, num_candidates=2)
-    print(f"Original: {sentence}")
-    print(f"Paraphrase: {paraphrase}")
-
-# >>> Original: Hôm nay trời đẹp quá, mình muốn đi dạo công viên.
-# >>> Paraphrase: ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.', 'Hôm nay trời đẹp quá, tôi muốn đi dạo công viên.']
-# >>> Original: Thủ đô của nước Pháp là thành phố nào?
-# >>> Paraphrase: ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?']
+# Generate paraphrases in batch
+results = model.paraphrases(sentences)
+print(results)
+# >>> [['Hôm nay trời đẹp, tôi muốn đi dạo công viên.'], ['Nước Pháp có thủ đô là thành phố nào?']]
 ```
 
 Using `lexical`, `syntactic`, `semantic` for tunning paraphrase quality and diversity.
@@ -76,13 +92,37 @@ Using `lexical`, `syntactic`, `semantic` for tunning paraphrase quality and dive
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
 
-paraphraser = AutoModelForControllableParaphraseGeneration()
+model = AutoModelForControllableParaphraseGeneration()
 sentence = "Tôi rất thích ăn phở vào buổi sáng và uống một cốc cà phê nóng."
 
 # Generate with specific control levels
-paraphrase = paraphraser.paraphrase(sentence, lexical=90, syntactic=70, semantic=70, num_candidates=2)
+paraphrase = model.paraphrase(sentence, lexical=90, syntactic=70, semantic=70, num_candidates=2)
 print(paraphrase)
 # >>> ['Bữa sáng tôi ăn phở, uống một cốc cà phê nóng.', 'Bữa sáng tôi ăn phở và một cốc cà phê nóng.']
+```
+
+Alternatively, you can use predefined style presets using the `ParaphraseStyle` enum (or pass the style name as a string):
+
+```python
+from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+
+model = AutoModelForControllableParaphraseGeneration()
+sentence = "Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"
+
+# Generate with CONSERVATIVE
+paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.CONSERVATIVE)
+print(paraphrase)
+# >>> ['Mỗi ngày có bao nhiêu người Việt Nam sử dụng mạng xã hội?']
+
+# Generate with BALANCED
+paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.BALANCED)
+print(paraphrase)
+# >>> ['Số lượng người Việt Nam sử dụng mạng xã hội mỗi ngày là bao nhiêu?']
+
+# Generate with DIVERSE
+paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.DIVERSE)
+print(paraphrase)
+# >>> ['Có bao nhiêu người Việt Nam sử dụng mạng xã hội mỗi ngày?']
 ```
 
 ### Paraphrase Evaluate
@@ -143,7 +183,7 @@ Please CITE our paper when VietQuill is used to help produce published results o
 
 ```bibtex
 @software{sang2026vietquill,
-  author = {Nguyen Quang Sang},
+  author = {Sang Quang Nguyen and Kiet Van Nguyen},
   title = {VietQuill: An Open-Source Toolkit for Vietnamese Paraphrasing},
   year = {2026},
   publisher = {GitHub},

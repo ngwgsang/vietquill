@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="../.github/assets/logo/vietquill-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="../.github/assets/logo/vietquill-light.png">
-    <img alt="VietQuill: Bộ công cụ Tạo và Đánh giá Câu đồng nghĩa Tiếng Việt" src="../.github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png">
+    <img alt="VietQuill: Bộ công cụ mã nguồn mở dành cho Sinh câu đồng nghĩa Tiếng Việt" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
   </picture>
   <br/>
   <br/>
@@ -53,22 +53,39 @@ Sử dụng `AutoModelForControllableParaphraseGeneration` để điều khiển
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
 
-paraphraser = AutoModelForControllableParaphraseGeneration()
+model = AutoModelForControllableParaphraseGeneration()
+result = model.paraphrase("Hôm nay trời đẹp quá, mình muốn đi dạo công viên.")
+print(result)
+# >>> ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']
+```
 
+Tạo nhiều câu đồng nghĩa ứng viên bằng cách sử dụng tham số `num_candidates`:
+
+```python
+from vietquill import AutoModelForControllableParaphraseGeneration
+
+model = AutoModelForControllableParaphraseGeneration()
+result = model.paraphrase("Thủ đô của nước Pháp là thành phố nào?", num_candidates=3)
+print(result)
+# >>> ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?', 'Nước Pháp có thủ đô là thành phố tên là gì?']
+```
+
+Nếu có nhiều câu và muốn tận dụng hiệu quả sức mạnh của GPU, bạn nên dùng `paraphrases` để sinh câu đồng nghĩa theo lô (batch):
+
+```python
+from vietquill import AutoModelForControllableParaphraseGeneration
+
+model = AutoModelForControllableParaphraseGeneration()
 sentences = [
     "Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
     "Thủ đô của nước Pháp là thành phố nào?",
+    # ... rất nhiều câu ở đây ...
 ]
 
-for sentence in sentences:
-    paraphrase = paraphraser.paraphrase(sentence, num_candidates=2)
-    print(f"Bản gốc: {sentence}")
-    print(f"Câu đồng nghĩa: {paraphrase}")
-
-# >>> Bản gốc: Hôm nay trời đẹp quá, mình muốn đi dạo công viên.
-# >>> Câu đồng nghĩa: ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.', 'Hôm nay trời đẹp quá, tôi muốn đi dạo công viên.']
-# >>> Bản gốc: Thủ đô của nước Pháp là thành phố nào?
-# >>> Câu đồng nghĩa: ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?']
+# Sinh câu đồng nghĩa theo lô (batch)
+results = model.paraphrases(sentences)
+print(results)
+# >>> [['Hôm nay trời đẹp, tôi muốn đi dạo công viên.'], ['Nước Pháp có thủ đô là thành phố nào?']]
 ```
 
 Sử dụng các tham số `lexical`, `syntactic`, `semantic` để tinh chỉnh chất lượng và tính đa dạng của câu đồng nghĩa.
@@ -76,13 +93,39 @@ Sử dụng các tham số `lexical`, `syntactic`, `semantic` để tinh chỉnh
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
 
-paraphraser = AutoModelForControllableParaphraseGeneration()
+model = AutoModelForControllableParaphraseGeneration()
 sentence = "Tôi rất thích ăn phở vào buổi sáng và uống một cốc cà phê nóng."
 
 # Tạo câu với các mức độ kiểm soát cụ thể
-paraphrase = paraphraser.paraphrase(sentence, lexical=90, syntactic=70, semantic=70, num_candidates=2)
+paraphrase = model.paraphrase(sentence, lexical=90, syntactic=70, semantic=70, num_candidates=2)
 print(paraphrase)
 # >>> ['Bữa sáng tôi ăn phở, uống một cốc cà phê nóng.', 'Bữa sáng tôi ăn phở và một cốc cà phê nóng.']
+```
+
+### Sinh câu đồng nghĩa theo mẫu định sẵn (Presets)
+
+Hoặc cách khác, bạn có thể sử dụng các thiết lập phong cách định sẵn (presets) thông qua Enum `ParaphraseStyle` (hoặc truyền tên phong cách dưới dạng chuỗi):
+
+```python
+from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+
+model = AutoModelForControllableParaphraseGeneration()
+sentence = "Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"
+
+# Tạo câu đồng nghĩa với preset CONSERVATIVE
+paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.CONSERVATIVE)
+print(paraphrase)
+# >>> ['Mỗi ngày có bao nhiêu người Việt Nam sử dụng mạng xã hội?']
+
+# Tạo câu đồng nghĩa với preset BALANCED
+paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.BALANCED)
+print(paraphrase)
+# >>> ['Số lượng người Việt Nam sử dụng mạng xã hội mỗi ngày là bao nhiêu?']
+
+# Tạo câu đồng nghĩa với preset DIVERSE
+paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.DIVERSE)
+print(paraphrase)
+# >>> ['Có bao nhiêu người Việt Nam sử dụng mạng xã hội mỗi ngày?']
 ```
 
 ### Đánh giá câu đồng nghĩa (Paraphrase Evaluate)
@@ -146,8 +189,8 @@ Vui lòng TRÍCH DẪN bài báo của chúng tôi khi VietQuill được sử d
 
 ```bibtex
 @software{sang2026vietquill,
-  author = {Nguyen Quang Sang},
-  title = {VietQuill: A Toolkit for Vietnamese Paraphrase Generation and Evaluation},
+  author = {Sang Quang Nguyen and Kiet Van Nguyen},
+  title = {VietQuill: An Open-Source Toolkit for Vietnamese Paraphrasing},
   year = {2026},
   publisher = {GitHub},
   journal = {GitHub repository},
