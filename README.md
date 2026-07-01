@@ -177,11 +177,62 @@ VietQuill is designed to be the most comprehensive and effective toolkit for Vie
 * **Seamless Integration:** Designed with a clean and intuitive API, allowing VietQuill to be easily integrated into existing NLP workflows, research pipelines, and production systems.
 * **State-of-the-Art Paraphrase Generation:** Built upon strong Vietnamese language models and quality-controlled generation techniques to deliver high-quality, diverse, and semantically faithful paraphrases.
 
+## Star History
+
+<p align="center">
+  <picture>
+    <source
+      media="(prefers-color-scheme: dark)"
+      srcset="https://api.star-history.com/svg?repos=ngwgsang/vietquill&type=Date&theme=dark" />
+    <source
+      media="(prefers-color-scheme: light)"
+      srcset="https://api.star-history.com/svg?repos=ngwgsang/vietquill&type=Date" />
+    <img
+      alt="Star History Chart"
+      src="https://api.star-history.com/svg?repos=ngwgsang/vietquill&type=Date"
+      width="700" />
+  </picture>
+</p>
+
+## Acknowledgements
+
+We sincerely thank the Vietnamese NLP community for their continuous support and valuable contributions. We also gratefully acknowledge the support of the University of Information Technology (UIT), Vietnam National University Ho Chi Minh City (VNU-HCM), which has made the development of VietQuill possible.
+
 ## Citation
 
-Please CITE our paper when VietQuill is used to help produce published results or is incorporated into other software.
+VietQuill builds upon our previous research projects, ViQP and ViSP, extending them into a unified toolkit for Vietnamese paraphrase generation and quality estimation.
+If VietQuill contributes to your research or software, please cite it using the following reference.
 
 ```bibtex
+
+@inproceedings{nguyen2023viqp,
+  title={Viqp: Dataset for vietnamese question paraphrasing},
+  author={Nguyen, Sang Quang and Vo, Thuc Dinh and Nguyen, Duc PA and Tran, Dang T and Van Nguyen, Kiet},
+  booktitle={2023 International Conference on Multimedia Analysis and Pattern Recognition (MAPR)},
+  pages={1--6},
+  year={2023},
+  organization={IEEE}
+}
+
+@inproceedings{nguyen-nguyen-2025-large,
+    title = "A Large-Scale Benchmark for {V}ietnamese Sentence Paraphrases",
+    author = "Nguyen, Sang Quang  and
+      Nguyen, Kiet Van",
+    editor = "Chiruzzo, Luis  and
+      Ritter, Alan  and
+      Wang, Lu",
+    booktitle = "Findings of the Association for Computational Linguistics: NAACL 2025",
+    month = apr,
+    year = "2025",
+    address = "Albuquerque, New Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.findings-naacl.59/",
+    doi = "10.18653/v1/2025.findings-naacl.59",
+    pages = "1045--1060",
+    ISBN = "979-8-89176-195-7",
+    abstract = "This paper presents ViSP, a high-quality Vietnamese dataset for sentence paraphrasing, consisting of 1.2M original{--}paraphrase pairs collected from various domains. The dataset was constructed using a hybrid approach that combines automatic paraphrase generation with manual evaluation to ensure high quality. We conducted experiments using methods such as back-translation, EDA, and baseline models like BART and T5, as well as large language models (LLMs), including GPT-4o, Gemini-1.5, Aya, Qwen-2.5, and Meta-Llama-3.1 variants. To the best of our knowledge, this is the first large-scale study on Vietnamese paraphrasing. We hope that our dataset and findings will serve as a valuable foundation for future research and applications in Vietnamese paraphrase tasks. The dataset is available for research purposes at \url{https://github.com/ngwgsang/ViSP}."
+}
+
 @software{sang2026vietquill,
   author = {Sang Quang Nguyen and Kiet Van Nguyen},
   title = {VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation},
