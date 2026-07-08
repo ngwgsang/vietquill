@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VietQuill - Controllable Vietnamese Paraphrase Generation & Evaluation</title>
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --primary-color: #1e1b4b;
+            --accent-color: #4f46e5;
+            --accent-hover: #4338ca;
+            --secondary-color: #d97706;
+            --secondary-hover: #b45309;
+            --border-color: #cbd5e1;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+            --header-bg: rgba(241, 245, 249, 0.8);
+            --footer-bg: #0f172a;
+            --footer-text: #f8fafc;
+            --code-bg: #1e293b;
+            --code-text: #f8fafc;
+        }
+
+        .dark-theme {
+            --bg-color: #0b0f19;
+            --card-bg: #151f32;
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary-color: #e2e8f0;
+            --accent-color: #818cf8;
+            --accent-hover: #6366f1;
+            --secondary-color: #fbbf24;
+            --secondary-hover: #f59e0b;
+            --border-color: #1e293b;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            --header-bg: rgba(21, 31, 50, 0.8);
+            --code-bg: #090d16;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Navigation */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-light, .logo-dark {
+            height: 32px;
+            width: auto;
+        }
+
+        .logo-dark {
+            display: none;
+        }
+
+        .dark-theme .logo-light {
+            display: none;
+        }
+
+        .dark-theme .logo-dark {
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle-btn:hover {
+            background: var(--border-color);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0 3.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(234,179,8,0.05) 50%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero-logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-logo-container img {
+            height: 90px;
+            width: auto;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            font-weight: 500;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-badges img {
+            height: 22px;
+            border-radius: 4px;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        /* Section general styling */
+        section {
+            padding: 3.5rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: var(--accent-color);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 50px;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 1.25rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            padding: 1.75rem;
+            overflow: hidden;
+        }
+
+        /* Features Section styling */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .feature-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-color);
+        }
+
+        .feature-desc {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Quickstart Section styling */
+        .quickstart-tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-color);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .code-container {
+            position: relative;
+            background: var(--code-bg);
+            color: var(--code-text);
+            border-radius: 1rem;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            background: rgba(0,0,0,0.15);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .code-copy-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .code-copy-btn:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+
+        .code-copy-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        pre {
+            padding: 1rem 1.25rem;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Keyword Highlighting for simple mock code highlighter */
+        .token.keyword { color: #f472b6; }
+        .token.string { color: #34d399; }
+        .token.comment { color: #64748b; font-style: italic; }
+        .token.class-name { color: #60a5fa; }
+        .token.function { color: #fbbf24; }
+
+        /* Models Table Section */
+        .table-card {
+            padding: 1.5rem;
+        }
+
+        .model-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+
+        .model-table th, .model-table td {
+            padding: 1.1rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .model-table th {
+            background: var(--bg-color);
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .model-table td code {
+            background: var(--bg-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Citation Section */
+        .citation-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .citation-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .citation-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .citation-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Footer styling */
+        .site-footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 4rem 0 3rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .footer-logo {
+            display: block;
+        }
+
+        .footer-logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .footer-nav a:hover {
+            color: white;
+        }
+
+        .copyright {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <nav class="site-nav">
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <img class="logo-light" alt="VietQuill Logo" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png">
+                <img class="logo-dark" alt="VietQuill Logo" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-dark.png">
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#quickstart">Quickstart</a>
+                <a href="#models">Models</a>
+                <a href="https://github.com/ngwgsang/vietquill" target="_blank" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+                    <svg height="18" viewBox="0 0 16 16" width="18" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                    GitHub
+                </a>
+                <button class="theme-toggle-btn" id="theme-toggle" title="Switch Light/Dark Theme">
+                    <!-- Sun icon -->
+                    <svg id="theme-sun" viewBox="0 0 24 24" style="display: none;">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <!-- Moon icon -->
+                    <svg id="theme-moon" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-logo-container">
+                <img class="logo-light" alt="VietQuill Logo" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png">
+                <img class="logo-dark" alt="VietQuill Logo" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-dark.png">
+            </div>
+            <p class="hero-subtitle">A unified framework for controllable Vietnamese paraphrase generation and quality estimation, supporting both research and production applications.</p>
+            
+            <div class="hero-badges">
+                <a href="https://pypi.org/project/vietquill/" target="_blank"><img src="https://img.shields.io/pypi/v/vietquill?color=EAB308&style=flat-square" alt="PyPI"></a>
+                <a href="https://pypi.org/project/vietquill/" target="_blank"><img src="https://img.shields.io/pypi/pyversions/vietquill?color=EAB308&style=flat-square" alt="Python"></a>
+                <a href="https://github.com/ngwgsang/vietquill/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/ngwgsang/vietquill?color=525252&style=flat-square" alt="License"></a>
+                <a href="https://huggingface.co/collections/ngwgsang/vietquill" target="_blank"><img src="https://img.shields.io/badge/🤗-Models-EAB308&style=flat-square" alt="Hugging Face Models"></a>
+            </div>
+
+            <div class="hero-actions">
+                <a href="#quickstart" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                    Get Started
+                </a>
+                <a href="https://github.com/ngwgsang/vietquill" class="btn btn-secondary" target="_blank">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                    GitHub Code
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Overview</span>
+                <h2 class="section-title">Why VietQuill?</h2>
+                <p class="section-desc">VietQuill centralizes datasets, generation methods, augmentation techniques, and evaluation metrics into a consistent, unified interface.</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/><path d="M12 6V12L16 14"/></svg>
+                    </div>
+                    <h3 class="feature-title">Controllable Generation</h3>
+                    <p class="feature-desc">Fine-grained control over lexical overlap, syntactic similarity, and semantic preservation levels to match your custom NLP downstream requirements.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M9 12L11 14L15 10"/><circle cx="12" cy="12" r="10"/></svg>
+                    </div>
+                    <h3 class="feature-title">Quality Estimation</h3>
+                    <p class="feature-desc">Built-in neural quality estimators (vELECTRA) along with traditional metrics (BLEU, BERTScore, Jaccard, TED, ParaScore) to inspect paraphrases.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 17L10 11L13 14L20 7"/><path d="M14 7H20V13"/></svg>
+                    </div>
+                    <h3 class="feature-title">Optimized Architectures</h3>
+                    <p class="feature-desc">Leverages strong Vietnamese pre-trained model baselines (ViT5-base) fine-tuned on clean large-scale sentence alignment benchmarks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quickstart & Documentation Section -->
+    <section id="quickstart">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Documentation</span>
+                <h2 class="section-title">Quickstart Guide</h2>
+                <p class="section-desc">Easily integrate VietQuill into your Python pipelines.</p>
+            </div>
+
+            <div class="quickstart-tabs">
+                <button class="tab-btn active" data-tab="tab-install">Installation</button>
+                <button class="tab-btn" data-tab="tab-gen">Paraphrase Generate</button>
+                <button class="tab-btn" data-tab="tab-preset">Using Style Presets</button>
+                <button class="tab-btn" data-tab="tab-eval">Quality Estimation</button>
+                <button class="tab-btn" data-tab="tab-metrics">Traditional Metrics</button>
+            </div>
+
+            <!-- Tab 1: Install -->
+            <div class="tab-content active" id="tab-install">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>Terminal</span>
+                        <button class="code-copy-btn" onclick="copyCode('code-install')">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                    <pre><code id="code-install"><span class="token comment"># Create and activate virtual environment</span>
+python -m venv .\venv
+.\venv\Scripts\activate
+
+<span class="token comment"># Install VietQuill package from PyPI</span>
+pip install vietquill</code></pre>
+                </div>
+            </div>
+
+            <!-- Tab 2: Generation -->
+            <div class="tab-content" id="tab-gen">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>main.py</span>
+                        <button class="code-copy-btn" onclick="copyCode('code-gen')">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                    <pre><code id="code-gen"><span class="token keyword">from</span> vietquill <span class="token keyword">import</span> <span class="token class-name">AutoModelForControllableParaphraseGeneration</span>
+
+<span class="token comment"># Load default controllable paraphrase generator</span>
+model = <span class="token class-name">AutoModelForControllableParaphraseGeneration</span>()
+
+<span class="token comment"># Paraphrase a single sentence</span>
+result = model.paraphrase(<span class="token string">"Hôm nay trời đẹp quá, mình muốn đi dạo công viên."</span>)
+<span class="token keyword">print</span>(result)
+<span class="token comment"># >>> ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']</span>
+
+<span class="token comment"># Batch generate candidates with specific control levels</span>
+result_custom = model.paraphrase(
+    <span class="token string">"Tôi rất thích ăn phở vào buổi sáng."</span>,
+    lexical=<span class="token class-name">90</span>, syntactic=<span class="token class-name">70</span>, semantic=<span class="token class-name">70</span>,
+    num_candidates=<span class="token class-name">2</span>
+)
+<span class="token keyword">print</span>(result_custom)</code></pre>
+                </div>
+            </div>
+
+            <!-- Tab 3: Style Presets -->
+            <div class="tab-content" id="tab-preset">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>style_preset.py</span>
+                        <button class="code-copy-btn" onclick="copyCode('code-preset')">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                    <pre><code id="code-preset"><span class="token keyword">from</span> vietquill <span class="token keyword">import</span> <span class="token class-name">AutoModelForControllableParaphraseGeneration</span>, <span class="token class-name">ParaphraseStyle</span>
+
+model = <span class="token class-name">AutoModelForControllableParaphraseGeneration</span>()
+sentence = <span class="token string">"Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"</span>
+
+<span class="token comment"># Generate with CONSERVATIVE style preset</span>
+c_res = model.paraphrase(sentence, style=<span class="token class-name">ParaphraseStyle.CONSERVATIVE</span>)
+<span class="token keyword">print</span>(c_res)
+
+<span class="token comment"># Generate with DIVERSE style preset</span>
+d_res = model.paraphrase(sentence, style=<span class="token string">"diverse"</span>)
+<span class="token keyword">print</span>(d_res)</code></pre>
+                </div>
+            </div>
+
+            <!-- Tab 4: QE Estimation -->
+            <div class="tab-content" id="tab-eval">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>estimate.py</span>
+                        <button class="code-copy-btn" onclick="copyCode('code-eval')">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                    <pre><code id="code-eval"><span class="token keyword">from</span> vietquill <span class="token keyword">import</span> <span class="token class-name">AutoModelForParaphraseQualityEstimation</span>
+
+original = <span class="token string">"Hôm nay trời đẹp quá, mình muốn đi dạo công viên."</span>
+paraphrase = <span class="token string">"Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."</span>
+
+<span class="token comment"># Load deep quality estimator model (vELECTRA base)</span>
+estimator = <span class="token class-name">AutoModelForParaphraseQualityEstimation</span>()
+scores = estimator.estimate(original, paraphrase)
+
+<span class="token keyword">print</span>(scores)
+<span class="token comment"># >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}</span></code></pre>
+                </div>
+            </div>
+
+            <!-- Tab 5: Traditional Evaluation -->
+            <div class="tab-content" id="tab-metrics">
+                <div class="code-container">
+                    <div class="code-header">
+                        <span>eval_metrics.py</span>
+                        <button class="code-copy-btn" onclick="copyCode('code-metrics')">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            Copy
+                        </button>
+                    </div>
+                    <pre><code id="code-metrics"><span class="token keyword">from</span> vietquill.evaluation <span class="token keyword">import</span> <span class="token class-name">BLEUMetric</span>, <span class="token class-name">LexicalEstimator</span>
+
+original = <span class="token string">"Hôm nay trời đẹp quá."</span>
+paraphrase = <span class="token string">"Hôm nay trời đẹp ghê."</span>
+
+<span class="token comment"># Calculate BLEU score</span>
+bleu = <span class="token class-name">BLEUMetric</span>()
+<span class="token keyword">print</span>(bleu.score(original, paraphrase))
+<span class="token comment"># >>> 0.668740304976422</span>
+
+<span class="token comment"># Measure lexical alignment percentage</span>
+lex_est = <span class="token class-name">LexicalEstimator</span>()
+<span class="token keyword">print</span>(lex_est.estimate(original, paraphrase))
+<span class="token comment"># >>> {'lexical_score': 66.67}</span></code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Models Section -->
+    <section id="models">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Archived Models</span>
+                <h2 class="section-title">Published Models List</h2>
+                <p class="section-desc">Optimized checkpoint packages hosted on the Hugging Face Hub for direct download.</p>
+            </div>
+
+            <div class="card table-card">
+                <table class="model-table">
+                    <thead>
+                        <tr>
+                            <th>Hugging Face Hub Repository</th>
+                            <th>Architecture Base</th>
+                            <th>Size</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ngwgsang/vietquill-vit5-base-tsubaki</code></td>
+                            <td>T5-base (~440M parameters)</td>
+                            <td>4.19 GB</td>
+                            <td>Bundles both <strong>sentence</strong> and <strong>question</strong> variants in a single model package.</td>
+                        </tr>
+                        <tr>
+                            <td><code>ngwgsang/vietquill-velectra-estimator-tsubaki</code></td>
+                            <td>vELECTRA-base (~220M parameters)</td>
+                            <td>1.64 GB</td>
+                            <td>Quality Control (QC) estimator scoring lexical, syntactic, and semantic indices.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Citation & Star History -->
+    <section style="background: var(--bg-color);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Publications</span>
+                <h2 class="section-title">Research Publications & Citations</h2>
+                <p class="section-desc">VietQuill builds upon ViQP and ViSP datasets. Please cite our research if you use it in your works.</p>
+            </div>
+
+            <div class="citation-container">
+                <!-- ViSP Citation -->
+                <div class="citation-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <h4 class="citation-title">ViSP Paper (NAACL Findings 2025)</h4>
+                        <button class="code-copy-btn" onclick="copyCode('cite-visp')">Copy BibTeX</button>
+                    </div>
+                    <div class="code-container" style="font-size: 0.75rem;">
+                        <pre><code id="cite-visp">@inproceedings{nguyen-nguyen-2025-large,
+  title = "A Large-Scale Benchmark for {V}ietnamese Sentence Paraphrases",
+  author = "Nguyen, Sang Quang and Nguyen, Kiet Van",
+  booktitle = "Findings of the ACL: NAACL 2025",
+  year = "2025",
+  pages = "1045--1060"
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- ViQP Citation -->
+                <div class="citation-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <h4 class="citation-title">ViQP Paper (MAPR 2023)</h4>
+                        <button class="code-copy-btn" onclick="copyCode('cite-viqp')">Copy BibTeX</button>
+                    </div>
+                    <div class="code-container" style="font-size: 0.75rem;">
+                        <pre><code id="cite-viqp">@inproceedings{nguyen2023viqp,
+  title={Viqp: Dataset for vietnamese question paraphrasing},
+  author={Nguyen, Sang Quang and Vo, Thuc Dinh and Nguyen, Duc PA and Tran, Dang T and Van Nguyen, Kiet},
+  booktitle={MAPR 2023},
+  pages={1--6},
+  organization={IEEE}
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <a href="#" class="footer-logo">
+                <img class="logo-light" alt="VietQuill Logo" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-dark.png" height="32">
+            </a>
+            <nav class="footer-nav">
+                <a href="#features">Features</a>
+                <a href="#quickstart">Documentation</a>
+                <a href="#models">Models</a>
+                <a href="https://github.com/ngwgsang/vietquill" target="_blank">GitHub</a>
+            </nav>
+            <p class="copyright">
+                &copy; 2026 VietQuill Project. All rights reserved. <br>
+                Developed by <strong>Sang Quang Nguyen</strong> & <strong>Kiet Van Nguyen</strong> at University of Information Technology (UIT), VNU-HCM.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripting logic -->
+    <script>
+        // --- THEME TOGGLER ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('theme-sun');
+        const moonIcon = document.getElementById('theme-moon');
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            sunIcon.style.display = isDark ? 'block' : 'none';
+            moonIcon.style.display = isDark ? 'none' : 'block';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.add('dark-theme');
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        function copyCode(id) {
+            const code = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Source code copied to clipboard!');
+            });
+        }
+
+        // --- QUICKSTART TABS ---
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
