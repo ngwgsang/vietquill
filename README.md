@@ -4,11 +4,14 @@
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png">
     <img alt="VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
   </picture>
-  <br/>
-  <br/>
+</p>
+<h2 align="center">VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation</h1>
+<p align="center">
+  <a href="https://ngwgsang.github.io/vietquill/">
+    <img src="https://img.shields.io/badge/Documentation-VietQuill-4f46e5?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="VietQuill Documentation">
+  </a>
 </p>
 
-<p align="center">VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation</p>
 
 ![PyPI](https://img.shields.io/pypi/v/vietquill?color=EAB308)
 ![Python](https://img.shields.io/pypi/pyversions/vietquill?color=EAB308)
@@ -17,15 +20,9 @@
 ![Vietnamese](https://img.shields.io/badge/Language-Vietnamese-525252)
 ![Task](https://img.shields.io/badge/Task-Paraphrase%20Generation-EAB308)
 [![Models](https://img.shields.io/badge/🤗-Models-EAB308)](https://huggingface.co/collections/ngwgsang/vietquill)
-[![Docs](https://img.shields.io/badge/📖-Documentation-4f46e5)](https://ngwgsang.github.io/vietquill/)
 
-English | [Tiếng Việt](i18n/README_vi.md) | [**Documentation**](https://ngwgsang.github.io/vietquill/)
+English | [Tiếng Việt](i18n/README_vi.md)
 
-<p align="center">
-  <a href="https://ngwgsang.github.io/vietquill/">
-    <img src="https://img.shields.io/badge/📚_Documentation-Explore_VietQuill_Docs-4f46e5?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="VietQuill Documentation">
-  </a>
-</p>
 
 
 VietQuill is a unified framework for controllable Vietnamese paraphrase generation and quality estimation, supporting both research and production applications.
