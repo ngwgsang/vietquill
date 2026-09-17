@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -100,7 +102,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="VietQuill" class="md-header__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -317,6 +319,25 @@
   
 
       
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../sponsors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sponsors
+
+      </a>
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -347,7 +368,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="VietQuill" class="md-nav__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     VietQuill
@@ -888,6 +909,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sponsors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -980,12 +1028,12 @@
 
 <h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h1>
 <p>This guide walks you through setting up VietQuill in your Python environment.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Python</strong>: <code>&gt;= 3.10</code></li>
 <li><strong>PyTorch</strong>: <code>&gt;= 2.0.0</code> (with CUDA support recommended for GPU acceleration)</li>
 </ul>
-<h2 id="basic-installation">Basic Installation<a class="headerlink" href="#basic-installation" title="Permanent link">&para;</a></h2>
+<h3 id="basic-installation">Basic Installation<a class="headerlink" href="#basic-installation" title="Permanent link">&para;</a></h3>
 <p>You can install VietQuill directly from PyPI using <code>pip</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>vietquill
 </span></code></pre></div>
@@ -994,14 +1042,14 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>vietquill
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </span></code></pre></div>
-<h2 id="installing-optional-documentation-dependencies">Installing Optional Documentation Dependencies<a class="headerlink" href="#installing-optional-documentation-dependencies" title="Permanent link">&para;</a></h2>
+<h3 id="installing-optional-documentation-dependencies">Installing Optional Documentation Dependencies<a class="headerlink" href="#installing-optional-documentation-dependencies" title="Permanent link">&para;</a></h3>
 <p>If you wish to build or preview this documentation locally:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"vietquill[docs]"</span>
 </span></code></pre></div>
 <p>Or manually:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>mkdocs-material<span class="w"> </span>mkdocstrings<span class="o">[</span>python<span class="o">]</span><span class="w"> </span>mkdocs-autorefs
 </span></code></pre></div>
-<h2 id="gpu-acceleration-setup-pytorch-with-cuda">GPU Acceleration Setup (PyTorch with CUDA)<a class="headerlink" href="#gpu-acceleration-setup-pytorch-with-cuda" title="Permanent link">&para;</a></h2>
+<h3 id="gpu-acceleration-setup-pytorch-with-cuda">GPU Acceleration Setup (PyTorch with CUDA)<a class="headerlink" href="#gpu-acceleration-setup-pytorch-with-cuda" title="Permanent link">&para;</a></h3>
 <p>VietQuill models use Seq2Seq transformers (such as ViT5) and neural estimators (vELECTRA). A CUDA-enabled GPU significantly speeds up inference.</p>
 <p>If you have an NVIDIA GPU, install the appropriate PyTorch build according to your CUDA driver:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Example for CUDA 12.1</span>

@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -100,7 +102,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="VietQuill" class="md-header__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -317,6 +319,25 @@
   
 
       
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../sponsors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sponsors
+
+      </a>
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -347,7 +368,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="VietQuill" class="md-nav__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     VietQuill
@@ -933,6 +954,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sponsors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -1071,7 +1119,7 @@
 <h1 id="paraphrase-evaluation">Paraphrase Evaluation<a class="headerlink" href="#paraphrase-evaluation" title="Permanent link">&para;</a></h1>
 <p>VietQuill provides a comprehensive suite of evaluation tools, ranging from fast rule-based estimators to state-of-the-art neural quality models and academic NLP metrics.</p>
 <hr />
-<h2 id="unified-neural-quality-estimation">Unified Neural Quality Estimation<a class="headerlink" href="#unified-neural-quality-estimation" title="Permanent link">&para;</a></h2>
+<h3 id="unified-neural-quality-estimation">Unified Neural Quality Estimation<a class="headerlink" href="#unified-neural-quality-estimation" title="Permanent link">&para;</a></h3>
 <p>The <code>AutoModelForParaphraseQualityEstimation</code> class uses a fine-tuned vELECTRA estimator model to simultaneously evaluate the <strong>Lexical</strong>, <strong>Syntactic</strong>, and <strong>Semantic</strong> scores of a paraphrase candidate relative to the source text.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForParaphraseQualityEstimation</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
@@ -1091,9 +1139,9 @@
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
 </span></code></pre></div></p>
 <hr />
-<h2 id="individual-estimators">Individual Estimators<a class="headerlink" href="#individual-estimators" title="Permanent link">&para;</a></h2>
+<h3 id="individual-estimators">Individual Estimators<a class="headerlink" href="#individual-estimators" title="Permanent link">&para;</a></h3>
 <p>VietQuill includes modular estimators for specific evaluation dimensions:</p>
-<h3 id="1-lexical-estimator">1. Lexical Estimator<a class="headerlink" href="#1-lexical-estimator" title="Permanent link">&para;</a></h3>
+<h4 id="1-lexical-estimator">1. Lexical Estimator<a class="headerlink" href="#1-lexical-estimator" title="Permanent link">&para;</a></h4>
 <p>Measures n-gram overlap and token replacement rates between texts.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">LexicalEstimator</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
@@ -1101,7 +1149,7 @@
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="s2">"Hôm nay trời đẹp quá."</span><span class="p">,</span> <span class="s2">"Hôm nay trời đẹp ghê."</span><span class="p">)</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="c1"># {'lexical_score': 66.67}</span>
 </span></code></pre></div>
-<h3 id="2-syntactic-estimator">2. Syntactic Estimator<a class="headerlink" href="#2-syntactic-estimator" title="Permanent link">&para;</a></h3>
+<h4 id="2-syntactic-estimator">2. Syntactic Estimator<a class="headerlink" href="#2-syntactic-estimator" title="Permanent link">&para;</a></h4>
 <p>Parses dependency trees (using Stanza) and computes tree structure edit distances (TED).</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">SyntacticEstimator</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
@@ -1109,7 +1157,7 @@
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="s2">"Mẹ nấu cơm rất ngon."</span><span class="p">,</span> <span class="s2">"Cơm do mẹ nấu rất ngon."</span><span class="p">)</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </span></code></pre></div>
-<h3 id="3-semantic-estimator">3. Semantic Estimator<a class="headerlink" href="#3-semantic-estimator" title="Permanent link">&para;</a></h3>
+<h4 id="3-semantic-estimator">3. Semantic Estimator<a class="headerlink" href="#3-semantic-estimator" title="Permanent link">&para;</a></h4>
 <p>Uses neural sentence embeddings / cross-encoder architectures to score meaning equivalence.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">SemanticEstimator</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
@@ -1118,7 +1166,7 @@
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </span></code></pre></div>
 <hr />
-<h2 id="nlp-benchmark-metrics">NLP Benchmark Metrics<a class="headerlink" href="#nlp-benchmark-metrics" title="Permanent link">&para;</a></h2>
+<h3 id="nlp-benchmark-metrics">NLP Benchmark Metrics<a class="headerlink" href="#nlp-benchmark-metrics" title="Permanent link">&para;</a></h3>
 <p>For academic benchmarking and standardized comparison against baselines, VietQuill implements standard metrics:</p>
 <table>
 <thead>
@@ -1156,7 +1204,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="example-running-benchmark-metrics">Example: Running Benchmark Metrics<a class="headerlink" href="#example-running-benchmark-metrics" title="Permanent link">&para;</a></h3>
+<h4 id="example-running-benchmark-metrics">Example: Running Benchmark Metrics<a class="headerlink" href="#example-running-benchmark-metrics" title="Permanent link">&para;</a></h4>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">BLEUMetric</span><span class="p">,</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">BERTScoreMetric</span><span class="p">,</span>

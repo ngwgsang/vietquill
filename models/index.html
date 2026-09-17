@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -100,7 +102,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="VietQuill" class="md-header__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../assets/logo/favicon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -317,6 +319,25 @@
   
 
       
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../sponsors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sponsors
+
+      </a>
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -347,7 +368,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="VietQuill" class="md-nav__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../assets/logo/favicon.png" alt="logo">
 
     </a>
     VietQuill
@@ -902,6 +923,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sponsors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -1012,7 +1060,7 @@
 <h1 id="models-checkpoints">Models &amp; Checkpoints<a class="headerlink" href="#models-checkpoints" title="Permanent link">&para;</a></h1>
 <p>VietQuill provides officially trained checkpoints published on the Hugging Face Hub under the <a href="https://huggingface.co/collections/ngwgsang/vietquill"><code>ngwgsang</code></a> organization.</p>
 <hr />
-<h2 id="official-model-hub-collection">Official Model Hub Collection<a class="headerlink" href="#official-model-hub-collection" title="Permanent link">&para;</a></h2>
+<h3 id="official-model-hub-collection">Official Model Hub Collection<a class="headerlink" href="#official-model-hub-collection" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1060,8 +1108,8 @@
 </tbody>
 </table>
 <hr />
-<h2 id="model-architecture-details">Model Architecture Details<a class="headerlink" href="#model-architecture-details" title="Permanent link">&para;</a></h2>
-<h3 id="1-paraphrase-generator-vietquill-vit5-base-tsubaki">1. Paraphrase Generator (<code>vietquill-vit5-base-tsubaki</code>)<a class="headerlink" href="#1-paraphrase-generator-vietquill-vit5-base-tsubaki" title="Permanent link">&para;</a></h3>
+<h3 id="model-architecture-details">Model Architecture Details<a class="headerlink" href="#model-architecture-details" title="Permanent link">&para;</a></h3>
+<h4 id="1-paraphrase-generator-vietquill-vit5-base-tsubaki">1. Paraphrase Generator (<code>vietquill-vit5-base-tsubaki</code>)<a class="headerlink" href="#1-paraphrase-generator-vietquill-vit5-base-tsubaki" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Base Architecture</strong>: ViT5 (Vietnamese T5 pre-trained on large-scale Vietnamese corpus).</li>
 <li><strong>Subfolders</strong>:<ul>
@@ -1073,7 +1121,7 @@
   <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SEM_&lt;0..100&gt; SYN_&lt;0..100&gt; LEX_&lt;0..100&gt; : &lt;Input Text&gt;
 </span></code></pre></div></li>
 </ul>
-<h3 id="2-paraphrase-quality-estimator-vietquill-velectra-estimator-tsubaki">2. Paraphrase Quality Estimator (<code>vietquill-velectra-estimator-tsubaki</code>)<a class="headerlink" href="#2-paraphrase-quality-estimator-vietquill-velectra-estimator-tsubaki" title="Permanent link">&para;</a></h3>
+<h4 id="2-paraphrase-quality-estimator-vietquill-velectra-estimator-tsubaki">2. Paraphrase Quality Estimator (<code>vietquill-velectra-estimator-tsubaki</code>)<a class="headerlink" href="#2-paraphrase-quality-estimator-vietquill-velectra-estimator-tsubaki" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Base Architecture</strong>: vELECTRA-base.</li>
 <li><strong>Output Heads</strong>: Regression heads predicting:<ol>
@@ -1084,7 +1132,7 @@
 </li>
 </ul>
 <hr />
-<h2 id="custom-model-checkpoints">Custom Model Checkpoints<a class="headerlink" href="#custom-model-checkpoints" title="Permanent link">&para;</a></h2>
+<h3 id="custom-model-checkpoints">Custom Model Checkpoints<a class="headerlink" href="#custom-model-checkpoints" title="Permanent link">&para;</a></h3>
 <p>You can specify custom local paths or custom Hugging Face Hub IDs when instantiating the models:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>

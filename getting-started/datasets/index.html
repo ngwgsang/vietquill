@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -100,7 +102,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="VietQuill" class="md-header__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -317,6 +319,25 @@
   
 
       
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../sponsors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sponsors
+
+      </a>
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -347,7 +368,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="VietQuill" class="md-nav__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     VietQuill
@@ -894,6 +915,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sponsors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -993,8 +1041,8 @@
 <h1 id="paraphrase-datasets">Paraphrase Datasets<a class="headerlink" href="#paraphrase-datasets" title="Permanent link">&para;</a></h1>
 <p>VietQuill provides built-in loaders and standardized schemas for benchmark Vietnamese paraphrase datasets.</p>
 <hr />
-<h2 id="supported-datasets">Supported Datasets<a class="headerlink" href="#supported-datasets" title="Permanent link">&para;</a></h2>
-<h3 id="1-viqp-vietnamese-question-paraphrasing">1. ViQP (Vietnamese Question Paraphrasing)<a class="headerlink" href="#1-viqp-vietnamese-question-paraphrasing" title="Permanent link">&para;</a></h3>
+<h3 id="supported-datasets">Supported Datasets<a class="headerlink" href="#supported-datasets" title="Permanent link">&para;</a></h3>
+<h4 id="1-viqp-vietnamese-question-paraphrasing">1. ViQP (Vietnamese Question Paraphrasing)<a class="headerlink" href="#1-viqp-vietnamese-question-paraphrasing" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Paper</strong>: <a href="https://ieeexplore.ieee.org/document/10188981">ViQP: Dataset for Vietnamese Question Paraphrasing (MAPR 2023)</a></li>
 <li><strong>Domain</strong>: Question pairs in Vietnamese.</li>
@@ -1013,7 +1061,7 @@
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">pairs</span><span class="p">[</span><span class="s1">'train'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 </span></code></pre></div>
 <hr />
-<h3 id="2-visp-vietnamese-sentence-paraphrases">2. ViSP (Vietnamese Sentence Paraphrases)<a class="headerlink" href="#2-visp-vietnamese-sentence-paraphrases" title="Permanent link">&para;</a></h3>
+<h4 id="2-visp-vietnamese-sentence-paraphrases">2. ViSP (Vietnamese Sentence Paraphrases)<a class="headerlink" href="#2-visp-vietnamese-sentence-paraphrases" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Paper</strong>: <a href="https://aclanthology.org/2025.findings-naacl.59/">ViSP: A Large-Scale Benchmark for Vietnamese Sentence Paraphrases (Findings of NAACL 2025)</a></li>
 <li><strong>Scale</strong>: 1.2M sentence pairs across diverse domains.</li>
@@ -1026,7 +1074,7 @@
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">visp_data</span><span class="p">)</span>
 </span></code></pre></div>
 <hr />
-<h2 id="schema-structure">Schema &amp; Structure<a class="headerlink" href="#schema-structure" title="Permanent link">&para;</a></h2>
+<h3 id="schema-structure">Schema &amp; Structure<a class="headerlink" href="#schema-structure" title="Permanent link">&para;</a></h3>
 <p>When using <code>.load_pairs()</code>, items are formatted with <code>vietquill.data.schema.ParaphraseSchema</code>:</p>
 <table>
 <thead>

@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -100,7 +102,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="VietQuill" class="md-header__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -317,6 +319,25 @@
   
 
       
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../sponsors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sponsors
+
+      </a>
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -347,7 +368,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="VietQuill" class="md-nav__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     VietQuill
@@ -899,6 +920,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sponsors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -1002,7 +1050,7 @@
 
 <h1 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h1>
 <p>Get started with VietQuill in less than 5 minutes!</p>
-<h2 id="1-single-sentence-paraphrasing">1. Single Sentence Paraphrasing<a class="headerlink" href="#1-single-sentence-paraphrasing" title="Permanent link">&para;</a></h2>
+<h3 id="1-single-sentence-paraphrasing">1. Single Sentence Paraphrasing<a class="headerlink" href="#1-single-sentence-paraphrasing" title="Permanent link">&para;</a></h3>
 <p>The primary interface for paraphrase generation is <code>AutoModelForControllableParaphraseGeneration</code>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
@@ -1015,7 +1063,7 @@
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']</span>
 </span></code></pre></div>
-<h2 id="2-generating-multiple-candidates">2. Generating Multiple Candidates<a class="headerlink" href="#2-generating-multiple-candidates" title="Permanent link">&para;</a></h2>
+<h3 id="2-generating-multiple-candidates">2. Generating Multiple Candidates<a class="headerlink" href="#2-generating-multiple-candidates" title="Permanent link">&para;</a></h3>
 <p>Use the <code>num_candidates</code> parameter to generate a list of alternative candidate sentences:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">paraphrase</span><span class="p">(</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="s2">"Thủ đô của nước Pháp là thành phố nào?"</span><span class="p">,</span>
@@ -1030,7 +1078,7 @@
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>2. Nước Pháp có thủ đô là thành phố tên gì?
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>3. Nước Pháp có thủ đô là thành phố tên là gì?
 </span></code></pre></div></p>
-<h2 id="3-using-style-presets">3. Using Style Presets<a class="headerlink" href="#3-using-style-presets" title="Permanent link">&para;</a></h2>
+<h3 id="3-using-style-presets">3. Using Style Presets<a class="headerlink" href="#3-using-style-presets" title="Permanent link">&para;</a></h3>
 <p>VietQuill provides predefined generation styles via <code>ParaphraseStyle</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">,</span> <span class="n">ParaphraseStyle</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
@@ -1046,7 +1094,7 @@
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1"># Diverse: Strong structural and vocabulary variations</span>
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">paraphrase</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">ParaphraseStyle</span><span class="o">.</span><span class="n">DIVERSE</span><span class="p">))</span>
 </span></code></pre></div>
-<h2 id="4-fine-grained-attribute-control">4. Fine-Grained Attribute Control<a class="headerlink" href="#4-fine-grained-attribute-control" title="Permanent link">&para;</a></h2>
+<h3 id="4-fine-grained-attribute-control">4. Fine-Grained Attribute Control<a class="headerlink" href="#4-fine-grained-attribute-control" title="Permanent link">&para;</a></h3>
 <p>You can directly control attributes on a scale of <code>0</code> to <code>100</code>:</p>
 <ul>
 <li><code>lexical</code>: Desired lexical similarity / overlap (higher = more word preservation).</li>
@@ -1062,7 +1110,7 @@
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">)</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </span></code></pre></div>
-<h2 id="5-estimating-paraphrase-quality">5. Estimating Paraphrase Quality<a class="headerlink" href="#5-estimating-paraphrase-quality" title="Permanent link">&para;</a></h2>
+<h3 id="5-estimating-paraphrase-quality">5. Estimating Paraphrase Quality<a class="headerlink" href="#5-estimating-paraphrase-quality" title="Permanent link">&para;</a></h3>
 <p>Evaluate similarity and divergence between original and candidate sentences:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForParaphraseQualityEstimation</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>

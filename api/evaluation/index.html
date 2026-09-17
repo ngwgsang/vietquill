@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -100,7 +102,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="VietQuill" class="md-header__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -317,6 +319,25 @@
   
 
       
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../sponsors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sponsors
+
+      </a>
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -347,7 +368,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="VietQuill" class="md-nav__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     VietQuill
@@ -1262,6 +1283,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sponsors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -1727,17 +1775,17 @@
 
 
 <h1 id="evaluation-api-reference">Evaluation API Reference<a class="headerlink" href="#evaluation-api-reference" title="Permanent link">&para;</a></h1>
-<h2 id="quality-estimators">Quality Estimators<a class="headerlink" href="#quality-estimators" title="Permanent link">&para;</a></h2>
+<h3 id="quality-estimators">Quality Estimators<a class="headerlink" href="#quality-estimators" title="Permanent link">&para;</a></h3>
 
 
 <div class="doc doc-object doc-class">
 
 
 
-<h3 id="vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation" class="doc doc-heading">
+<h4 id="vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">estimators</span><span class="o">.</span><span class="n">neural_est</span><span class="o">.</span><span class="n">AutoModelForParaphraseQualityEstimation</span><span class="p">(</span><span class="n">hub_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -1876,10 +1924,10 @@ Supports both sentence and question specialized models loaded from a unified rep
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation.estimate" class="doc doc-heading">
+<h5 id="vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation.estimate" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">estimate</span><span class="p">(</span><span class="n">sentence1</span><span class="p">,</span> <span class="n">sentence2</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation.estimate" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation.estimate" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2064,10 +2112,10 @@ Automatically detects if sentence1 is a question.</p>
 
 
 
-<h3 id="vietquill.evaluation.estimators.lexical_est.LexicalEstimator" class="doc doc-heading">
+<h4 id="vietquill.evaluation.estimators.lexical_est.LexicalEstimator" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">estimators</span><span class="o">.</span><span class="n">lexical_est</span><span class="o">.</span><span class="n">LexicalEstimator</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="s1">'whitespace'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.estimators.lexical_est.LexicalEstimator" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.estimators.lexical_est.LexicalEstimator" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -2111,10 +2159,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.estimators.lexical_est.LexicalEstimator.estimate" class="doc doc-heading">
+<h5 id="vietquill.evaluation.estimators.lexical_est.LexicalEstimator.estimate" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">estimate</span><span class="p">(</span><span class="n">sentence1</span><span class="p">,</span> <span class="n">sentence2</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.estimators.lexical_est.LexicalEstimator.estimate" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.estimators.lexical_est.LexicalEstimator.estimate" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2236,10 +2284,10 @@ Automatically detects if sentence1 is a question.</p>
 
 
 
-<h3 id="vietquill.evaluation.estimators.syntactic_est.SyntacticEstimator" class="doc doc-heading">
+<h4 id="vietquill.evaluation.estimators.syntactic_est.SyntacticEstimator" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">estimators</span><span class="o">.</span><span class="n">syntactic_est</span><span class="o">.</span><span class="n">SyntacticEstimator</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.estimators.syntactic_est.SyntacticEstimator" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.estimators.syntactic_est.SyntacticEstimator" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -2283,10 +2331,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.estimators.syntactic_est.SyntacticEstimator.estimate" class="doc doc-heading">
+<h5 id="vietquill.evaluation.estimators.syntactic_est.SyntacticEstimator.estimate" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">estimate</span><span class="p">(</span><span class="n">sentence1</span><span class="p">,</span> <span class="n">sentence2</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.estimators.syntactic_est.SyntacticEstimator.estimate" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.estimators.syntactic_est.SyntacticEstimator.estimate" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2408,10 +2456,10 @@ Automatically detects if sentence1 is a question.</p>
 
 
 
-<h3 id="vietquill.evaluation.estimators.semantic_est.SemanticEstimator" class="doc doc-heading">
+<h4 id="vietquill.evaluation.estimators.semantic_est.SemanticEstimator" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">estimators</span><span class="o">.</span><span class="n">semantic_est</span><span class="o">.</span><span class="n">SemanticEstimator</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.estimators.semantic_est.SemanticEstimator" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.estimators.semantic_est.SemanticEstimator" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -2461,10 +2509,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.estimators.semantic_est.SemanticEstimator.estimate" class="doc doc-heading">
+<h5 id="vietquill.evaluation.estimators.semantic_est.SemanticEstimator.estimate" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">estimate</span><span class="p">(</span><span class="n">sentence1</span><span class="p">,</span> <span class="n">sentence2</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.estimators.semantic_est.SemanticEstimator.estimate" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.estimators.semantic_est.SemanticEstimator.estimate" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2594,17 +2642,17 @@ Automatically detects if sentence1 is a question.</p>
     </div>
 
 </div><hr />
-<h2 id="evaluation-metrics">Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Permanent link">&para;</a></h2>
+<h3 id="evaluation-metrics">Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Permanent link">&para;</a></h3>
 
 
 <div class="doc doc-object doc-class">
 
 
 
-<h3 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric" class="doc doc-heading">
+<h4 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">bleu_metric</span><span class="o">.</span><span class="n">BLEUMetric</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="s1">'whitespace'</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -2664,10 +2712,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric.compute" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric.compute" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">compute</span><span class="p">()</span></code>
 
-<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric.compute" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric.compute" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2699,10 +2747,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric.reset" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric.reset" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">reset</span><span class="p">()</span></code>
 
-<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric.reset" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric.reset" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2730,10 +2778,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric.score" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric.score" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric.score" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric.score" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2773,10 +2821,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric.update" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.bleu_metric.BLEUMetric.update" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric.update" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.bleu_metric.BLEUMetric.update" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2815,10 +2863,10 @@ Automatically detects if sentence1 is a question.</p>
 
 
 
-<h3 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric" class="doc doc-heading">
+<h4 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">bertscore_metric</span><span class="o">.</span><span class="n">BERTScoreMetric</span><span class="p">(</span><span class="n">model_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -2882,10 +2930,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.compute" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.compute" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">compute</span><span class="p">()</span></code>
 
-<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.compute" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.compute" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2917,10 +2965,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.reset" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.reset" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">reset</span><span class="p">()</span></code>
 
-<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.reset" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.reset" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2948,10 +2996,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.score" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.score" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.score" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.score" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -2995,10 +3043,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.update" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.update" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.update" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.bertscore_metric.BERTScoreMetric.update" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3037,10 +3085,10 @@ Automatically detects if sentence1 is a question.</p>
 
 
 
-<h3 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric" class="doc doc-heading">
+<h4 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">parascore_metric</span><span class="o">.</span><span class="n">ParaScoreMetric</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -3138,10 +3186,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.compute" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.compute" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">compute</span><span class="p">()</span></code>
 
-<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.compute" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.compute" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3205,10 +3253,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.score" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.score" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">score</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.score" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.score" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3252,10 +3300,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.score_free" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.score_free" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">score_free</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.score_free" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.score_free" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3297,10 +3345,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.update" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.update" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.update" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.parascore_metric.ParaScoreMetric.update" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3367,10 +3415,10 @@ Automatically detects if sentence1 is a question.</p>
 
 
 
-<h3 id="vietquill.evaluation.metrics.ted_metric.TEDMetric" class="doc doc-heading">
+<h4 id="vietquill.evaluation.metrics.ted_metric.TEDMetric" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">ted_metric</span><span class="o">.</span><span class="n">TEDMetric</span><span class="p">(</span><span class="n">max_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.ted_metric.TEDMetric" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.metrics.ted_metric.TEDMetric" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -3416,10 +3464,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.ted_metric.TEDMetric.normalize_tree" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.ted_metric.TEDMetric.normalize_tree" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">normalize_tree</span><span class="p">(</span><span class="n">tree_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
-<a href="#vietquill.evaluation.metrics.ted_metric.TEDMetric.normalize_tree" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.ted_metric.TEDMetric.normalize_tree" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3487,10 +3535,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.ted_metric.TEDMetric.score" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.ted_metric.TEDMetric.score" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">score</span><span class="p">(</span><span class="n">sentence1</span><span class="p">,</span> <span class="n">sentence2</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.ted_metric.TEDMetric.score" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.ted_metric.TEDMetric.score" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3566,10 +3614,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.ted_metric.TEDMetric.tree_edit_distance" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.ted_metric.TEDMetric.tree_edit_distance" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">tree_edit_distance</span><span class="p">(</span><span class="n">lintree1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lintree2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span></code>
 
-<a href="#vietquill.evaluation.metrics.ted_metric.TEDMetric.tree_edit_distance" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.ted_metric.TEDMetric.tree_edit_distance" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3630,10 +3678,10 @@ Automatically detects if sentence1 is a question.</p>
 
 
 
-<h3 id="vietquill.evaluation.metrics.jaccard_metric.JaccardMetric" class="doc doc-heading">
+<h4 id="vietquill.evaluation.metrics.jaccard_metric.JaccardMetric" class="doc doc-heading">
               <code class="highlight language-python"><span class="n">vietquill</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">jaccard_metric</span><span class="o">.</span><span class="n">JaccardMetric</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="s1">'whitespace'</span><span class="p">,</span> <span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.jaccard_metric.JaccardMetric" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#vietquill.evaluation.metrics.jaccard_metric.JaccardMetric" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents first">
@@ -3690,10 +3738,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.jaccard_metric.JaccardMetric.score" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.jaccard_metric.JaccardMetric.score" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.jaccard_metric.JaccardMetric.score" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.jaccard_metric.JaccardMetric.score" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">
@@ -3733,10 +3781,10 @@ Automatically detects if sentence1 is a question.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="vietquill.evaluation.metrics.jaccard_metric.JaccardMetric.update" class="doc doc-heading">
+<h5 id="vietquill.evaluation.metrics.jaccard_metric.JaccardMetric.update" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span></code>
 
-<a href="#vietquill.evaluation.metrics.jaccard_metric.JaccardMetric.update" class="headerlink" title="Permanent link">&para;</a></h4>
+<a href="#vietquill.evaluation.metrics.jaccard_metric.JaccardMetric.update" class="headerlink" title="Permanent link">&para;</a></h5>
 
 
     <div class="doc doc-contents ">

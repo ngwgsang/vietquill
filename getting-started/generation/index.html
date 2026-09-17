@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -100,7 +102,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="VietQuill" class="md-header__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -317,6 +319,25 @@
   
 
       
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../sponsors/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sponsors
+
+      </a>
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -347,7 +368,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="VietQuill" class="md-nav__button md-logo" aria-label="VietQuill" data-md-component="logo">
       
-  <img src="../../assets/logo/vietquill-light.png" alt="logo">
+  <img src="../../assets/logo/favicon.png" alt="logo">
 
     </a>
     VietQuill
@@ -916,6 +937,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sponsors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sponsors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -1036,7 +1084,7 @@
 
 <h1 id="paraphrase-generation">Paraphrase Generation<a class="headerlink" href="#paraphrase-generation" title="Permanent link">&para;</a></h1>
 <p>This guide details how to configure and run controllable paraphrase generation with VietQuill.</p>
-<h2 id="how-controllable-generation-works">How Controllable Generation Works<a class="headerlink" href="#how-controllable-generation-works" title="Permanent link">&para;</a></h2>
+<h3 id="how-controllable-generation-works">How Controllable Generation Works<a class="headerlink" href="#how-controllable-generation-works" title="Permanent link">&para;</a></h3>
 <p>VietQuill allows you to steer how the model paraphrases sentences using three control knobs (values from <code>0</code> to <code>100</code>, rounded to nearest 5):</p>
 <table>
 <thead>
@@ -1073,8 +1121,8 @@
 </span></code></pre></div>
 <p><em>Example:</em> <code>SEM_90 SYN_85 LEX_60 : Hôm nay trời đẹp quá, mình muốn đi dạo công viên.</code></p>
 <hr />
-<h2 id="generation-methods">Generation Methods<a class="headerlink" href="#generation-methods" title="Permanent link">&para;</a></h2>
-<h3 id="1-single-text-paraphrasing-paraphrase">1. Single Text Paraphrasing: <code>paraphrase</code><a class="headerlink" href="#1-single-text-paraphrasing-paraphrase" title="Permanent link">&para;</a></h3>
+<h3 id="generation-methods">Generation Methods<a class="headerlink" href="#generation-methods" title="Permanent link">&para;</a></h3>
+<h4 id="1-single-text-paraphrasing-paraphrase">1. Single Text Paraphrasing: <code>paraphrase</code><a class="headerlink" href="#1-single-text-paraphrasing-paraphrase" title="Permanent link">&para;</a></h4>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">)</span>
@@ -1093,7 +1141,7 @@
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 </span></code></pre></div>
-<h3 id="2-batch-paraphrasing-paraphrases">2. Batch Paraphrasing: <code>paraphrases</code><a class="headerlink" href="#2-batch-paraphrasing-paraphrases" title="Permanent link">&para;</a></h3>
+<h4 id="2-batch-paraphrasing-paraphrases">2. Batch Paraphrasing: <code>paraphrases</code><a class="headerlink" href="#2-batch-paraphrasing-paraphrases" title="Permanent link">&para;</a></h4>
 <p>For processing large datasets or multiple sentences efficiently on GPU:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="s2">"Hôm nay trời đẹp quá, mình muốn đi dạo công viên."</span><span class="p">,</span>
@@ -1115,7 +1163,7 @@
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  -&gt; </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></code></pre></div>
 <hr />
-<h2 id="style-presets">Style Presets<a class="headerlink" href="#style-presets" title="Permanent link">&para;</a></h2>
+<h3 id="style-presets">Style Presets<a class="headerlink" href="#style-presets" title="Permanent link">&para;</a></h3>
 <p>Instead of manually tuning percentages, you can use <code>ParaphraseStyle</code>:</p>
 <table>
 <thead>
@@ -1162,7 +1210,7 @@
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">diverse</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">paraphrase</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">ParaphraseStyle</span><span class="o">.</span><span class="n">DIVERSE</span><span class="p">)</span>
 </span></code></pre></div>
 <hr />
-<h2 id="advanced-decoding-parameters">Advanced Decoding Parameters<a class="headerlink" href="#advanced-decoding-parameters" title="Permanent link">&para;</a></h2>
+<h3 id="advanced-decoding-parameters">Advanced Decoding Parameters<a class="headerlink" href="#advanced-decoding-parameters" title="Permanent link">&para;</a></h3>
 <p><code>paraphrase</code> and <code>paraphrases</code> forward arbitrary keyword arguments to Hugging Face <code>transformers.GenerationConfig</code>:</p>
 <ul>
 <li><code>max_length</code> (int): Maximum generated sequence length (default: 256).</li>
