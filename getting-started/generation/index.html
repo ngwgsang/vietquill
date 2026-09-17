@@ -24,7 +24,7 @@
         
       
       
-      <link rel="icon" href="../../assets/logo/vietquill-light.png">
+      <link rel="icon" href="../../assets/logo/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#paraphrase-generation-guide" class="md-skip">
+        <a href="#paraphrase-generation" class="md-skip">
           Skip to content
         </a>
       
@@ -624,17 +624,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#automatic-question-vs-statement-routing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automatic Question vs Statement Routing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#style-presets" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -679,7 +668,7 @@
   <span class="md-ellipsis">
     
   
-    Quality Evaluation
+    Paraphrase Evaluation
   
 
     
@@ -707,7 +696,7 @@
   <span class="md-ellipsis">
     
   
-    Datasets
+    Paraphrase Datasets
   
 
     
@@ -1004,17 +993,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#automatic-question-vs-statement-routing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automatic Question vs Statement Routing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#style-presets" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1056,22 +1034,44 @@
   
 
 
-<h1 id="paraphrase-generation-guide">Paraphrase Generation Guide<a class="headerlink" href="#paraphrase-generation-guide" title="Permanent link">&para;</a></h1>
+<h1 id="paraphrase-generation">Paraphrase Generation<a class="headerlink" href="#paraphrase-generation" title="Permanent link">&para;</a></h1>
 <p>This guide details how to configure and run controllable paraphrase generation with VietQuill.</p>
 <h2 id="how-controllable-generation-works">How Controllable Generation Works<a class="headerlink" href="#how-controllable-generation-works" title="Permanent link">&para;</a></h2>
-<p>VietQuill models are conditioned with prefix control tokens representing three linguistic dimensions:</p>
-<p>$$\text{Input Prefix} = \text{SEM_}{s} \text{ SYN_}{y} \text{ LEX_}{l} : \text{Original Text}$$</p>
-<p>Each attribute takes an integer value from <code>0</code> to <code>100</code> (automatically normalized to the nearest multiple of 5):</p>
-<ul>
-<li><strong>Semantic ($s$)</strong>: Level of semantic meaning preservation.</li>
-<li><strong>Syntactic ($y$)</strong>: Level of sentence structure/tree similarity.</li>
-<li><strong>Lexical ($l$)</strong>: Level of vocabulary overlap.</li>
-</ul>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Low Lexical (0-40)  --&gt; High word substitution, rich synonyms
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>High Lexical (70-90) --&gt; Minimal word changes, retains key vocabulary
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Low Syntactic (0-50) --&gt; Restructures sentence grammar, active/passive voice switch
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>High Syntactic (80+) --&gt; Keeps original grammar and phrasing pattern
+<p>VietQuill allows you to steer how the model paraphrases sentences using three control knobs (values from <code>0</code> to <code>100</code>, rounded to nearest 5):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Parameter</th>
+<th style="text-align: left;">What It Controls</th>
+<th style="text-align: left;">Lower Value (0 - 40)</th>
+<th style="text-align: left;">Higher Value (70 - 100)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>lexical</code></strong></td>
+<td style="text-align: left;">Vocabulary overlap</td>
+<td style="text-align: left;">Replaces many words with synonyms</td>
+<td style="text-align: left;">Retains original wording &amp; key terms</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>syntactic</code></strong></td>
+<td style="text-align: left;">Sentence structure</td>
+<td style="text-align: left;">Restructures clauses and grammar</td>
+<td style="text-align: left;">Keeps original sentence pattern</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>semantic</code></strong></td>
+<td style="text-align: left;">Meaning preservation</td>
+<td style="text-align: left;">More creative / flexible rewriting</td>
+<td style="text-align: left;">Strictly faithful to original meaning</td>
+</tr>
+</tbody>
+</table>
+<p>VietQuill automatically attaches these constraints as a prefix before passing to the model:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SEM_&lt;semantic&gt; SYN_&lt;syntactic&gt; LEX_&lt;lexical&gt; : &lt;your_text&gt;
 </span></code></pre></div>
+<p><em>Example:</em> <code>SEM_90 SYN_85 LEX_60 : Hôm nay trời đẹp quá, mình muốn đi dạo công viên.</code></p>
 <hr />
 <h2 id="generation-methods">Generation Methods<a class="headerlink" href="#generation-methods" title="Permanent link">&para;</a></h2>
 <h3 id="1-single-text-paraphrasing-paraphrase">1. Single Text Paraphrasing: <code>paraphrase</code><a class="headerlink" href="#1-single-text-paraphrasing-paraphrase" title="Permanent link">&para;</a></h3>
@@ -1114,14 +1114,6 @@
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cands</span><span class="p">:</span>
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  -&gt; </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></code></pre></div>
-<hr />
-<h2 id="automatic-question-vs-statement-routing">Automatic Question vs Statement Routing<a class="headerlink" href="#automatic-question-vs-statement-routing" title="Permanent link">&para;</a></h2>
-<p>VietQuill automatically detects whether an input sentence is an interrogative sentence (ending with <code>?</code>) or a declarative statement:</p>
-<ul>
-<li><strong>Statement sentences</strong>: Routed to the <code>sentence</code> checkpoint fine-tuned on general sentences (e.g. ViSP).</li>
-<li><strong>Question sentences</strong>: Routed to the <code>question</code> checkpoint fine-tuned on question pairs (e.g. ViQP).</li>
-</ul>
-<p>No manual branch logic is required in your application code.</p>
 <hr />
 <h2 id="style-presets">Style Presets<a class="headerlink" href="#style-presets" title="Permanent link">&para;</a></h2>
 <p>Instead of manually tuning percentages, you can use <code>ParaphraseStyle</code>:</p>

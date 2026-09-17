@@ -22,7 +22,7 @@
         
       
       
-      <link rel="icon" href="assets/logo/vietquill-light.png">
+      <link rel="icon" href="assets/logo/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
@@ -443,21 +443,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-highlights" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Highlights
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#minimal-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Minimal Example
+        Example
       
     </span>
   </a>
@@ -635,7 +624,7 @@
   <span class="md-ellipsis">
     
   
-    Quality Evaluation
+    Paraphrase Evaluation
   
 
     
@@ -663,7 +652,7 @@
   <span class="md-ellipsis">
     
   
-    Datasets
+    Paraphrase Datasets
   
 
     
@@ -921,21 +910,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-highlights" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Key Highlights
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#minimal-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Minimal Example
+        Example
       
     </span>
   </a>
@@ -983,72 +961,67 @@
 </p>
 
 <p align="center">
-  <a href="https://pypi.org/project/vietquill/"><img src="https://img.shields.io/pypi/v/vietquill?color=EAB308" alt="PyPI"></a>
-  <a href="https://pypi.org/project/vietquill/"><img src="https://img.shields.io/pypi/pyversions/vietquill?color=EAB308" alt="Python Versions"></a>
-  <a href="https://github.com/ngwgsang/vietquill/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ngwgsang/vietquill?color=525252" alt="License"></a>
-  <a href="https://huggingface.co/collections/ngwgsang/vietquill"><img src="https://img.shields.io/badge/🤗-HuggingFace%20Models-EAB308" alt="HuggingFace Models"></a>
+  <a href="https://pypi.org/project/vietquill/">
+    <img src="https://img.shields.io/pypi/v/vietquill?color=B7181F" alt="PyPI">
+  </a>
+  <a href="https://pypi.org/project/vietquill/">
+    <img src="https://img.shields.io/pypi/pyversions/vietquill?color=B7181F" alt="Python">
+  </a>
+  <a href="https://github.com/ngwgsang/vietquill/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/ngwgsang/vietquill?color=B7181F" alt="License">
+  </a>
+  <img src="https://img.shields.io/badge/Language-Vietnamese-B7181F" alt="Language">
+  <img src="https://img.shields.io/badge/Task-Paraphrase%20Generation-B7181F" alt="Task">
+  <a href="https://huggingface.co/collections/ngwgsang/vietquill">
+    <img src="https://img.shields.io/badge/🤗-Models-B7181F" alt="Models">
+  </a>
 </p>
 
 <hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p><strong>VietQuill</strong> is a unified framework designed for controllable Vietnamese paraphrase generation and quality estimation, supporting both research and production applications.</p>
-<p>It centralizes datasets, generation methods, quality control techniques, and evaluation metrics into an intuitive and consistent Python interface. With VietQuill, researchers and developers can benchmark, fine-tune, and deploy paraphrase pipelines with minimal code.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>graph LR
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    Input["Input Vietnamese Text"] --&gt; Pipeline["VietQuill Pipeline"]
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    Pipeline --&gt; Control["Controllable Constraints&lt;br/&gt;(Lexical, Syntactic, Semantic)"]
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    Control --&gt; Paraphraser["AutoModelForControllableParaphraseGeneration&lt;br/&gt;(ViT5 Tsubaki)"]
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    Paraphraser --&gt; QualityEst["AutoModelForParaphraseQualityEstimation&lt;br/&gt;(vELECTRA Estimator)"]
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    QualityEst --&gt; Output["Quality-Ranked Paraphrases"]
-</span></code></pre></div>
-<h2 id="key-highlights">Key Highlights<a class="headerlink" href="#key-highlights" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Quality-Controlled Generation</strong>: Fine-grained steering over <strong>Lexical Diversity</strong>, <strong>Syntactic Divergence</strong>, and <strong>Semantic Preservation</strong> (levels 0 to 100).</li>
-<li><strong>Style Presets</strong>: Quick generation modes: <code>CONSERVATIVE</code>, <code>BALANCED</code>, and <code>DIVERSE</code>.</li>
-<li><strong>Automatic Domain Handling</strong>: Automatic detection and optimal routing between statement and question inputs.</li>
-<li><strong>Comprehensive Quality Estimation</strong>: Neural evaluation with <code>AutoModelForParaphraseQualityEstimation</code>, plus classic and neural metrics (<code>BERTScore</code>, <code>BLEU</code>, <code>TED</code>, <code>Jaccard</code>, <code>ParaScore</code>).</li>
-<li><strong>Standard Benchmark Datasets</strong>: Built-in loaders for large-scale Vietnamese paraphrase benchmarks (ViQP, ViSP).</li>
-</ul>
-<h2 id="minimal-example">Minimal Example<a class="headerlink" href="#minimal-example" title="Permanent link">&para;</a></h2>
+<p><strong>VietQuill</strong> is a Python toolkit for generating and evaluating Vietnamese paraphrases with controllable quality. It lets you easily rewrite sentences, tune diversity and grammar constraints, and evaluate paraphrase quality with minimal code.</p>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Paraphrase Generation</label><label for="__tabbed_1_2">Quality Estimation</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">,</span> <span class="n">ParaphraseStyle</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Load model from Hugging Face Hub</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">()</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Generate with balanced style preset</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">paraphrase</span><span class="p">(</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="s2">"Hôm nay thời tiết thật đẹp, mình muốn đi dạo ở công viên."</span><span class="p">,</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">style</span><span class="o">=</span><span class="n">ParaphraseStyle</span><span class="o">.</span><span class="n">BALANCED</span><span class="p">,</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">num_candidates</span><span class="o">=</span><span class="mi">2</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">)</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># Output: ['Thời tiết hôm nay rất đẹp, tôi muốn đi dạo công viên.', ...]</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">,</span> <span class="n">ParaphraseStyle</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Load model from Hugging Face Hub</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Generate with balanced style preset</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">paraphrase</span><span class="p">(</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="s2">"Hôm nay thời tiết thật đẹp, mình muốn đi dạo ở công viên."</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">style</span><span class="o">=</span><span class="n">ParaphraseStyle</span><span class="o">.</span><span class="n">BALANCED</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">num_candidates</span><span class="o">=</span><span class="mi">2</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># Output: ['Thời tiết hôm nay rất đẹp, tôi muốn đi dạo công viên.', ...]</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForParaphraseQualityEstimation</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">estimator</span> <span class="o">=</span> <span class="n">AutoModelForParaphraseQualityEstimation</span><span class="p">()</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">scores</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">original</span><span class="o">=</span><span class="s2">"Hôm nay trời đẹp quá, mình muốn đi dạo công viên."</span><span class="p">,</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">paraphrase</span><span class="o">=</span><span class="s2">"Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># Output: {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForParaphraseQualityEstimation</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">estimator</span> <span class="o">=</span> <span class="n">AutoModelForParaphraseQualityEstimation</span><span class="p">()</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">scores</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">original</span><span class="o">=</span><span class="s2">"Hôm nay trời đẹp quá, mình muốn đi dạo công viên."</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">paraphrase</span><span class="o">=</span><span class="s2">"Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Output: {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}</span>
 </span></code></pre></div>
 </div>
 </div>
 </div>
 <h2 id="navigation">Navigation<a class="headerlink" href="#navigation" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="getting-started/installation/">Installation Guide</a> - How to install VietQuill and setup CUDA.</li>
+<li><a href="getting-started/installation/">Installation</a> - How to install VietQuill and setup CUDA.</li>
 <li><a href="getting-started/quickstart/">Quickstart</a> - Fast overview of core features.</li>
-<li><a href="getting-started/generation/">Paraphrase Generation Guide</a> - Detailed usage of control parameters and batching.</li>
-<li><a href="getting-started/evaluation/">Quality Evaluation Guide</a> - Estimators and automated metric scoring.</li>
+<li><a href="getting-started/generation/">Paraphrase Generation</a> - Detailed usage of control parameters and batching.</li>
+<li><a href="getting-started/evaluation/">Paraphrase Evaluation</a> - Estimators and automated metric scoring.</li>
+<li><a href="getting-started/datasets/">Paraphrase Datasets</a> - Standard benchmark datasets and schemas.</li>
 <li><a href="api/generation/">API Reference</a> - Auto-generated documentation for modules and classes.</li>
 </ul>
 
