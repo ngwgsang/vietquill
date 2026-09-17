@@ -1,0 +1,84 @@
+site_name: VietQuill
+site_description: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation & Evaluation
+site_author: Nguyen Quang Sang
+site_url: https://ngwgsang.github.io/vietquill/
+repo_url: https://github.com/ngwgsang/vietquill
+repo_name: ngwgsang/vietquill
+
+theme:
+  name: material
+  language: en
+  logo: assets/logo/vietquill-light.png
+  favicon: assets/logo/vietquill-light.png
+  palette:
+    # Light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_root_heading: true
+            show_source: true
+            heading_level: 2
+            show_signature_annotations: true
+            merge_init_into_class: true
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+      - Paraphrase Generation: getting-started/generation.md
+      - Quality Evaluation: getting-started/evaluation.md
+      - Datasets: getting-started/datasets.md
+  - Models & Checkpoints: models.md
+  - API Reference:
+      - Generation: api/generation.md
+      - Evaluation: api/evaluation.md
+      - Datasets: api/data.md
+  - Citation: citation.md

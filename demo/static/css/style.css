@@ -395,21 +395,21 @@ main {
 }
 
 .tree-box {
-    padding: 1.5rem;
+    padding: 1rem;
     background: #f8fafc;
     border-radius: 0.75rem;
     border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    min-height: 200px;
+    gap: 0.75rem;
+    min-height: 100px;
 }
 
 /* Layered View Styles */
 .layer-row {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
 }
 
 .layer-label {
@@ -422,12 +422,12 @@ main {
 
 .layer-nodes {
     display: grid;
-    gap: 0.75rem;
+    gap: 0.35rem;
     width: 100%;
 }
 
 .constituent-node {
-    padding: 0.5rem 0.75rem;
+    padding: 0.25rem 0.5rem;
     background: white;
     border: 1px solid #cbd5e1;
     border-radius: 0.5rem;

@@ -337,11 +337,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     content.textContent = node.name;
                     nodeDiv.appendChild(content);
                     
-                    const subtext = document.createElement('span');
-                    subtext.className = 'node-subtext';
-                    subtext.textContent = getLeafText(node);
-                    subtext.title = subtext.textContent;
-                    nodeDiv.appendChild(subtext);
+                    const isPreTerminal = node.children && node.children.every(child => !child.children || child.children.length === 0);
+                    if (isPreTerminal) {
+                        const subtext = document.createElement('span');
+                        subtext.className = 'node-subtext';
+                        subtext.textContent = getLeafText(node);
+                        subtext.title = subtext.textContent;
+                        nodeDiv.appendChild(subtext);
+                    }
                     
                     nodesContainer.appendChild(nodeDiv);
                     currentPos += spanWidth;

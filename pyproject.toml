@@ -56,6 +56,11 @@ dev = [
 "twine",
 "pytest"
 ]
+docs = [
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.24.0",
+    "mkdocs-autorefs>=1.0.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/ngwgsang/vietquill"

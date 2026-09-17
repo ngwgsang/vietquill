@@ -18,8 +18,15 @@
 ![Vietnamese](https://img.shields.io/badge/Language-Vietnamese-525252)
 ![Task](https://img.shields.io/badge/Task-Paraphrase%20Generation-EAB308)
 [![Models](https://img.shields.io/badge/🤗-Models-EAB308)](https://huggingface.co/collections/ngwgsang/vietquill)
+[![Docs](https://img.shields.io/badge/📖-Tài_liệu-4f46e5)](https://ngwgsang.github.io/vietquill/)
 
-[English](../README.md) | Tiếng Việt
+[English](../README.md) | Tiếng Việt | [**Tài liệu hướng dẫn**](https://ngwgsang.github.io/vietquill/)
+
+<p align="center">
+  <a href="https://ngwgsang.github.io/vietquill/">
+    <img src="https://img.shields.io/badge/📚_Tài_liệu-Xem_VietQuill_Docs-4f46e5?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="Tài liệu VietQuill">
+  </a>
+</p>
 
 
 VietQuill là một framework hợp nhất dành cho việc tạo câu đồng nghĩa (paraphrase generation) tiếng Việt có kiểm soát và đánh giá chất lượng (quality estimation), hỗ trợ cả trong nghiên cứu và ứng dụng thực tế.
