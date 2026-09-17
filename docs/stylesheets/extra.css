@@ -1,0 +1,17 @@
+/* Toggle images based on Material theme */
+[data-md-color-scheme="default"] .dark-only {
+  display: none !important;
+}
+
+[data-md-color-scheme="default"] .light-only {
+  display: inline-block !important;
+}
+
+[data-md-color-scheme="slate"] .light-only {
+  display: none !important;
+}
+
+[data-md-color-scheme="slate"] .dark-only {
+  display: inline-block !important;
+}
+

@@ -1,7 +1,8 @@
 # VietQuill
 
 <p align="center">
-  <img src="assets/logo/vietquill-light.png" alt="VietQuill Logo" width="180">
+  <img class="light-only" src="assets/logo/vietquill-light.png" alt="VietQuill Logo" width="180">
+  <img class="dark-only" src="assets/logo/vietquill-dark.png" alt="VietQuill Logo" width="180">
 </p>
 
 <p align="center">
@@ -27,11 +28,11 @@
 
 ---
 
-## Overview
+### Overview
 
 **VietQuill** is a Python toolkit for generating and evaluating Vietnamese paraphrases with controllable quality. It lets you easily rewrite sentences, tune diversity and grammar constraints, and evaluate paraphrase quality with minimal code.
 
-## Example
+### Example
 
 === "Paraphrase Generation"
     ```python
@@ -65,7 +66,7 @@
     # Output: {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
     ```
 
-## Navigation
+### Navigation
 
 - [Installation](getting-started/installation.md) - How to install VietQuill and setup CUDA.
 - [Quickstart](getting-started/quickstart.md) - Fast overview of core features.
@@ -73,3 +74,5 @@
 - [Paraphrase Evaluation](getting-started/evaluation.md) - Estimators and automated metric scoring.
 - [Paraphrase Datasets](getting-started/datasets.md) - Standard benchmark datasets and schemas.
 - [API Reference](api/generation.md) - Auto-generated documentation for modules and classes.
+- [Citation](citation.md) - BibTeX references and academic publications.
+- [Sponsors](sponsors.md) - Project funding, grants, and sponsorship.

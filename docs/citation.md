@@ -48,14 +48,8 @@ If VietQuill contributes to your research or software, please cite it using the 
 
 ---
 
-## Acknowledgements & Funding
+### Acknowledgements & Funding
+
+We sincerely thank the Vietnamese NLP community for their continuous support and valuable contributions. We also gratefully acknowledge the support of the University of Information Technology (UIT), Vietnam National University Ho Chi Minh City (VNU-HCM), which has made the development of VietQuill possible.
 
 This research is funded by University of Information Technology - Vietnam National University Ho Chi Minh City under grant number **D4-2025-05**.
-
-If you would like to acknowledge this project in your LaTeX paper or report:
-
-```latex
-\section*{Acknowledgement}
-This research is funded by University of Information Technology-Vietnam National University Ho Chi Minh City under grant number D4-2025-05.
-```
-

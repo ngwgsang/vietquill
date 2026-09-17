@@ -2,12 +2,12 @@
 
 This guide walks you through setting up VietQuill in your Python environment.
 
-## Prerequisites
+### Prerequisites
 
 - **Python**: `>= 3.10`
 - **PyTorch**: `>= 2.0.0` (with CUDA support recommended for GPU acceleration)
 
-## Basic Installation
+### Basic Installation
 
 You can install VietQuill directly from PyPI using `pip`:
 
@@ -23,7 +23,7 @@ cd vietquill
 pip install -e .
 ```
 
-## Installing Optional Documentation Dependencies
+### Installing Optional Documentation Dependencies
 
 If you wish to build or preview this documentation locally:
 
@@ -37,7 +37,7 @@ Or manually:
 pip install mkdocs-material mkdocstrings[python] mkdocs-autorefs
 ```
 
-## GPU Acceleration Setup (PyTorch with CUDA)
+### GPU Acceleration Setup (PyTorch with CUDA)
 
 VietQuill models use Seq2Seq transformers (such as ViT5) and neural estimators (vELECTRA). A CUDA-enabled GPU significantly speeds up inference.
 

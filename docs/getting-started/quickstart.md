@@ -2,7 +2,7 @@
 
 Get started with VietQuill in less than 5 minutes!
 
-## 1. Single Sentence Paraphrasing
+### 1. Single Sentence Paraphrasing
 
 The primary interface for paraphrase generation is `AutoModelForControllableParaphraseGeneration`.
 
@@ -19,7 +19,7 @@ print(results)
 # ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']
 ```
 
-## 2. Generating Multiple Candidates
+### 2. Generating Multiple Candidates
 
 Use the `num_candidates` parameter to generate a list of alternative candidate sentences:
 
@@ -40,7 +40,7 @@ Output:
 3. Nước Pháp có thủ đô là thành phố tên là gì?
 ```
 
-## 3. Using Style Presets
+### 3. Using Style Presets
 
 VietQuill provides predefined generation styles via `ParaphraseStyle`:
 
@@ -60,7 +60,7 @@ print(model.paraphrase(sentence, style=ParaphraseStyle.BALANCED))
 print(model.paraphrase(sentence, style=ParaphraseStyle.DIVERSE))
 ```
 
-## 4. Fine-Grained Attribute Control
+### 4. Fine-Grained Attribute Control
 
 You can directly control attributes on a scale of `0` to `100`:
 
@@ -79,7 +79,7 @@ result = model.paraphrase(
 print(result)
 ```
 
-## 5. Estimating Paraphrase Quality
+### 5. Estimating Paraphrase Quality
 
 Evaluate similarity and divergence between original and candidate sentences:
 

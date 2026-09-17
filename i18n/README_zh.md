@@ -5,7 +5,7 @@
     <img alt="VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation" src="https://raw.githubusercontent.com/ngwgsang/vietquill/main/.github/assets/logo/vietquill-light.png" height="100" style="max-width: 100%;">
   </picture>
 </p>
-<h2 align="center">A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation & Evaluation</h2>
+<h3 align="center">A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation & Evaluation</h3>
 <p align="center">
   <a href="https://ngwgsang.github.io/vietquill/">
     <img src="https://img.shields.io/badge/文档-VietQuill-D91F26?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="VietQuill Documentation">

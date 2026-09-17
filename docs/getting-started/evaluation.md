@@ -4,7 +4,7 @@ VietQuill provides a comprehensive suite of evaluation tools, ranging from fast 
 
 ---
 
-## Unified Neural Quality Estimation
+### Unified Neural Quality Estimation
 
 The `AutoModelForParaphraseQualityEstimation` class uses a fine-tuned vELECTRA estimator model to simultaneously evaluate the **Lexical**, **Syntactic**, and **Semantic** scores of a paraphrase candidate relative to the source text.
 
@@ -31,11 +31,11 @@ print(result)
 
 ---
 
-## Individual Estimators
+### Individual Estimators
 
 VietQuill includes modular estimators for specific evaluation dimensions:
 
-### 1. Lexical Estimator
+#### 1. Lexical Estimator
 Measures n-gram overlap and token replacement rates between texts.
 
 ```python
@@ -46,7 +46,7 @@ result = estimator.estimate("Hôm nay trời đẹp quá.", "Hôm nay trời đ�
 print(result) # {'lexical_score': 66.67}
 ```
 
-### 2. Syntactic Estimator
+#### 2. Syntactic Estimator
 Parses dependency trees (using Stanza) and computes tree structure edit distances (TED).
 
 ```python
@@ -57,7 +57,7 @@ result = estimator.estimate("Mẹ nấu cơm rất ngon.", "Cơm do mẹ nấu r
 print(result)
 ```
 
-### 3. Semantic Estimator
+#### 3. Semantic Estimator
 Uses neural sentence embeddings / cross-encoder architectures to score meaning equivalence.
 
 ```python
@@ -70,7 +70,7 @@ print(result)
 
 ---
 
-## NLP Benchmark Metrics
+### NLP Benchmark Metrics
 
 For academic benchmarking and standardized comparison against baselines, VietQuill implements standard metrics:
 
@@ -82,7 +82,7 @@ For academic benchmarking and standardized comparison against baselines, VietQui
 | **Tree Edit Distance** | `TEDMetric` | APTED-based syntactic tree distance |
 | **Jaccard** | `JaccardMetric` | Lexical set overlap coefficient |
 
-### Example: Running Benchmark Metrics
+#### Example: Running Benchmark Metrics
 
 ```python
 from vietquill.evaluation import (

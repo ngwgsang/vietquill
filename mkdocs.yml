@@ -8,7 +8,7 @@ repo_name: ngwgsang/vietquill
 theme:
   name: material
   language: en
-  logo: assets/logo/vietquill-light.png
+  logo: assets/logo/favicon.png
   favicon: assets/logo/favicon.png
   palette:
     # Light mode
@@ -35,6 +35,9 @@ theme:
     - content.code.annotate
     - search.suggest
     - search.highlight
+
+extra_css:
+  - stylesheets/extra.css
 
 markdown_extensions:
   - admonition
@@ -82,3 +85,4 @@ nav:
       - Evaluation: api/evaluation.md
       - Datasets: api/data.md
   - Citation: citation.md
+  - Sponsors: sponsors.md

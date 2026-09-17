@@ -4,7 +4,7 @@ VietQuill provides officially trained checkpoints published on the Hugging Face 
 
 ---
 
-## Official Model Hub Collection
+### Official Model Hub Collection
 
 | Model Hub ID | Base Architecture | Task | Size | Status | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -15,9 +15,9 @@ VietQuill provides officially trained checkpoints published on the Hugging Face 
 
 ---
 
-## Model Architecture Details
+### Model Architecture Details
 
-### 1. Paraphrase Generator (`vietquill-vit5-base-tsubaki`)
+#### 1. Paraphrase Generator (`vietquill-vit5-base-tsubaki`)
 - **Base Architecture**: ViT5 (Vietnamese T5 pre-trained on large-scale Vietnamese corpus).
 - **Subfolders**:
     - `sentence/`: Fine-tuned on the ViSP dataset for declarative and complex sentence rewriting.
@@ -27,7 +27,7 @@ VietQuill provides officially trained checkpoints published on the Hugging Face 
   SEM_<0..100> SYN_<0..100> LEX_<0..100> : <Input Text>
   ```
 
-### 2. Paraphrase Quality Estimator (`vietquill-velectra-estimator-tsubaki`)
+#### 2. Paraphrase Quality Estimator (`vietquill-velectra-estimator-tsubaki`)
 - **Base Architecture**: vELECTRA-base.
 - **Output Heads**: Regression heads predicting:
     1. `lexical_score`: Measures token substitution / diversity.
@@ -36,7 +36,7 @@ VietQuill provides officially trained checkpoints published on the Hugging Face 
 
 ---
 
-## Custom Model Checkpoints
+### Custom Model Checkpoints
 
 You can specify custom local paths or custom Hugging Face Hub IDs when instantiating the models:
 

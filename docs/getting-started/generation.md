@@ -2,7 +2,7 @@
 
 This guide details how to configure and run controllable paraphrase generation with VietQuill.
 
-## How Controllable Generation Works
+### How Controllable Generation Works
 
 VietQuill allows you to steer how the model paraphrases sentences using three control knobs (values from `0` to `100`, rounded to nearest 5):
 
@@ -22,9 +22,9 @@ SEM_<semantic> SYN_<syntactic> LEX_<lexical> : <your_text>
 
 ---
 
-## Generation Methods
+### Generation Methods
 
-### 1. Single Text Paraphrasing: `paraphrase`
+#### 1. Single Text Paraphrasing: `paraphrase`
 
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
@@ -46,7 +46,7 @@ for r in results:
     print("-", r)
 ```
 
-### 2. Batch Paraphrasing: `paraphrases`
+#### 2. Batch Paraphrasing: `paraphrases`
 
 For processing large datasets or multiple sentences efficiently on GPU:
 
@@ -73,7 +73,7 @@ for orig, cands in zip(sentences, batch_results):
 
 ---
 
-## Style Presets
+### Style Presets
 
 Instead of manually tuning percentages, you can use `ParaphraseStyle`:
 
@@ -97,7 +97,7 @@ diverse = model.paraphrase(text, style=ParaphraseStyle.DIVERSE)
 
 ---
 
-## Advanced Decoding Parameters
+### Advanced Decoding Parameters
 
 `paraphrase` and `paraphrases` forward arbitrary keyword arguments to Hugging Face `transformers.GenerationConfig`:
 
