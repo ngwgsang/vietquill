@@ -176,6 +176,54 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
+## Mở rộng (Extensions)
+
+### Sinh câu đồng nghĩa Few-shot với LLM (Fewshot Paraphrase Generation [LLM])
+
+Bên cạnh các checkpoint tiền huấn luyện, VietQuill cung cấp `FewshotModelForControllableParaphraseGeneration` dựa trên mô thức **Mimic**. Tính năng này cho phép bạn tận dụng sức mạnh của các LLM (GPT-4o, Claude, Qwen, Llama, DeepSeek) qua OpenAI SDK hoặc OpenRouter và tự do định nghĩa các **chiều kiểm soát tùy biến** (ví dụ: `formality`, `technicality`, `conciseness`) được suy luận trực tiếp từ một vài ví dụ mẫu:
+
+```python
+from openai import OpenAI
+from vietquill import (
+    FewshotModelForControllableParaphraseGeneration,
+    Mimic,
+    MimicControl,
+    MimicExample,
+)
+
+# Khởi tạo client & generator (tự động đọc OPENAI_API_KEY từ môi trường)
+client = OpenAI()
+generator = FewshotModelForControllableParaphraseGeneration(
+    client=client, model="gpt-4o-mini"
+)
+
+# Định nghĩa các trục điều khiển và ví dụ mẫu (Mimic specification)
+mimic = Mimic(
+    intent="Chuyển đổi câu văn giao tiếp sang phong cách học thuật, trang trọng.",
+    controls=[
+        MimicControl(name="formality", description="Mức độ trang trọng (low, high)"),
+        MimicControl(name="conciseness", description="Độ ngắn gọn súc tích (low, high)"),
+    ],
+    examples=[
+        MimicExample(
+            input_text="Mô hình này chạy khá tốt.",
+            output_text="Mô hình đề xuất đạt hiệu năng tương đối khả quan.",
+            controls={"formality": "high", "conciseness": "high"},
+        ),
+    ],
+)
+
+# Sinh câu đồng nghĩa với các tiêu chí mục tiêu
+result = generator.paraphrase(
+    mimic=mimic,
+    input_text="Mấy thuật toán này chạy chậm quá, phải sửa lại code.",
+    output_control={"formality": "high", "conciseness": "high"},
+)
+
+print(result)
+# >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
+```
+
 ## Danh sách mô hình (Model list)
 
 | Model                                  | Kiến trúc                        | Kích thước | Trạng thái    |

@@ -73,6 +73,7 @@
 - [Paraphrase Generation](getting-started/generation.md) - Detailed usage of control parameters and batching.
 - [Paraphrase Evaluation](getting-started/evaluation.md) - Estimators and automated metric scoring.
 - [Paraphrase Datasets](getting-started/datasets.md) - Standard benchmark datasets and schemas.
+- [Fewshot Generation [LLM]](getting-started/fewshot_generation.md) - LLM-powered few-shot controllable paraphrase generation with custom control axes.
 - [API Reference](api/generation.md) - Auto-generated documentation for modules and classes.
 - [Citation](citation.md) - BibTeX references and academic publications.
 - [Sponsors](sponsors.md) - Project funding, grants, and sponsorship.

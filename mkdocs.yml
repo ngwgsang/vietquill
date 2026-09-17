@@ -79,6 +79,7 @@ nav:
       - Paraphrase Generation: getting-started/generation.md
       - Paraphrase Evaluation: getting-started/evaluation.md
       - Paraphrase Datasets: getting-started/datasets.md
+      - Fewshot Paraphrase Generation: getting-started/fewshot_generation.md
   - Models & Checkpoints: models.md
   - API Reference:
       - Generation: api/generation.md

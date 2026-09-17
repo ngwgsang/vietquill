@@ -176,6 +176,54 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
+## 拡張機能 (Extensions)
+
+### LLMを活用したFew-shot言い換え生成 (Fewshot Paraphrase Generation [LLM])
+
+VietQuill の事前学習モデルに加え、本ライブラリは **Mimic** パラダイムに基づく `FewshotModelForControllableParaphraseGeneration` を提供しています。OpenAI SDK または OpenRouter を経由して最新の LLM（GPT-4o、Claude、Qwen、Llama、DeepSeek など）を活用し、数件の入出力例から**任意の制御軸**（`formality`、`technicality`、`conciseness` など）を推論させて柔軟な制御が可能です：
+
+```python
+from openai import OpenAI
+from vietquill import (
+    FewshotModelForControllableParaphraseGeneration,
+    Mimic,
+    MimicControl,
+    MimicExample,
+)
+
+# client と generator の初期化（環境変数から OPENAI_API_KEY を自動読み込み）
+client = OpenAI()
+generator = FewshotModelForControllableParaphraseGeneration(
+    client=client, model="gpt-4o-mini"
+)
+
+# 制御軸とデモ例の定義 (Mimic specification)
+mimic = Mimic(
+    intent="Chuyển đổi câu văn giao tiếp sang phong cách học thuật, trang trọng.",
+    controls=[
+        MimicControl(name="formality", description="Mức độ trang trọng (low, high)"),
+        MimicControl(name="conciseness", description="Độ ngắn gọn súc tích (low, high)"),
+    ],
+    examples=[
+        MimicExample(
+            input_text="Mô hình này chạy khá tốt.",
+            output_text="Mô hình đề xuất đạt hiệu năng tương đối khả quan.",
+            controls={"formality": "high", "conciseness": "high"},
+        ),
+    ],
+)
+
+# 目標の制御値を指定して言い換えを生成
+result = generator.paraphrase(
+    mimic=mimic,
+    input_text="Mấy thuật toán này chạy chậm quá, phải sửa lại code.",
+    output_control={"formality": "high", "conciseness": "high"},
+)
+
+print(result)
+# >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
+```
+
 ## モデル一覧 (Model List)
 
 | モデル                                 | アーキテクチャ                   | サイズ   | ステータス    |

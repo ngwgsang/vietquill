@@ -176,6 +176,54 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
+## 扩展功能 (Extensions)
+
+### 基于大语言模型的少样本复述生成 (Fewshot Paraphrase Generation [LLM])
+
+除了 VietQuill 的预训练模型，本库还提供了基于 **Mimic** 规范的 `FewshotModelForControllableParaphraseGeneration`。该功能允许您通过 OpenAI SDK 或 OpenRouter 利用先进的大语言模型（如 GPT-4o、Claude、Qwen、Llama、DeepSeek），并根据少样本示例自主定义**可控维度**（例如 `formality`、`technicality`、`conciseness`）：
+
+```python
+from openai import OpenAI
+from vietquill import (
+    FewshotModelForControllableParaphraseGeneration,
+    Mimic,
+    MimicControl,
+    MimicExample,
+)
+
+# 初始化 client 与 generator（自动从环境变量读取 OPENAI_API_KEY）
+client = OpenAI()
+generator = FewshotModelForControllableParaphraseGeneration(
+    client=client, model="gpt-4o-mini"
+)
+
+# 定义自定义控制维度与少样本转换示例 (Mimic specification)
+mimic = Mimic(
+    intent="Chuyển đổi câu văn giao tiếp sang phong cách học thuật, trang trọng.",
+    controls=[
+        MimicControl(name="formality", description="Mức độ trang trọng (low, high)"),
+        MimicControl(name="conciseness", description="Độ ngắn gọn súc tích (low, high)"),
+    ],
+    examples=[
+        MimicExample(
+            input_text="Mô hình này chạy khá tốt.",
+            output_text="Mô hình đề xuất đạt hiệu năng tương đối khả quan.",
+            controls={"formality": "high", "conciseness": "high"},
+        ),
+    ],
+)
+
+# 根据目标控制配置生成复述
+result = generator.paraphrase(
+    mimic=mimic,
+    input_text="Mấy thuật toán này chạy chậm quá, phải sửa lại code.",
+    output_control={"formality": "high", "conciseness": "high"},
+)
+
+print(result)
+# >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
+```
+
 ## 模型列表 (Model List)
 
 | 模型                                  | 架构                             | 模型大小 | 状态          |

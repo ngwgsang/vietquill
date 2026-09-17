@@ -187,6 +187,54 @@ print(result)
 
 * Each Hub repository bundles both **sentence** and **question** variants in a single model package.
 
+## Extensions
+
+### Fewshot Paraphrase Generation [LLM]
+
+In addition to pretrained checkpoints, VietQuill provides `FewshotModelForControllableParaphraseGeneration` using the **Mimic** paradigm. This allows you to leverage modern LLMs (GPT-4o, Claude, Qwen, Llama, DeepSeek) through OpenAI SDK or OpenRouter and define **custom control dimensions** (e.g., `formality`, `technicality`, `conciseness`) inferred from few-shot demonstrations:
+
+```python
+from openai import OpenAI
+from vietquill import (
+    FewshotModelForControllableParaphraseGeneration,
+    Mimic,
+    MimicControl,
+    MimicExample,
+)
+
+# Initialize client & generator (reads OPENAI_API_KEY from environment)
+client = OpenAI()
+generator = FewshotModelForControllableParaphraseGeneration(
+    client=client, model="gpt-4o-mini"
+)
+
+# Define custom control axes and transformation demonstrations
+mimic = Mimic(
+    intent="Chuyển đổi câu văn giao tiếp sang phong cách học thuật, trang trọng.",
+    controls=[
+        MimicControl(name="formality", description="Mức độ trang trọng (low, high)"),
+        MimicControl(name="conciseness", description="Độ ngắn gọn súc tích (low, high)"),
+    ],
+    examples=[
+        MimicExample(
+            input_text="Mô hình này chạy khá tốt.",
+            output_text="Mô hình đề xuất đạt hiệu năng tương đối khả quan.",
+            controls={"formality": "high", "conciseness": "high"},
+        ),
+    ],
+)
+
+# Generate with target controls
+result = generator.paraphrase(
+    mimic=mimic,
+    input_text="Mấy thuật toán này chạy chậm quá, phải sửa lại code.",
+    output_control={"formality": "high", "conciseness": "high"},
+)
+
+print(result)
+# >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
+```
+
 ## Why should I use VietQuill?
 
 VietQuill is designed to be the most comprehensive and effective toolkit for Vietnamese paraphrase generation and evaluation. Here is why you should choose it:

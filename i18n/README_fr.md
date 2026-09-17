@@ -176,6 +176,54 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
+## Extensions
+
+### Génération de paraphrases Few-shot avec LLM (Fewshot Paraphrase Generation [LLM])
+
+En plus des points de contrôle pré-entraînés, VietQuill fournit `FewshotModelForControllableParaphraseGeneration` basé sur le paradigme **Mimic**. Cela vous permet de tirer parti des LLM modernes (GPT-4o, Claude, Qwen, Llama, DeepSeek) via le SDK OpenAI ou OpenRouter, et de définir des **dimensions de contrôle personnalisées** (par ex. `formality`, `technicality`, `conciseness`) déduites à partir de quelques démonstrations :
+
+```python
+from openai import OpenAI
+from vietquill import (
+    FewshotModelForControllableParaphraseGeneration,
+    Mimic,
+    MimicControl,
+    MimicExample,
+)
+
+# Initialisation du client et du générateur (lit OPENAI_API_KEY depuis l'environnement)
+client = OpenAI()
+generator = FewshotModelForControllableParaphraseGeneration(
+    client=client, model="gpt-4o-mini"
+)
+
+# Définition des axes de contrôle et des exemples (Mimic specification)
+mimic = Mimic(
+    intent="Chuyển đổi câu văn giao tiếp sang phong cách học thuật, trang trọng.",
+    controls=[
+        MimicControl(name="formality", description="Mức độ trang trọng (low, high)"),
+        MimicControl(name="conciseness", description="Độ ngắn gọn súc tích (low, high)"),
+    ],
+    examples=[
+        MimicExample(
+            input_text="Mô hình này chạy khá tốt.",
+            output_text="Mô hình đề xuất đạt hiệu năng tương đối khả quan.",
+            controls={"formality": "high", "conciseness": "high"},
+        ),
+    ],
+)
+
+# Génération avec les contrôles cibles
+result = generator.paraphrase(
+    mimic=mimic,
+    input_text="Mấy thuật toán này chạy chậm quá, phải sửa lại code.",
+    output_control={"formality": "high", "conciseness": "high"},
+)
+
+print(result)
+# >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
+```
+
 ## Liste des modèles (Model list)
 
 | Modèle                                 | Architecture                     | Taille   | Statut        |
