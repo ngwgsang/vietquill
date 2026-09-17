@@ -204,7 +204,6 @@ VietQuill builds upon our previous research projects, ViQP and ViSP, extending t
 If VietQuill contributes to your research or software, please cite it using the following reference.
 
 ```bibtex
-
 @inproceedings{nguyen2023viqp,
   title={Viqp: Dataset for vietnamese question paraphrasing},
   author={Nguyen, Sang Quang and Vo, Thuc Dinh and Nguyen, Duc PA and Tran, Dang T and Van Nguyen, Kiet},
@@ -214,7 +213,7 @@ If VietQuill contributes to your research or software, please cite it using the 
   organization={IEEE}
 }
 
-@inproceedings{nguyen-nguyen-2025-large,
+@inproceedings{nguyen2025visp,
     title = "A Large-Scale Benchmark for {V}ietnamese Sentence Paraphrases",
     author = "Nguyen, Sang Quang  and
       Nguyen, Kiet Van",
@@ -233,12 +232,15 @@ If VietQuill contributes to your research or software, please cite it using the 
     abstract = "This paper presents ViSP, a high-quality Vietnamese dataset for sentence paraphrasing, consisting of 1.2M original{--}paraphrase pairs collected from various domains. The dataset was constructed using a hybrid approach that combines automatic paraphrase generation with manual evaluation to ensure high quality. We conducted experiments using methods such as back-translation, EDA, and baseline models like BART and T5, as well as large language models (LLMs), including GPT-4o, Gemini-1.5, Aya, Qwen-2.5, and Meta-Llama-3.1 variants. To the best of our knowledge, this is the first large-scale study on Vietnamese paraphrasing. We hope that our dataset and findings will serve as a valuable foundation for future research and applications in Vietnamese paraphrase tasks. The dataset is available for research purposes at \url{https://github.com/ngwgsang/ViSP}."
 }
 
-@software{sang2026vietquill,
-  author = {Sang Quang Nguyen and Kiet Van Nguyen},
-  title = {VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation},
-  year = {2026},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/ngwgsang/vietquill}}
+@inproceedings{nguyen2026vietquill,
+  author={Nguyen, Sang Quang and Van Nguyen, Kiet},
+  booktitle={2026 International Conference on Multimedia Analysis and Pattern Recognition (MAPR)}, 
+  title={VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language}, 
+  year={2026},
+  volume={},
+  number={},
+  pages={61-66},
+  keywords={Modeling;Computational linguistics;Syntactics;Conferences;Manuals;Printing;Training;Estimation;Measurement;Equations;Paraphrase Generation;Controllable Generation;Quality-Aware Modeling;Vietnamese NLP;Low-Resource NLP},
+  doi={10.1109/MAPR72750.2026.11685721}
 }
 ```
