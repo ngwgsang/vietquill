@@ -1,10 +1,14 @@
 @echo off
 
-if exist build rmdir /s /q build
-if exist dist rmdir /s /q dist
-if exist src\vietquill.egg-info rmdir /s /q src\vietquill.egg-info
-
 call scripts\clean.bat
 
-python -m build
-twine check dist/*
+set "PYTHON=python"
+
+if exist "venv\Scripts\python.exe" (
+    set "PYTHON=venv\Scripts\python.exe"
+)
+
+%PYTHON% -m build
+if errorlevel 1 exit /b %errorlevel%
+
+%PYTHON% -m twine check dist\*

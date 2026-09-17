@@ -1,4 +1,4 @@
-# Datasets Guide
+# Paraphrase Datasets
 
 VietQuill provides built-in loaders and standardized schemas for benchmark Vietnamese paraphrase datasets.
 

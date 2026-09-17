@@ -9,7 +9,7 @@ theme:
   name: material
   language: en
   logo: assets/logo/vietquill-light.png
-  favicon: assets/logo/vietquill-light.png
+  favicon: assets/logo/favicon.png
   palette:
     # Light mode
     - scheme: default
@@ -74,8 +74,8 @@ nav:
       - Installation: getting-started/installation.md
       - Quickstart: getting-started/quickstart.md
       - Paraphrase Generation: getting-started/generation.md
-      - Quality Evaluation: getting-started/evaluation.md
-      - Datasets: getting-started/datasets.md
+      - Paraphrase Evaluation: getting-started/evaluation.md
+      - Paraphrase Datasets: getting-started/datasets.md
   - Models & Checkpoints: models.md
   - API Reference:
       - Generation: api/generation.md

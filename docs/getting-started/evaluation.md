@@ -1,4 +1,4 @@
-# Quality Evaluation & Metrics Guide
+# Paraphrase Evaluation
 
 VietQuill provides a comprehensive suite of evaluation tools, ranging from fast rule-based estimators to state-of-the-art neural quality models and academic NLP metrics.
 

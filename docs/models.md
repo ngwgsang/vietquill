@@ -6,10 +6,12 @@ VietQuill provides officially trained checkpoints published on the Hugging Face 
 
 ## Official Model Hub Collection
 
-| Model Hub ID | Base Architecture | Task | Size | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | ViT5-base (~440M params) | Quality-Controlled Generation | 4.19 GB | Bundles both `sentence` and `question` checkpoints for controllable generation. |
-| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | vELECTRA-base (~220M params) | Quality Estimation | 1.64 GB | Predicts Lexical, Syntactic, and Semantic quality scores. |
+| Model Hub ID | Base Architecture | Task | Size | Status | Description |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | ViT5-base (~440M params) | Quality-Controlled Generation | 4.19 GB | Available | Bundles both `sentence` and `question` checkpoints for controllable generation. |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | vELECTRA-base (~220M params) | Quality Estimation | 1.64 GB | Available | Predicts Lexical, Syntactic, and Semantic quality scores. |
+| `ngwgsang/vietquill-vit5-base-nelke` | ViT5-base (~440M params) | Quality-Controlled Generation | — | *Coming Soon* | Next-generation controllable paraphrase generation model. |
+| `ngwgsang/vietquill-velectra-estimator-nelke` | vELECTRA-base (~220M params) | Quality Estimation | — | *Coming Soon* | Next-generation paraphrase quality estimator. |
 
 ---
 

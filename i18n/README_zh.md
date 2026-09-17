@@ -8,7 +8,7 @@
 <h2 align="center">A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation & Evaluation</h2>
 <p align="center">
   <a href="https://ngwgsang.github.io/vietquill/">
-    <img src="https://img.shields.io/badge/Documentation-VietQuill-D91F26?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="VietQuill Documentation">
+    <img src="https://img.shields.io/badge/文档-VietQuill-D91F26?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="VietQuill Documentation">
   </a>
 </p>
 
@@ -31,38 +31,38 @@
 </p>
 
 <p align="center">
-  <b>English</b> | <a href="i18n/README_vi.md">Tiếng Việt</a> | <a href="i18n/README_zh.md">简体中文</a> | <a href="i18n/README_ja.md">日本語</a> | <a href="i18n/README_fr.md">Français</a>
+  <a href="../README.md">English</a> | <a href="README_vi.md">Tiếng Việt</a> | <b>简体中文</b> | <a href="README_ja.md">日本語</a> | <a href="README_fr.md">Français</a>
 </p>
 
 
 
-VietQuill is a unified framework for controllable Vietnamese paraphrase generation and quality estimation, supporting both research and production applications.
+VietQuill 是一个用于可控越南语复述生成（Paraphrase Generation）与质量评估（Quality Estimation）的统一框架，同时支持学术研究与生产部署。
 
-It centralizes datasets, generation methods, augmentation techniques, and evaluation metrics into a consistent interface, enabling researchers and practitioners to develop, benchmark, and deploy paraphrase systems with minimal effort. VietQuill aims to serve as a common foundation for the Vietnamese paraphrase generation ecosystem, promoting reproducible research, standardized evaluation, and the development of high-quality paraphrase technologies for education, information retrieval, question answering, conversational AI, and other natural language processing applications.
+该工具集成了数据集、生成方法、数据增强技术以及评估指标于统一的接口中，使研究人员和开发者能够以极低的代码成本开发、评测和部署复述系统。VietQuill 旨在作为越南语复述生成生态系统的坚实基础，推动可复现研究、标准化评测，并促进高质量复述技术在教育、信息检索、问答系统、对话式 AI 等自然语言处理领域的应用。
 
-We are committed to advancing Vietnamese paraphrase generation by making state-of-the-art methods accessible, customizable, and easy to integrate into real-world workflows.
+我们致力于通过使前沿算法（State-of-the-Art）易于获取、高度可定制以及易于集成到实际业务流程中，推动越南语自然语言处理的发展。
 
 ---
 
-## Installation
+## 安装
 
-Create and activate a virtual environment with venv and project manager.
+使用 `venv` 创建并激活虚拟环境：
 
 ```cmd
 python -m venv .\venv
 ```
 
-Install VietQuill in your virtual environment.
+在虚拟环境中安装 VietQuill：
 
 ```cmd
 pip install vietquill
 ```
 
-## Quickstart
+## 快速上手 (Quickstart)
 
-### Paraphrase Generate
+### 复述生成 (Paraphrase Generate)
 
-Using `AutoModelForControllableParaphraseGeneration` for fine-grained control over lexical, semantic, and syntactic attributes.
+使用 `AutoModelForControllableParaphraseGeneration` 对词汇（lexical）、语义（semantic）与句法（syntactic）属性进行细粒度控制。
 
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
@@ -73,7 +73,7 @@ print(result)
 # >>> ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']
 ```
 
-Generate multiple paraphrase candidates using the `num_candidates` parameter.
+通过 `num_candidates` 参数生成多个复述候选句：
 
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
@@ -84,7 +84,7 @@ print(result)
 # >>> ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?', 'Nước Pháp có thủ đô là thành phố tên là gì?']
 ```
 
-If you have multiple sentences and want to leverage the power of GPU acceleration, you should use `paraphrases` for batch generation:
+如果有多个句子并希望借助 GPU 加速，建议使用 `paraphrases` 进行批量生成（Batch）：
 
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
@@ -93,16 +93,16 @@ model = AutoModelForControllableParaphraseGeneration()
 sentences = [
     "Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
     "Thủ đô của nước Pháp là thành phố nào?",
-    # ... many sentences here ...
+    # ... 更多句子 ...
 ]
 
-# Generate paraphrases in batch
+# 批量生成复述
 results = model.paraphrases(sentences)
 print(results)
 # >>> [['Hôm nay trời đẹp, tôi muốn đi dạo công viên.'], ['Nước Pháp có thủ đô là thành phố nào?']]
 ```
 
-Using `lexical`, `syntactic`, `semantic` for tunning paraphrase quality and diversity.
+使用 `lexical`、`syntactic`、`semantic` 调整复述质量与多样性：
 
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration
@@ -110,13 +110,13 @@ from vietquill import AutoModelForControllableParaphraseGeneration
 model = AutoModelForControllableParaphraseGeneration()
 sentence = "Tôi rất thích ăn phở vào buổi sáng và uống một cốc cà phê nóng."
 
-# Generate with specific control levels
+# 指定控制级别生成
 paraphrase = model.paraphrase(sentence, lexical=90, syntactic=70, semantic=70, num_candidates=2)
 print(paraphrase)
 # >>> ['Bữa sáng tôi ăn phở, uống một cốc cà phê nóng.', 'Bữa sáng tôi ăn phở và một cốc cà phê nóng.']
 ```
 
-Alternatively, you can use predefined style presets using the `ParaphraseStyle` enum (or pass the style name as a string):
+也可以通过 `ParaphraseStyle` 枚举（或传入风格字符串）使用预设的风格（Presets）：
 
 ```python
 from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
@@ -124,25 +124,25 @@ from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseSt
 model = AutoModelForControllableParaphraseGeneration()
 sentence = "Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"
 
-# Generate with CONSERVATIVE
+# 使用 CONSERVATIVE（保守型：高语义保留，微调词汇）
 paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.CONSERVATIVE)
 print(paraphrase)
 # >>> ['Mỗi ngày có bao nhiêu người Việt Nam sử dụng mạng xã hội?']
 
-# Generate with BALANCED
+# 使用 BALANCED（平衡型：兼顾多样性与语义保留）
 paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.BALANCED)
 print(paraphrase)
 # >>> ['Số lượng người Việt Nam sử dụng mạng xã hội mỗi ngày là bao nhiêu?']
 
-# Generate with DIVERSE
+# 使用 DIVERSE（多样型：高多样性改写）
 paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.DIVERSE)
 print(paraphrase)
 # >>> ['Có bao nhiêu người Việt Nam sử dụng mạng xã hội mỗi ngày?']
 ```
 
-### Paraphrase Evaluate
+### 质量评估 (Paraphrase Evaluate)
 
-Evaluate the quality of generated paraphrases using various metrics and estimators.
+使用各种指标和评估模型评估生成的复述句质量：
 
 ```python
 from vietquill.evaluation import BLEUMetric, LexicalEstimator
@@ -176,25 +176,25 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
-## Model list
+## 模型列表 (Model List)
 
-| Model                                  | Architecture                     | Size     | Status        |
-| :------------------------------------- | :------------------------------- | :------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M parameters)       | 4.19 GB* | Available     |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M parameters) | 1.64 GB* | Available     |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M parameters)       | —        | *Coming Soon* |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M parameters) | —        | *Coming Soon* |
+| 模型                                  | 架构                             | 模型大小 | 状态          |
+| :------------------------------------ | :------------------------------- | :------- | :------------ |
+| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M 参数)             | 4.19 GB* | 现已可用      |
+| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M 参数)       | 1.64 GB* | 现已可用      |
+| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M 参数)             | —        | *即将推出*    |
+| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M 参数)       | —        | *即将推出*    |
 
-* Each Hub repository bundles both **sentence** and **question** variants in a single model package.
+* 每个 Hub 仓库均将 **sentence**（陈述句）与 **question**（疑问句）变体整合在单个模型包中。
 
-## Why should I use VietQuill?
+## 为什么选择 VietQuill？
 
-VietQuill is designed to be the most comprehensive and effective toolkit for Vietnamese paraphrase generation and evaluation. Here is why you should choose it:
+VietQuill 旨在成为越南语复述生成与评估最全面、最有效的工具集。核心优势包括：
 
-* **Seamless Integration:** Designed with a clean and intuitive API, allowing VietQuill to be easily integrated into existing NLP workflows, research pipelines, and production systems.
-* **State-of-the-Art Paraphrase Generation:** Built upon strong Vietnamese language models and quality-controlled generation techniques to deliver high-quality, diverse, and semantically faithful paraphrases.
+* **无缝集成 (Seamless Integration)：** 设计了简洁直观的 API，便于将 VietQuill 快速集成到现有的 NLP 工作流、科研流程及生产系统中。
+* **前沿复述生成 (State-of-the-Art Paraphrase Generation)：** 基于强大的越南语预训练模型与质量控制生成技术，提供高质量、多样化且忠于语义的复述结果。
 
-## Star History
+## Star 增长历史 (Star History)
 
 <p align="center">
   <picture>
@@ -211,16 +211,16 @@ VietQuill is designed to be the most comprehensive and effective toolkit for Vie
   </picture>
 </p>
 
-## Acknowledgements
+## 致谢 (Acknowledgements)
 
-We sincerely thank the Vietnamese NLP community for their continuous support and valuable contributions. We also gratefully acknowledge the support of the University of Information Technology (UIT), Vietnam National University Ho Chi Minh City (VNU-HCM), which has made the development of VietQuill possible.
+我们衷心感谢越南 NLP 社区一直以来的支持与宝贵贡献。同时，我们由衷感谢越南国家大学胡志明市分校信息科技大学（UIT - VNU-HCM）对本项目的鼎力支持，使 VietQuill 的研发成为可能。
 
-This research is funded by University of Information Technology - Vietnam National University Ho Chi Minh City under grant number **D4-2025-05**.
+本研究由越南国家大学胡志明市分校信息科技大学资助，项目编号为 **D4-2025-05**。
 
-## Citation
+## 引用 (Citation)
 
-VietQuill builds upon our previous research projects, ViQP and ViSP, extending them into a unified toolkit for Vietnamese paraphrase generation and quality estimation.
-If VietQuill contributes to your research or software, please cite it using the following reference.
+VietQuill 基于我们前期的研究项目 ViQP 和 ViSP 构建，并将其拓展为越南语复述生成与质量评估的统一工具包。
+如果 VietQuill 对您的研究或软件项目有所帮助，请引用以下论文：
 
 ```bibtex
 @inproceedings{nguyen2023viqp,

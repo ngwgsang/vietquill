@@ -9,38 +9,29 @@
 </p>
 
 <p align="center">
-  <a href="https://pypi.org/project/vietquill/"><img src="https://img.shields.io/pypi/v/vietquill?color=EAB308" alt="PyPI"></a>
-  <a href="https://pypi.org/project/vietquill/"><img src="https://img.shields.io/pypi/pyversions/vietquill?color=EAB308" alt="Python Versions"></a>
-  <a href="https://github.com/ngwgsang/vietquill/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ngwgsang/vietquill?color=525252" alt="License"></a>
-  <a href="https://huggingface.co/collections/ngwgsang/vietquill"><img src="https://img.shields.io/badge/🤗-HuggingFace%20Models-EAB308" alt="HuggingFace Models"></a>
+  <a href="https://pypi.org/project/vietquill/">
+    <img src="https://img.shields.io/pypi/v/vietquill?color=B7181F" alt="PyPI">
+  </a>
+  <a href="https://pypi.org/project/vietquill/">
+    <img src="https://img.shields.io/pypi/pyversions/vietquill?color=B7181F" alt="Python">
+  </a>
+  <a href="https://github.com/ngwgsang/vietquill/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/ngwgsang/vietquill?color=B7181F" alt="License">
+  </a>
+  <img src="https://img.shields.io/badge/Language-Vietnamese-B7181F" alt="Language">
+  <img src="https://img.shields.io/badge/Task-Paraphrase%20Generation-B7181F" alt="Task">
+  <a href="https://huggingface.co/collections/ngwgsang/vietquill">
+    <img src="https://img.shields.io/badge/🤗-Models-B7181F" alt="Models">
+  </a>
 </p>
 
 ---
 
 ## Overview
 
-**VietQuill** is a unified framework designed for controllable Vietnamese paraphrase generation and quality estimation, supporting both research and production applications.
+**VietQuill** is a Python toolkit for generating and evaluating Vietnamese paraphrases with controllable quality. It lets you easily rewrite sentences, tune diversity and grammar constraints, and evaluate paraphrase quality with minimal code.
 
-It centralizes datasets, generation methods, quality control techniques, and evaluation metrics into an intuitive and consistent Python interface. With VietQuill, researchers and developers can benchmark, fine-tune, and deploy paraphrase pipelines with minimal code.
-
-```mermaid
-graph LR
-    Input["Input Vietnamese Text"] --> Pipeline["VietQuill Pipeline"]
-    Pipeline --> Control["Controllable Constraints<br/>(Lexical, Syntactic, Semantic)"]
-    Control --> Paraphraser["AutoModelForControllableParaphraseGeneration<br/>(ViT5 Tsubaki)"]
-    Paraphraser --> QualityEst["AutoModelForParaphraseQualityEstimation<br/>(vELECTRA Estimator)"]
-    QualityEst --> Output["Quality-Ranked Paraphrases"]
-```
-
-## Key Highlights
-
-- **Quality-Controlled Generation**: Fine-grained steering over **Lexical Diversity**, **Syntactic Divergence**, and **Semantic Preservation** (levels 0 to 100).
-- **Style Presets**: Quick generation modes: `CONSERVATIVE`, `BALANCED`, and `DIVERSE`.
-- **Automatic Domain Handling**: Automatic detection and optimal routing between statement and question inputs.
-- **Comprehensive Quality Estimation**: Neural evaluation with `AutoModelForParaphraseQualityEstimation`, plus classic and neural metrics (`BERTScore`, `BLEU`, `TED`, `Jaccard`, `ParaScore`).
-- **Standard Benchmark Datasets**: Built-in loaders for large-scale Vietnamese paraphrase benchmarks (ViQP, ViSP).
-
-## Minimal Example
+## Example
 
 === "Paraphrase Generation"
     ```python
@@ -76,8 +67,9 @@ graph LR
 
 ## Navigation
 
-- [Installation Guide](getting-started/installation.md) - How to install VietQuill and setup CUDA.
+- [Installation](getting-started/installation.md) - How to install VietQuill and setup CUDA.
 - [Quickstart](getting-started/quickstart.md) - Fast overview of core features.
-- [Paraphrase Generation Guide](getting-started/generation.md) - Detailed usage of control parameters and batching.
-- [Quality Evaluation Guide](getting-started/evaluation.md) - Estimators and automated metric scoring.
+- [Paraphrase Generation](getting-started/generation.md) - Detailed usage of control parameters and batching.
+- [Paraphrase Evaluation](getting-started/evaluation.md) - Estimators and automated metric scoring.
+- [Paraphrase Datasets](getting-started/datasets.md) - Standard benchmark datasets and schemas.
 - [API Reference](api/generation.md) - Auto-generated documentation for modules and classes.

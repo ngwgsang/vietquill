@@ -1,25 +1,24 @@
-# Paraphrase Generation Guide
+# Paraphrase Generation
 
 This guide details how to configure and run controllable paraphrase generation with VietQuill.
 
 ## How Controllable Generation Works
 
-VietQuill models are conditioned with prefix control tokens representing three linguistic dimensions:
+VietQuill allows you to steer how the model paraphrases sentences using three control knobs (values from `0` to `100`, rounded to nearest 5):
 
-$$\text{Input Prefix} = \text{SEM\_}\{s\} \text{ SYN\_}\{y\} \text{ LEX\_}\{l\} : \text{Original Text}$$
+| Parameter | What It Controls | Lower Value (0 - 40) | Higher Value (70 - 100) |
+| :--- | :--- | :--- | :--- |
+| **`lexical`** | Vocabulary overlap | Replaces many words with synonyms | Retains original wording & key terms |
+| **`syntactic`** | Sentence structure | Restructures clauses and grammar | Keeps original sentence pattern |
+| **`semantic`** | Meaning preservation | More creative / flexible rewriting | Strictly faithful to original meaning |
 
-Each attribute takes an integer value from `0` to `100` (automatically normalized to the nearest multiple of 5):
-
-- **Semantic ($s$)**: Level of semantic meaning preservation.
-- **Syntactic ($y$)**: Level of sentence structure/tree similarity.
-- **Lexical ($l$)**: Level of vocabulary overlap.
+VietQuill automatically attaches these constraints as a prefix before passing to the model:
 
 ```text
-Low Lexical (0-40)  --> High word substitution, rich synonyms
-High Lexical (70-90) --> Minimal word changes, retains key vocabulary
-Low Syntactic (0-50) --> Restructures sentence grammar, active/passive voice switch
-High Syntactic (80+) --> Keeps original grammar and phrasing pattern
+SEM_<semantic> SYN_<syntactic> LEX_<lexical> : <your_text>
 ```
+
+*Example:* `SEM_90 SYN_85 LEX_60 : Hôm nay trời đẹp quá, mình muốn đi dạo công viên.`
 
 ---
 
@@ -71,17 +70,6 @@ for orig, cands in zip(sentences, batch_results):
     for c in cands:
         print(f"  -> {c}")
 ```
-
----
-
-## Automatic Question vs Statement Routing
-
-VietQuill automatically detects whether an input sentence is an interrogative sentence (ending with `?`) or a declarative statement:
-
-- **Statement sentences**: Routed to the `sentence` checkpoint fine-tuned on general sentences (e.g. ViSP).
-- **Question sentences**: Routed to the `question` checkpoint fine-tuned on question pairs (e.g. ViQP).
-
-No manual branch logic is required in your application code.
 
 ---
 
