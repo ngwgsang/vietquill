@@ -24,6 +24,9 @@
   <a href="https://huggingface.co/collections/ngwgsang/vietquill">
     <img src="https://img.shields.io/badge/🤗-Models-B7181F" alt="Models">
   </a>
+  <a href="https://ieeexplore.ieee.org/document/11685721">
+    <img src="https://img.shields.io/badge/IEEE%20Xplore-Paper-B7181F?logo=IEEE&logoColor=white" alt="IEEE Xplore">
+  </a>
 </p>
 
 ---

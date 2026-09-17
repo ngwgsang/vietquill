@@ -28,6 +28,9 @@
   <a href="https://huggingface.co/collections/ngwgsang/vietquill">
     <img src="https://img.shields.io/badge/🤗-Models-B7181F" alt="Models">
   </a>
+  <a href="https://ieeexplore.ieee.org/document/11685721">
+    <img src="https://img.shields.io/badge/IEEE%20Xplore-Paper-B7181F?logo=IEEE&logoColor=white" alt="IEEE Xplore">
+  </a>
 </p>
 
 <p align="center">
@@ -36,9 +39,9 @@
 
 
 
-VietQuill is a unified framework for controllable Vietnamese paraphrase generation and quality estimation, supporting both research and production applications.
+This is the official source code accompanying our research work, `VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language`, published at MAPR 2026.
 
-It centralizes datasets, generation methods, augmentation techniques, and evaluation metrics into a consistent interface, enabling researchers and practitioners to develop, benchmark, and deploy paraphrase systems with minimal effort. VietQuill aims to serve as a common foundation for the Vietnamese paraphrase generation ecosystem, promoting reproducible research, standardized evaluation, and the development of high-quality paraphrase technologies for education, information retrieval, question answering, conversational AI, and other natural language processing applications.
+We provide a unified framework for controllable Vietnamese paraphrase generation and quality estimation, integrating datasets, generation methods, augmentation techniques, and evaluation metrics into a consistent interface. VietQuill is designed to support reproducible research and practical development of high-quality Vietnamese paraphrase systems.
 
 We are committed to advancing Vietnamese paraphrase generation by making state-of-the-art methods accessible, customizable, and easy to integrate into real-world workflows.
 
