@@ -39,9 +39,9 @@
 
 
 
-VietQuill est un framework unifié pour la génération contrôlable de paraphrases en vietnamien et l'évaluation de leur qualité, conçu à la fois pour la recherche académique et les applications en production.
+Ceci est le code source officiel accompagnant nos travaux de recherche, `VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language`, publiés à MAPR 2026.
 
-Il centralise les jeux de données, les méthodes de génération, les techniques d'augmentation de données et les métriques d'évaluation au sein d'une interface cohérente et intuitive, permettant aux chercheurs et praticiens de développer, d'évaluer et de déployer des systèmes de paraphrase avec un minimum d'effort. VietQuill vise à constituer un socle commun pour l'écosystème du traitement automatique du langage naturel (TALN) vietnamien, favorisant une recherche reproductible, une évaluation standardisée et le développement de technologies de paraphrase de haute qualité pour l'éducation, la recherche d'information, les systèmes de questions-réponses et l'IA conversationnelle.
+Nous proposons un framework unifié pour la génération contrôlable de paraphrases en vietnamien et l'évaluation de leur qualité, intégrant des jeux de données, des méthodes de génération, des techniques d'augmentation de données et des métriques d'évaluation au sein d'une interface cohérente. VietQuill est conçu pour soutenir une recherche reproductible et le développement pratique de systèmes de paraphrase en vietnamien de haute qualité.
 
 Nous nous engageons à faire progresser la génération de paraphrases en vietnamien en rendant les méthodes de pointe (*State-of-the-Art*) accessibles, personnalisables et faciles à intégrer dans des environnements réels.
 
@@ -179,6 +179,17 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
+## Liste des modèles (Model list)
+
+| Modèle                                 | Architecture                     | Taille   | Statut        |
+| :------------------------------------- | :------------------------------- | :------- | :------------ |
+| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M paramètres)       | 4.19 GB* | Disponible    |
+| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M paramètres) | 1.64 GB* | Disponible    |
+| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M parameters)       | —        | *Bientôt disponible* |
+| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M paramètres) | —        | *Bientôt disponible* |
+
+* Chaque dépôt Hub regroupe les deux variantes **sentence** (phrases déclaratives) et **question** (questions) dans un paquet unique.
+
 ## Extensions
 
 ### Génération de paraphrases Few-shot avec LLM (Fewshot Paraphrase Generation [LLM])
@@ -226,17 +237,6 @@ result = generator.paraphrase(
 print(result)
 # >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
 ```
-
-## Liste des modèles (Model list)
-
-| Modèle                                 | Architecture                     | Taille   | Statut        |
-| :------------------------------------- | :------------------------------- | :------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M paramètres)       | 4.19 GB* | Disponible    |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M paramètres) | 1.64 GB* | Disponible    |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M paramètres)       | —        | *Bientôt disponible* |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M paramètres) | —        | *Bientôt disponible* |
-
-* Chaque dépôt Hub regroupe les deux variantes **sentence** (phrases déclaratives) et **question** (questions) dans un paquet unique.
 
 ## Pourquoi choisir VietQuill ?
 

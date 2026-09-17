@@ -39,9 +39,9 @@
 
 
 
-VietQuill là một framework hợp nhất dành cho việc tạo câu đồng nghĩa (paraphrase generation) tiếng Việt có kiểm soát và đánh giá chất lượng (quality estimation), hỗ trợ cả trong nghiên cứu và ứng dụng thực tế.
+Đây là mã nguồn chính thức đi kèm bài báo nghiên cứu của chúng tôi: `VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language`, được công bố tại hội nghị MAPR 2026.
 
-Dự án tập trung các tập dữ liệu, phương pháp sinh văn bản, kỹ thuật tăng cường dữ liệu và các độ đo đánh giá vào một giao diện đồng nhất, cho phép các nhà nghiên cứu và kỹ sư phát triển, đo lường (benchmark) và triển khai các hệ thống paraphrase với công sức tối thiểu. VietQuill hướng tới việc đóng vai trò như một nền tảng chung cho hệ sinh thái tạo câu đồng nghĩa tiếng Việt, thúc đẩy tính tái lập trong nghiên cứu, tiêu chuẩn hóa việc đánh giá và phát triển các công nghệ paraphrase chất lượng cao cho giáo dục, truy xuất thông tin, hỏi đáp, AI hội thoại và các ứng dụng xử lý ngôn ngữ tự nhiên khác.
+Chúng tôi cung cấp một framework hợp nhất dành cho việc tạo câu đồng nghĩa (paraphrase generation) tiếng Việt có kiểm soát và đánh giá chất lượng (quality estimation), tích hợp các tập dữ liệu, phương pháp sinh văn bản, kỹ thuật tăng cường dữ liệu và các độ đo đánh giá vào một giao diện đồng nhất. VietQuill được thiết kế nhằm hỗ trợ nghiên cứu có khả năng tái lập và phát triển các hệ thống tạo câu đồng nghĩa tiếng Việt chất lượng cao trong thực tế.
 
 Chúng tôi cam kết thúc đẩy lĩnh vực tạo câu đồng nghĩa tiếng Việt bằng cách làm cho các phương pháp tiên tiến nhất (state-of-the-art) trở nên dễ tiếp cận, dễ tùy chỉnh và dễ dàng tích hợp vào quy trình làm việc thực tế.
 
@@ -179,6 +179,17 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
+## Danh sách mô hình (Model list)
+
+| Model                                  | Kiến trúc                        | Kích thước | Trạng thái    |
+| :------------------------------------- | :------------------------------- | :--------- | :------------ |
+| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M tham số)          | 4.19 GB*   | Khả dụng      |
+| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M tham số)    | 1.64 GB*   | Khả dụng      |
+| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M tham số)          | —          | *Sắp ra mắt*  |
+| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M tham số)    | —          | *Sắp ra mắt*  |
+
+* Mỗi repository trên Hub đóng gói cả hai biến thể **sentence** (câu trần thuật) và **question** (câu hỏi) trong một gói mô hình duy nhất.
+
 ## Mở rộng (Extensions)
 
 ### Sinh câu đồng nghĩa Few-shot với LLM (Fewshot Paraphrase Generation [LLM])
@@ -226,17 +237,6 @@ result = generator.paraphrase(
 print(result)
 # >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
 ```
-
-## Danh sách mô hình (Model list)
-
-| Model                                  | Kiến trúc                        | Kích thước | Trạng thái    |
-| :------------------------------------- | :------------------------------- | :--------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M tham số)          | 4.19 GB*   | Khả dụng      |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M tham số)    | 1.64 GB*   | Khả dụng      |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M tham số)          | —          | *Sắp ra mắt*  |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M tham số)    | —          | *Sắp ra mắt*  |
-
-* Mỗi repository trên Hub đóng gói cả hai biến thể **sentence** (câu trần thuật) và **question** (câu hỏi) trong một gói mô hình duy nhất.
 
 ## Tại sao nên sử dụng VietQuill?
 

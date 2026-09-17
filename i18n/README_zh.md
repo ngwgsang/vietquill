@@ -39,9 +39,9 @@
 
 
 
-VietQuill 是一个用于可控越南语复述生成（Paraphrase Generation）与质量评估（Quality Estimation）的统一框架，同时支持学术研究与生产部署。
+这是我们发表于 MAPR 2026 的研究论文《VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language》的官方开源代码。
 
-该工具集成了数据集、生成方法、数据增强技术以及评估指标于统一的接口中，使研究人员和开发者能够以极低的代码成本开发、评测和部署复述系统。VietQuill 旨在作为越南语复述生成生态系统的坚实基础，推动可复现研究、标准化评测，并促进高质量复述技术在教育、信息检索、问答系统、对话式 AI 等自然语言处理领域的应用。
+我们提供了一个用于可控越南语复述生成（Paraphrase Generation）与质量评估（Quality Estimation）的统一框架，将数据集、生成方法、数据增强技术以及评估指标集成到统一的接口中。VietQuill 旨在支持可复现的研究，并促进高质量越南语复述系统的实际应用开发。
 
 我们致力于通过使前沿算法（State-of-the-Art）易于获取、高度可定制以及易于集成到实际业务流程中，推动越南语自然语言处理的发展。
 
@@ -179,6 +179,17 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
+## 模型列表 (Model List)
+
+| 模型                                  | 架构                             | 模型大小 | 状态          |
+| :------------------------------------ | :------------------------------- | :------- | :------------ |
+| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M 参数)             | 4.19 GB* | 现已可用      |
+| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M 参数)       | 1.64 GB* | 现已可用      |
+| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M 参数)             | —        | *即将推出*    |
+| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M 参数)       | —        | *即将推出*    |
+
+* 每个 Hub 仓库均将 **sentence**（陈述句）与 **question**（疑问句）变体整合在单个模型包中。
+
 ## 扩展功能 (Extensions)
 
 ### 基于大语言模型的少样本复述生成 (Fewshot Paraphrase Generation [LLM])
@@ -226,17 +237,6 @@ result = generator.paraphrase(
 print(result)
 # >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
 ```
-
-## 模型列表 (Model List)
-
-| 模型                                  | 架构                             | 模型大小 | 状态          |
-| :------------------------------------ | :------------------------------- | :------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M 参数)             | 4.19 GB* | 现已可用      |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M 参数)       | 1.64 GB* | 现已可用      |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M 参数)             | —        | *即将推出*    |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M 参数)       | —        | *即将推出*    |
-
-* 每个 Hub 仓库均将 **sentence**（陈述句）与 **question**（疑问句）变体整合在单个模型包中。
 
 ## 为什么选择 VietQuill？
 

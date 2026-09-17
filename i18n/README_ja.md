@@ -39,9 +39,9 @@
 
 
 
-VietQuill は、品質制御可能なベトナム語言い換え生成（Paraphrase Generation）および品質推定（Quality Estimation）のための統合フレームワークであり、学術研究と実運用（プロダクション）環境の双方をサポートしています。
+本リポジトリは、MAPR 2026 に採択された研究論文『VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language』の公式ソースコードです。
 
-データセット、生成手法、データ拡張技術、評価指標を一貫したインターフェースに集約し、研究者やエンジニアが最小限の労力で言い換えシステムの開発、ベンチマーク、展開を行えるように設計されています。VietQuill は、ベトナム語言い換えエコシステムの共通基盤として、再現性のある研究、標準化された評価、および教育、情報検索、質問応答、対話型 AI などの自然言語処理タスクに向けた高品質な言い換え技術の発展を促進することを目指しています。
+データセット、生成手法、データ拡張技術、評価指標を一貫したインターフェースに統合し、品質制御可能なベトナム語言い換え生成（Paraphrase Generation）および品質推定（Quality Estimation）のための統一フレームワークを提供します。VietQuill は、再現性のある研究と実用的な高品質ベトナム語言い換えシステムの開発を支援するために設計されています。
 
 私たちは、最先端（State-of-the-Art）の手法を扱いやすく、カスタマイズ可能で、実際のワークフローに容易に統合できるようにすることで、ベトナム語自然言語処理の発展に貢献してまいります。
 
@@ -179,6 +179,17 @@ print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
 ```
 
+## モデル一覧 (Model List)
+
+| モデル                                 | アーキテクチャ                   | サイズ   | ステータス    |
+| :------------------------------------- | :------------------------------- | :------- | :------------ |
+| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M パラメータ)       | 4.19 GB* | 利用可能      |
+| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M パラメータ) | 1.64 GB* | 利用可能      |
+| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M パラメータ)       | —        | *近日公開*    |
+| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M パラメータ) | —        | *近日公開*    |
+
+* 各 Hub リポジトリには、**sentence**（平叙文）と **question**（疑問文）の両バリアントが単一パッケージとしてバンドルされています。
+
 ## 拡張機能 (Extensions)
 
 ### LLMを活用したFew-shot言い換え生成 (Fewshot Paraphrase Generation [LLM])
@@ -226,17 +237,6 @@ result = generator.paraphrase(
 print(result)
 # >>> "Các thuật toán này hoạt động với hiệu suất không tối ưu, cần phải điều chỉnh mã nguồn."
 ```
-
-## モデル一覧 (Model List)
-
-| モデル                                 | アーキテクチャ                   | サイズ   | ステータス    |
-| :------------------------------------- | :------------------------------- | :------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M パラメータ)       | 4.19 GB* | 利用可能      |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M パラメータ) | 1.64 GB* | 利用可能      |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M パラメータ)       | —        | *近日公開*    |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M パラメータ) | —        | *近日公開*    |
-
-* 各 Hub リポジトリには、**sentence**（平叙文）と **question**（疑問文）の両バリアントが単一パッケージとしてバンドルされています。
 
 ## なぜ VietQuill を選ぶのか？
 
