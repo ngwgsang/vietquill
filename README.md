@@ -8,18 +8,18 @@
 <h2 align="center">VietQuill: A Toolkit for Quality-Controlled Vietnamese Paraphrase Generation</h1>
 <p align="center">
   <a href="https://ngwgsang.github.io/vietquill/">
-    <img src="https://img.shields.io/badge/Documentation-VietQuill-4f46e5?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="VietQuill Documentation">
+    <img src="https://img.shields.io/badge/Documentation-VietQuill-D91F26?style=for-the-badge&logo=materialformkdocs&logoColor=white" alt="VietQuill Documentation">
   </a>
 </p>
 
 
-![PyPI](https://img.shields.io/pypi/v/vietquill?color=EAB308)
-![Python](https://img.shields.io/pypi/pyversions/vietquill?color=EAB308)
-![License](https://img.shields.io/github/license/ngwgsang/vietquill?color=525252)
+![PyPI](https://img.shields.io/pypi/v/vietquill?color=B7181F)
+![Python](https://img.shields.io/pypi/pyversions/vietquill?color=B7181F)
+![License](https://img.shields.io/github/license/ngwgsang/vietquill?color=B7181F)
 
-![Vietnamese](https://img.shields.io/badge/Language-Vietnamese-525252)
-![Task](https://img.shields.io/badge/Task-Paraphrase%20Generation-EAB308)
-[![Models](https://img.shields.io/badge/🤗-Models-EAB308)](https://huggingface.co/collections/ngwgsang/vietquill)
+![Vietnamese](https://img.shields.io/badge/Language-Vietnamese-B7181F)
+![Task](https://img.shields.io/badge/Task-Paraphrase%20Generation-B7181F)
+[![Models](https://img.shields.io/badge/🤗-Models-B7181F)](https://huggingface.co/collections/ngwgsang/vietquill)
 
 English | [Tiếng Việt](i18n/README_vi.md)
 
