@@ -85,5 +85,4 @@ nav:
       - Generation: api/generation.md
       - Evaluation: api/evaluation.md
       - Datasets: api/data.md
-  - Citation: citation.md
   - Sponsors: sponsors.md
