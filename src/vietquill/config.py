@@ -6,7 +6,6 @@ This file contains the default settings.
 MODELS = {
     "paraphraser": {
         "hub_id": "ngwgsang/vietquill-vit5-base-tsubaki",
-        "uncontrol_hub_id": "ngwgsang/vit5-base-visp-s1",
     },
     "estimators": {
         "hub_id": "ngwgsang/vietquill-velectra-estimator-tsubaki",
