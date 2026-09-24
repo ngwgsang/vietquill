@@ -65,12 +65,12 @@ pip install vietquill
 
 ### 言い換え生成 (Paraphrase Generate)
 
-`AutoModelForControllableParaphraseGeneration` を使用して、語彙（lexical）、意味（semantic）、構文（syntactic）の各属性を詳細に制御します。
+`EnsembleModelForParaphraseGeneration` を使用して、語彙（lexical）、意味（semantic）、構文（syntactic）の各属性を詳細に制御します。
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 result = model.paraphrase("Hôm nay trời đẹp quá, mình muốn đi dạo công viên.")
 print(result)
 # >>> ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']
@@ -79,9 +79,9 @@ print(result)
 `num_candidates` パラメータを使用して、複数の言い換え候補文を生成します：
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 result = model.paraphrase("Thủ đô của nước Pháp là thành phố nào?", num_candidates=3)
 print(result)
 # >>> ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?', 'Nước Pháp có thủ đô là thành phố tên là gì?']
@@ -90,9 +90,9 @@ print(result)
 複数の文があり、GPU 加速の恩恵を受けたい場合は、`paraphrases` を使用してバッチ生成を行います：
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentences = [
     "Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
     "Thủ đô của nước Pháp là thành phố nào?",
@@ -108,9 +108,9 @@ print(results)
 `lexical`、`syntactic`、`semantic` パラメータを使用して、言い換えの品質と多様性を調整します：
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Tôi rất thích ăn phở vào buổi sáng và uống một cốc cà phê nóng."
 
 # 指定した制御レベルで生成
@@ -122,9 +122,9 @@ print(paraphrase)
 また、`ParaphraseStyle` 列挙型（または文字列）を使用して、事前定義されたスタイルプリセットを指定することも可能です：
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+from vietquill import EnsembleModelForParaphraseGeneration, ParaphraseStyle
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"
 
 # CONSERVATIVE（保守的：意味を厳密に保持し、語彙を微修正）
@@ -168,12 +168,12 @@ print(result)
 ```
 
 ```python
-from vietquill import AutoModelForParaphraseQualityEstimation
+from vietquill import EnsembleModelForParaphraseQualityEstimation
 
 original = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
 paraphrase = "Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."
 
-estimator = AutoModelForParaphraseQualityEstimation()
+estimator = EnsembleModelForParaphraseQualityEstimation()
 result = estimator.estimate(original, paraphrase)
 print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
@@ -181,14 +181,57 @@ print(result)
 
 ## モデル一覧 (Model List)
 
-| モデル                                 | アーキテクチャ                   | サイズ   | ステータス    |
-| :------------------------------------- | :------------------------------- | :------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M パラメータ)       | 4.19 GB* | 利用可能      |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M パラメータ) | 1.64 GB* | 利用可能      |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M パラメータ)       | —        | *近日公開*    |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M パラメータ) | —        | *近日公開*    |
+VietQuill は2種類のモデルローダークラスをサポートしています：
 
-* 各 Hub リポジトリには、**sentence**（平叙文）と **question**（疑問文）の両バリアントが単一パッケージとしてバンドルされています。
+- **`EnsembleModel`**：`sentence`（平叙文）と `question`（疑問文）モデル間での自動ルーティング機能を備え、複数チェックポイントをロードします。
+- **`AutoModel`**：ルーティングを行わず、リポジトリのルートから単一のチェックポイントを直接ロードします。
+
+### 公式チェックポイント (Official Checkpoints)
+
+[Hugging Face](https://huggingface.co/collections/ngwgsang/vietquill) の公式チェックポイントは、学習データに基づき2つのシリーズに分類されます：
+
+#### Tsubaki シリーズ
+公開研究データセット（平叙文は **ViSP**、疑問文は **ViQP**）で学習。標準的な文の言い換え、研究ベンチマーク、疑問文の多様化に最適です：
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+
+#### Ume シリーズ
+より長く、構文が複雑で多様な文で構成された **10万件の合成データ（Synthesis）** で学習（文用: [`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence)、質問用: [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question)）：
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-ume) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+
+\* *各公式アンサンブル Hub リポジトリには、**sentence** と **question** サブフォルダの両方が単一パッケージとしてバンドルされています。*
+
+#### クイック比較の例 (Quick Comparison Example)
+
+```python
+# --- 言い換え生成 (Paraphrase Generation) ---
+# 1. アンサンブル生成器 (sentence と question のチェックポイントをバンドル)
+from vietquill import EnsembleModelForParaphraseGeneration
+gen_model = EnsembleModelForParaphraseGeneration("ngwgsang/vietquill-vit5-base-tsubaki")
+
+# 2. 標準生成器 (リポジトリルートから直接ロード)
+from vietquill import AutoModelForParaphraseGeneration
+gen_model = AutoModelForParaphraseGeneration("ngwgsang/vit5-base-visp-s1")
+
+# --- 品質評価 (Quality Estimation) ---
+# 1. アンサンブル品質評価器 (sentence と question のチェックポイントをバンドル)
+from vietquill import EnsembleModelForParaphraseQualityEstimation
+estimator = EnsembleModelForParaphraseQualityEstimation("ngwgsang/vietquill-velectra-estimator-tsubaki")
+
+# 2. 標準品質評価器 (リポジトリルートから直接ロード)
+from vietquill import AutoModelForQualityEstimation
+estimator = AutoModelForQualityEstimation("your-username/your-estimator-model")
+```
 
 ## 拡張機能 (Extensions)
 

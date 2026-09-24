@@ -4,13 +4,13 @@ Get started with VietQuill in less than 5 minutes!
 
 ### 1. Single Sentence Paraphrasing
 
-The primary interface for paraphrase generation is `AutoModelForControllableParaphraseGeneration`.
+The primary interface for paraphrase generation is `EnsembleModelForParaphraseGeneration`.
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
 # Initializes model and downloads weights from Hugging Face if not cached
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 
 text = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
 results = model.paraphrase(text)
@@ -45,9 +45,9 @@ Output:
 VietQuill provides predefined generation styles via `ParaphraseStyle`:
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+from vietquill import EnsembleModelForParaphraseGeneration, ParaphraseStyle
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"
 
 # Conservative: High semantic similarity, low lexical modification
@@ -84,9 +84,9 @@ print(result)
 Evaluate similarity and divergence between original and candidate sentences:
 
 ```python
-from vietquill import AutoModelForParaphraseQualityEstimation
+from vietquill import EnsembleModelForParaphraseQualityEstimation
 
-estimator = AutoModelForParaphraseQualityEstimation()
+estimator = EnsembleModelForParaphraseQualityEstimation()
 
 original = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
 paraphrase = "Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."

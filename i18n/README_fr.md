@@ -65,12 +65,12 @@ pip install vietquill
 
 ### Génération de paraphrases (Paraphrase Generate)
 
-Utilisez `AutoModelForControllableParaphraseGeneration` pour un contrôle précis des attributs lexicaux, sémantiques et syntaxiques :
+Utilisez `EnsembleModelForParaphraseGeneration` pour un contrôle précis des attributs lexicaux, sémantiques et syntaxiques :
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 result = model.paraphrase("Hôm nay trời đẹp quá, mình muốn đi dạo công viên.")
 print(result)
 # >>> ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']
@@ -79,9 +79,9 @@ print(result)
 Générez plusieurs candidats de paraphrase via le paramètre `num_candidates` :
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 result = model.paraphrase("Thủ đô của nước Pháp là thành phố nào?", num_candidates=3)
 print(result)
 # >>> ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?', 'Nước Pháp có thủ đô là thành phố tên là gì?']
@@ -90,9 +90,9 @@ print(result)
 Pour traiter un grand nombre de phrases et tirer parti de l'accélération GPU, utilisez `paraphrases` pour une génération par lots (*batch*) :
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentences = [
     "Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
     "Thủ đô của nước Pháp là thành phố nào?",
@@ -108,9 +108,9 @@ print(results)
 Utilisez `lexical`, `syntactic` et `semantic` pour ajuster la qualité et la diversité de la reformulation :
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Tôi rất thích ăn phở vào buổi sáng và uống một cốc cà phê nóng."
 
 # Génération avec des niveaux de contraintes spécifiques
@@ -122,9 +122,9 @@ print(paraphrase)
 Vous pouvez également utiliser des styles prédéfinis via l'énumération `ParaphraseStyle` (ou en passant le nom du style sous forme de chaîne de caractères) :
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+from vietquill import EnsembleModelForParaphraseGeneration, ParaphraseStyle
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"
 
 # Style CONSERVATIVE (préservation sémantique maximale, légères retouches lexicales)
@@ -168,12 +168,12 @@ print(result)
 ```
 
 ```python
-from vietquill import AutoModelForParaphraseQualityEstimation
+from vietquill import EnsembleModelForParaphraseQualityEstimation
 
 original = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
 paraphrase = "Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."
 
-estimator = AutoModelForParaphraseQualityEstimation()
+estimator = EnsembleModelForParaphraseQualityEstimation()
 result = estimator.estimate(original, paraphrase)
 print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
@@ -181,14 +181,57 @@ print(result)
 
 ## Liste des modèles (Model list)
 
-| Modèle                                 | Architecture                     | Taille   | Statut        |
-| :------------------------------------- | :------------------------------- | :------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M paramètres)       | 4.19 GB* | Disponible    |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M paramètres) | 1.64 GB* | Disponible    |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M parameters)       | —        | *Bientôt disponible* |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M paramètres) | —        | *Bientôt disponible* |
+VietQuill prend en charge deux types de chargeurs de modèles :
 
-* Chaque dépôt Hub regroupe les deux variantes **sentence** (phrases déclaratives) et **question** (questions) dans un paquet unique.
+- **`EnsembleModel`** : Charge plusieurs points de contrôle avec routage automatique entre les modèles `sentence` et `question`.
+- **`AutoModel`** : Charge un point de contrôle unique directement depuis la racine du dépôt sans routage.
+
+### Points de contrôle officiels (Official Checkpoints)
+
+Les points de contrôle officiels sur [Hugging Face](https://huggingface.co/collections/ngwgsang/vietquill) sont répartis en deux séries selon leurs données d'entraînement :
+
+#### Série Tsubaki
+Entraînée sur des corpus de recherche publics (**ViSP** pour les phrases déclaratives, **ViQP** pour les questions). Idéale pour la reformulation standard et les benchmarks :
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+
+#### Série Ume
+Entraînée sur **100K paires de données synthétiques** comportant des phrases plus longues, plus denses et plus complexes ([`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence) pour les phrases, [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question) pour les questions) :
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-ume) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+
+\* *Chaque dépôt ensemble officiel regroupe les sous-dossiers **sentence** et **question** dans un paquet unique.*
+
+#### Exemple de comparaison rapide (Quick Comparison Example)
+
+```python
+# --- Génération de paraphrases (Paraphrase Generation) ---
+# 1. Générateur Ensemble (Regroupe les checkpoints sentence & question)
+from vietquill import EnsembleModelForParaphraseGeneration
+gen_model = EnsembleModelForParaphraseGeneration("ngwgsang/vietquill-vit5-base-tsubaki")
+
+# 2. Générateur Standard (Charge directement depuis la racine du repo)
+from vietquill import AutoModelForParaphraseGeneration
+gen_model = AutoModelForParaphraseGeneration("ngwgsang/vit5-base-visp-s1")
+
+# --- Estimation de la qualité (Quality Estimation) ---
+# 1. Estimateur de qualité Ensemble (Regroupe les checkpoints sentence & question)
+from vietquill import EnsembleModelForParaphraseQualityEstimation
+estimator = EnsembleModelForParaphraseQualityEstimation("ngwgsang/vietquill-velectra-estimator-tsubaki")
+
+# 2. Estimateur de qualité Standard (Charge directement depuis la racine du repo)
+from vietquill import AutoModelForQualityEstimation
+estimator = AutoModelForQualityEstimation("your-username/your-estimator-model")
+```
 
 ## Extensions
 

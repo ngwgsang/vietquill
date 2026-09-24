@@ -65,12 +65,12 @@ pip install vietquill
 
 ### Sinh câu đồng nghĩa (Paraphrase Generate)
 
-Sử dụng `AutoModelForControllableParaphraseGeneration` để điều khiển chi tiết các thuộc tính từ vựng (lexical), ngữ nghĩa (semantic) và cú pháp (syntactic).
+Sử dụng `EnsembleModelForParaphraseGeneration` để điều khiển chi tiết các thuộc tính từ vựng (lexical), ngữ nghĩa (semantic) và cú pháp (syntactic).
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 result = model.paraphrase("Hôm nay trời đẹp quá, mình muốn đi dạo công viên.")
 print(result)
 # >>> ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']
@@ -79,9 +79,9 @@ print(result)
 Tạo nhiều câu đồng nghĩa ứng viên bằng cách sử dụng tham số `num_candidates`.
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 result = model.paraphrase("Thủ đô của nước Pháp là thành phố nào?", num_candidates=3)
 print(result)
 # >>> ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?', 'Nước Pháp có thủ đô là thành phố tên là gì?']
@@ -90,9 +90,9 @@ print(result)
 Nếu bạn có nhiều câu và muốn tận dụng sức mạnh tăng tốc của GPU, bạn nên dùng `paraphrases` để sinh câu theo lô (batch):
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentences = [
     "Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
     "Thủ đô của nước Pháp là thành phố nào?",
@@ -108,9 +108,9 @@ print(results)
 Sử dụng `lexical`, `syntactic`, `semantic` để tinh chỉnh chất lượng và tính đa dạng của câu đồng nghĩa.
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Tôi rất thích ăn phở vào buổi sáng và uống một cốc cà phê nóng."
 
 # Sinh câu với các mức kiểm soát cụ thể
@@ -122,9 +122,9 @@ print(paraphrase)
 Ngoài ra, bạn có thể sử dụng các thiết lập phong cách định sẵn (style presets) thông qua enum `ParaphraseStyle` (hoặc truyền tên phong cách dưới dạng chuỗi):
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+from vietquill import EnsembleModelForParaphraseGeneration, ParaphraseStyle
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"
 
 # Sinh câu với CONSERVATIVE (Bảo toàn)
@@ -168,12 +168,12 @@ print(result)
 ```
 
 ```python
-from vietquill import AutoModelForParaphraseQualityEstimation
+from vietquill import EnsembleModelForParaphraseQualityEstimation
 
 original = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
 paraphrase = "Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."
 
-estimator = AutoModelForParaphraseQualityEstimation()
+estimator = EnsembleModelForParaphraseQualityEstimation()
 result = estimator.estimate(original, paraphrase)
 print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
@@ -181,14 +181,57 @@ print(result)
 
 ## Danh sách mô hình (Model list)
 
-| Model                                  | Kiến trúc                        | Kích thước | Trạng thái    |
-| :------------------------------------- | :------------------------------- | :--------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M tham số)          | 4.19 GB*   | Khả dụng      |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M tham số)    | 1.64 GB*   | Khả dụng      |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M tham số)          | —          | *Sắp ra mắt*  |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M tham số)    | —          | *Sắp ra mắt*  |
+VietQuill hỗ trợ hai loại bộ tải mô hình (model loaders):
 
-* Mỗi repository trên Hub đóng gói cả hai biến thể **sentence** (câu trần thuật) và **question** (câu hỏi) trong một gói mô hình duy nhất.
+- **`EnsembleModel`**: Tải nhiều checkpoint với khả năng tự động định tuyến giữa các mô hình `sentence` (câu trần thuật) và `question` (câu hỏi).
+- **`AutoModel`**: Tải một checkpoint duy nhất trực tiếp từ thư mục gốc của repository mà không cần định tuyến.
+
+### Official Checkpoints
+
+Các checkpoint chính thức trên [Hugging Face](https://huggingface.co/collections/ngwgsang/vietquill) được chia thành hai dòng mô hình dựa trên dữ liệu huấn luyện:
+
+#### Dòng Tsubaki (Tsubaki Series)
+Được huấn luyện trên các bộ dữ liệu nghiên cứu công khai (**ViSP** cho câu trần thuật, **ViQP** cho câu hỏi). Lý tưởng cho việc viết lại câu thông thường, nghiên cứu và benchmark:
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+
+#### Dòng Ume (Ume Series)
+Được huấn luyện trên **100K dữ liệu tổng hợp (synthesis)** gồm các câu dài, cấu trúc ngữ pháp phức tạp và phong phú hơn ([`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence) cho câu trần thuật, [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question) cho câu hỏi):
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-ume) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+
+\* *Mỗi repository ensemble chính thức trên Hub đóng gói cả hai thư mục con **sentence** và **question** trong cùng một gói.*
+
+#### Ví dụ so sánh nhanh (Quick Comparison Example)
+
+```python
+# --- Sinh câu đồng nghĩa (Paraphrase Generation) ---
+# 1. Ensemble Generator (Đóng gói checkpoint sentence & question)
+from vietquill import EnsembleModelForParaphraseGeneration
+gen_model = EnsembleModelForParaphraseGeneration("ngwgsang/vietquill-vit5-base-tsubaki")
+
+# 2. Standard Generator (Tải trực tiếp từ root của repo)
+from vietquill import AutoModelForParaphraseGeneration
+gen_model = AutoModelForParaphraseGeneration("ngwgsang/vit5-base-visp-s1")
+
+# --- Đánh giá chất lượng (Quality Estimation) ---
+# 1. Ensemble Quality Estimator (Đóng gói checkpoint sentence & question)
+from vietquill import EnsembleModelForParaphraseQualityEstimation
+estimator = EnsembleModelForParaphraseQualityEstimation("ngwgsang/vietquill-velectra-estimator-tsubaki")
+
+# 2. Standard Quality Estimator (Tải trực tiếp từ root của repo)
+from vietquill import AutoModelForQualityEstimation
+estimator = AutoModelForQualityEstimation("your-username/your-estimator-model")
+```
 
 ## Mở rộng (Extensions)
 

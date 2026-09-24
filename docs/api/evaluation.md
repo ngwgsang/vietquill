@@ -2,7 +2,13 @@
 
 ### Quality Estimators
 
-::: vietquill.evaluation.estimators.neural_est.AutoModelForParaphraseQualityEstimation
+::: vietquill.evaluation.estimators.neural_est.EnsembleModelForParaphraseQualityEstimation
+    options:
+      heading_level: 4
+      show_root_heading: true
+      show_source: true
+
+::: vietquill.evaluation.estimators.neural_est.AutoModelForQualityEstimation
     options:
       heading_level: 4
       show_root_heading: true

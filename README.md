@@ -65,12 +65,12 @@ pip install vietquill
 
 ### Paraphrase Generate
 
-Using `AutoModelForControllableParaphraseGeneration` for fine-grained control over lexical, semantic, and syntactic attributes.
+Using `EnsembleModelForParaphraseGeneration` for fine-grained control over lexical, semantic, and syntactic attributes.
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 result = model.paraphrase("Hôm nay trời đẹp quá, mình muốn đi dạo công viên.")
 print(result)
 # >>> ['Hôm nay trời đẹp, tôi muốn đi dạo công viên.']
@@ -79,9 +79,9 @@ print(result)
 Generate multiple paraphrase candidates using the `num_candidates` parameter.
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 result = model.paraphrase("Thủ đô của nước Pháp là thành phố nào?", num_candidates=3)
 print(result)
 # >>> ['Nước Pháp có thủ đô là thành phố nào?', 'Nước Pháp có thủ đô là thành phố tên gì?', 'Nước Pháp có thủ đô là thành phố tên là gì?']
@@ -90,9 +90,9 @@ print(result)
 If you have multiple sentences and want to leverage the power of GPU acceleration, you should use `paraphrases` for batch generation:
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentences = [
     "Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
     "Thủ đô của nước Pháp là thành phố nào?",
@@ -108,9 +108,9 @@ print(results)
 Using `lexical`, `syntactic`, `semantic` for tunning paraphrase quality and diversity.
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Tôi rất thích ăn phở vào buổi sáng và uống một cốc cà phê nóng."
 
 # Generate with specific control levels
@@ -122,9 +122,9 @@ print(paraphrase)
 Alternatively, you can use predefined style presets using the `ParaphraseStyle` enum (or pass the style name as a string):
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+from vietquill import EnsembleModelForParaphraseGeneration, ParaphraseStyle
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 sentence = "Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"
 
 # Generate with CONSERVATIVE
@@ -168,12 +168,12 @@ print(result)
 ```
 
 ```python
-from vietquill import AutoModelForParaphraseQualityEstimation
+from vietquill import EnsembleModelForParaphraseQualityEstimation
 
 original = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
 paraphrase = "Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."
 
-estimator = AutoModelForParaphraseQualityEstimation()
+estimator = EnsembleModelForParaphraseQualityEstimation()
 result = estimator.estimate(original, paraphrase)
 print(result)
 # >>> {'lexical_score': 24.48, 'syntactic_score': 78.26, 'semantic_score': 64.2}
@@ -181,14 +181,36 @@ print(result)
 
 ## Model list
 
-| Model                                  | Architecture                     | Size     | Status        |
-| :------------------------------------- | :------------------------------- | :------- | :------------ |
-| `ngwgsang/vietquill-vit5-base-tsubaki`          | T5-base (~440M parameters)       | 4.19 GB* | Available     |
-| `ngwgsang/vietquill-velectra-estimator-tsubaki` | vELECTRA-base (~220M parameters) | 1.64 GB* | Available     |
-| `ngwgsang/vietquill-vit5-base-nelke`            | T5-base (~440M parameters)       | —        | *Coming Soon* |
-| `ngwgsang/vietquill-velectra-estimator-nelke`   | vELECTRA-base (~220M parameters) | —        | *Coming Soon* |
+VietQuill supports two types of model loaders:
 
-* Each Hub repository bundles both **sentence** and **question** variants in a single model package.
+- **`EnsembleModel`**: Loads multiple checkpoints with automatic routing between `sentence` and `question` models.
+- **`AutoModel`**: Loads a single checkpoint directly from the repository root without routing.
+
+### Official Checkpoints
+
+The official checkpoints on [Hugging Face](https://huggingface.co/collections/ngwgsang/vietquill) are categorized into two series based on training data:
+
+#### Tsubaki Series
+Trained on public research datasets (**ViSP** for sentences, **ViQP** for questions). Ideal for standard sentence rewriting, research benchmarks, and question variations:
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+
+#### Ume Series
+Trained on **100K synthesized data** featuring longer, more structurally complex, and diverse sentences ([`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence) for sentences, [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question) for questions):
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-ume) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+
+\* *Each official ensemble Hub repository bundles both **sentence** and **question** subfolders in a single package.*
+> **Note:** For more information about each model, please refer to [Models & Checkpoints](https://ngwgsang.github.io/vietquill/models/).
 
 ## Extensions
 

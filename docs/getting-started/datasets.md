@@ -42,6 +42,23 @@ print(visp_data)
 
 ---
 
+#### 3. VietQuill Synthesis 100K Datasets
+- **Sentence Dataset**: [`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence)
+- **Question Dataset**: [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question)
+- **Scale**: 100,000 synthetic pairs with multi-level quality control dimensions, featuring longer and structurally complex Vietnamese sentences.
+- **Loading via Hugging Face `datasets`**:
+```python
+from datasets import load_dataset
+
+# Load sentence synthesis dataset
+sentence_dataset = load_dataset("ngwgsang/vietquill-qcpg-100k-synthesis-sentence")
+
+# Load question synthesis dataset
+question_dataset = load_dataset("ngwgsang/vietquill-qcpg-100k-synthesis-question")
+```
+
+---
+
 ### Schema & Structure
 
 When using `.load_pairs()`, items are formatted with `vietquill.data.schema.ParaphraseSchema`:

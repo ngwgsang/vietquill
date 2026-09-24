@@ -1,6 +1,6 @@
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-paraphraser = AutoModelForControllableParaphraseGeneration()
+paraphraser = EnsembleModelForParaphraseGeneration()
 
 sentences = [
     # Câu trần thuật

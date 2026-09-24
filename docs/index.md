@@ -39,10 +39,10 @@
 
 === "Paraphrase Generation"
     ```python
-    from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+    from vietquill import EnsembleModelForParaphraseGeneration, ParaphraseStyle
 
     # Load model from Hugging Face Hub
-    model = AutoModelForControllableParaphraseGeneration()
+    model = EnsembleModelForParaphraseGeneration()
 
     # Generate with balanced style preset
     result = model.paraphrase(
@@ -57,9 +57,9 @@
 
 === "Quality Estimation"
     ```python
-    from vietquill import AutoModelForParaphraseQualityEstimation
+    from vietquill import EnsembleModelForParaphraseQualityEstimation
 
-    estimator = AutoModelForParaphraseQualityEstimation()
+    estimator = EnsembleModelForParaphraseQualityEstimation()
     scores = estimator.estimate(
         original="Hôm nay trời đẹp quá, mình muốn đi dạo công viên.",
         paraphrase="Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."

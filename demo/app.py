@@ -9,7 +9,7 @@ import torch
 import uvicorn
 
 # Sử dụng trực tiếp thư viện vietquill
-from vietquill import AutoModelForControllableParaphraseGeneration, AutoModelForParaphraseQualityEstimation
+from vietquill import EnsembleModelForParaphraseGeneration, EnsembleModelForParaphraseQualityEstimation
 from vietquill.evaluation.metrics.bleu_metric import BLEUMetric
 from vietquill.evaluation.metrics.bertscore_metric import BERTScoreMetric
 from vietquill.evaluation.metrics.jaccard_metric import JaccardMetric
@@ -73,12 +73,12 @@ async def startup_event():
     print("="*50)
 
     try:
-        print("[*] Đang khởi tạo Generator (AutoModelForControllableParaphraseGeneration)...")
-        model = AutoModelForControllableParaphraseGeneration()
+        print("[*] Đang khởi tạo Generator (EnsembleModelForParaphraseGeneration)...")
+        model = EnsembleModelForParaphraseGeneration()
         print("[OK] Hoàn tất Generator.")
         
-        print("[*] Đang khởi tạo Estimator (AutoModelForParaphraseQualityEstimation)...")
-        estimator = AutoModelForParaphraseQualityEstimation()
+        print("[*] Đang khởi tạo Estimator (EnsembleModelForParaphraseQualityEstimation)...")
+        estimator = EnsembleModelForParaphraseQualityEstimation()
         print("[OK] Hoàn tất Estimator.")
 
         print("[*] Đang khởi tạo Dashboard Evaluator...")

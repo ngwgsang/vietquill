@@ -27,9 +27,9 @@ SEM_<semantic> SYN_<syntactic> LEX_<lexical> : <your_text>
 #### 1. Single Text Paraphrasing: `paraphrase`
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration
+from vietquill import EnsembleModelForParaphraseGeneration
 
-model = AutoModelForControllableParaphraseGeneration(device="cuda")
+model = EnsembleModelForParaphraseGeneration(device="cuda")
 
 text = "Chính phủ đang triển khai nhiều chính sách hỗ trợ doanh nghiệp nhỏ và vừa."
 
@@ -84,9 +84,9 @@ Instead of manually tuning percentages, you can use `ParaphraseStyle`:
 | `ParaphraseStyle.DIVERSE` | 40 | 60 | 85 | Data augmentation, creative rewriting |
 
 ```python
-from vietquill import AutoModelForControllableParaphraseGeneration, ParaphraseStyle
+from vietquill import EnsembleModelForParaphraseGeneration, ParaphraseStyle
 
-model = AutoModelForControllableParaphraseGeneration()
+model = EnsembleModelForParaphraseGeneration()
 
 text = "Dữ liệu lớn đóng vai trò then chốt trong chuyển đổi số."
 
@@ -106,3 +106,27 @@ diverse = model.paraphrase(text, style=ParaphraseStyle.DIVERSE)
 - `no_repeat_ngram_size` (int): Prevent repetition of n-grams (default: 3).
 - `temperature` (float): Sampling temperature (if `do_sample=True`).
 - `top_p` (float): Nucleus sampling cutoff.
+
+---
+
+### Single-Model Paraphrasing: `AutoModelForParaphraseGeneration`
+
+If you are loading a standalone single checkpoint from Hugging Face Hub or a local path without sentence/question routing, use `AutoModelForParaphraseGeneration`:
+
+```python
+from vietquill import AutoModelForParaphraseGeneration
+
+# Loads directly from repository root
+model = AutoModelForParaphraseGeneration(
+    hub_id="ngwgsang/vietquill-vit5-base-sentence-tsubaki",
+    device="cuda"
+)
+
+result = model.paraphrase(
+    "Dữ liệu lớn đóng vai trò then chốt trong chuyển đổi số.",
+    lexical=70,
+    syntactic=80,
+    semantic=90
+)
+print(result)
+```

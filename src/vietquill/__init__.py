@@ -1,6 +1,7 @@
 from vietquill.generation import (
-    AutoModelForControllableParaphraseGeneration,
+    AutoModelForParaphraseGeneration,
     ControlValue,
+    EnsembleModelForParaphraseGeneration,
     FewshotModelForControllableParaphraseGeneration,
     Mimic,
     MimicControl,
@@ -8,12 +9,19 @@ from vietquill.generation import (
     ParaphraseStyle,
     VietQuillMimicParaphraseGenerator,
 )
-from vietquill.evaluation import AutoModelForParaphraseQualityEstimation
+from vietquill.evaluation import (
+    AutoModelForParaphraseQualityEstimation,
+    AutoModelForQualityEstimation,
+    EnsembleModelForParaphraseQualityEstimation,
+)
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 __all__ = [
-    "AutoModelForControllableParaphraseGeneration",
+    "AutoModelForParaphraseGeneration",
+    "EnsembleModelForParaphraseGeneration",
+    "EnsembleModelForParaphraseQualityEstimation",
+    "AutoModelForQualityEstimation",
     "AutoModelForParaphraseQualityEstimation",
     "ParaphraseStyle",
     "ControlValue",

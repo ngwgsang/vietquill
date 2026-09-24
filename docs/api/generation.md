@@ -1,6 +1,12 @@
 # Generation API Reference
 
-::: vietquill.generation.controllable_paraphraser.AutoModelForControllableParaphraseGeneration
+::: vietquill.generation.controllable_paraphraser.AutoModelForParaphraseGeneration
+    options:
+      heading_level: 3
+      show_root_heading: true
+      show_source: true
+
+::: vietquill.generation.controllable_paraphraser.EnsembleModelForParaphraseGeneration
     options:
       heading_level: 3
       show_root_heading: true

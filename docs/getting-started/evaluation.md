@@ -4,14 +4,16 @@ VietQuill provides a comprehensive suite of evaluation tools, ranging from fast 
 
 ---
 
-### Unified Neural Quality Estimation
+### Neural Quality Estimation
 
-The `AutoModelForParaphraseQualityEstimation` class uses a fine-tuned vELECTRA estimator model to simultaneously evaluate the **Lexical**, **Syntactic**, and **Semantic** scores of a paraphrase candidate relative to the source text.
+VietQuill offers two classes for neural quality estimation:
+- **`EnsembleModelForParaphraseQualityEstimation`**: Ensemble estimator leveraging specialized sub-models for declarative sentences and questions (default: `ngwgsang/vietquill-velectra-estimator-tsubaki`).
+- **`AutoModelForQualityEstimation`**: Loads a single sequence classification model directly without sentence/question routing.
 
 ```python
-from vietquill import AutoModelForParaphraseQualityEstimation
+from vietquill import EnsembleModelForParaphraseQualityEstimation
 
-estimator = AutoModelForParaphraseQualityEstimation()
+estimator = EnsembleModelForParaphraseQualityEstimation()
 
 original = "Hôm nay trời đẹp quá, mình muốn đi dạo công viên."
 paraphrase = "Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."
@@ -27,6 +29,16 @@ print(result)
     'syntactic_score': 78.26,   # Moderate syntactic divergence
     'semantic_score': 64.2      # Semantic fidelity
 }
+```
+
+For loading a single sequence classification model directly without sentence/question routing:
+
+```python
+from vietquill import AutoModelForQualityEstimation
+
+single_estimator = AutoModelForQualityEstimation("your-username/your-estimator-model")
+scores = single_estimator.estimate(original, paraphrase)
+print(scores)
 ```
 
 ---

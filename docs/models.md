@@ -6,46 +6,52 @@ VietQuill provides officially trained checkpoints published on the Hugging Face 
 
 ### Official Model Hub Collection
 
-| Model Hub ID | Base Architecture | Task | Size | Status | Description |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | ViT5-base (~440M params) | Quality-Controlled Generation | 4.19 GB | Available | Bundles both `sentence` and `question` checkpoints for controllable generation. |
-| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | vELECTRA-base (~220M params) | Quality Estimation | 1.64 GB | Available | Predicts Lexical, Syntactic, and Semantic quality scores. |
-| `ngwgsang/vietquill-vit5-base-nelke` | ViT5-base (~440M params) | Quality-Controlled Generation | — | *Coming Soon* | Next-generation controllable paraphrase generation model. |
-| `ngwgsang/vietquill-velectra-estimator-nelke` | vELECTRA-base (~220M params) | Quality Estimation | — | *Coming Soon* | Next-generation paraphrase quality estimator. |
+VietQuill models are divided into two series based on training data characteristics:
+
+#### 1. Tsubaki Series
+The **Tsubaki** series models are trained on public research datasets (**ViSP** for sentences and **ViQP** for questions). Ideal for standard sentence rewriting, research benchmarks, and question variations:
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | [`EnsembleModelForParaphraseGeneration`](api/generation.md) | 4.19 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | [`EnsembleModelForParaphraseQualityEstimation`](api/evaluation.md) | 1.64 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | [`AutoModelForParaphraseGeneration`](api/generation.md) | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | [`AutoModelForParaphraseGeneration`](api/generation.md) | 2.09 GB |
+
+\* *The ensemble Hub repository bundles both **sentence** and **question** subfolders.*
+
+#### 2. Ume Series
+The **Ume** series models are trained on **100K synthesized data** comprising longer, more structurally complex, and diverse sentence pairs (sentences: [`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence), questions: [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question)):
+
+| Model | Class | Size |
+| :--- | :--- | :--- |
+| [`ngwgsang/vietquill-vit5-base-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-ume) | [`EnsembleModelForParaphraseGeneration`](api/generation.md) | 4.19 GB* |
+| [`ngwgsang/vietquill-vit5-base-sentence-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-ume) | [`AutoModelForParaphraseGeneration`](api/generation.md) | 2.09 GB |
+| [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | [`AutoModelForParaphraseGeneration`](api/generation.md) | 2.09 GB |
+
+\* *The ensemble Hub repository bundles both **sentence** and **question** subfolders.*
 
 ---
 
 ### Model Architecture Details
 
-#### 1. Paraphrase Generator (`vietquill-vit5-base-tsubaki`)
+#### 1. Paraphrase Generator (ViT5)
+Both **Tsubaki** ([`vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki)) and **Ume** ([`vietquill-vit5-base-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-ume)) share the exact same ViT5 architecture, input representation, and subfolder layout, differing only in the training data:
+
 - **Base Architecture**: ViT5 (Vietnamese T5 pre-trained on large-scale Vietnamese corpus).
-- **Subfolders**:
-    - `sentence/`: Fine-tuned on the ViSP dataset for declarative and complex sentence rewriting.
-    - `question/`: Fine-tuned on the ViQP dataset for question variations and inquiry rephrasing.
+- **Subfolder Structure**:
+    - `sentence/`: Fine-tuned for sentence rewriting (Tsubaki: ViSP dataset; Ume: [`vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence) with longer, more complex sentences).
+    - `question/`: Fine-tuned for question rewriting (Tsubaki: ViQP dataset; Ume: [`vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question)).
 - **Input Representation**:
   ```text
   SEM_<0..100> SYN_<0..100> LEX_<0..100> : <Input Text>
   ```
 
-#### 2. Paraphrase Quality Estimator (`vietquill-velectra-estimator-tsubaki`)
+#### 2. Paraphrase Quality Estimator (vELECTRA)
+- **Model**: [`vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki)
 - **Base Architecture**: vELECTRA-base.
 - **Output Heads**: Regression heads predicting:
     1. `lexical_score`: Measures token substitution / diversity.
     2. `syntactic_score`: Measures syntactic transformation divergence.
     3. `semantic_score`: Measures meaning preservation fidelity.
 
----
-
-### Custom Model Checkpoints
-
-You can specify custom local paths or custom Hugging Face Hub IDs when instantiating the models:
-
-```python
-from vietquill import AutoModelForControllableParaphraseGeneration
-
-# Custom local checkpoint or custom Hub model
-model = AutoModelForControllableParaphraseGeneration(
-    hub_id="your-username/your-custom-vietquill-model",
-    device="cuda"
-)
-```
