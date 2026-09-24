@@ -647,6 +647,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#single-model-paraphrasing-automodelforparaphrasegeneration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-Model Paraphrasing: AutoModelForParaphraseGeneration
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1044,6 +1055,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#single-model-paraphrasing-automodelforparaphrasegeneration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Single-Model Paraphrasing: AutoModelForParaphraseGeneration
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1105,9 +1127,9 @@
 <hr />
 <h3 id="generation-methods">Generation Methods<a class="headerlink" href="#generation-methods" title="Permanent link">&para;</a></h3>
 <h4 id="1-single-text-paraphrasing-paraphrase">1. Single Text Paraphrasing: <code>paraphrase</code><a class="headerlink" href="#1-single-text-paraphrasing-paraphrase" title="Permanent link">&para;</a></h4>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnsembleModelForParaphraseGeneration</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">EnsembleModelForParaphraseGeneration</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">)</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">text</span> <span class="o">=</span> <span class="s2">"Chính phủ đang triển khai nhiều chính sách hỗ trợ doanh nghiệp nhỏ và vừa."</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
@@ -1181,9 +1203,9 @@
 </tr>
 </tbody>
 </table>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">,</span> <span class="n">ParaphraseStyle</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnsembleModelForParaphraseGeneration</span><span class="p">,</span> <span class="n">ParaphraseStyle</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">()</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">EnsembleModelForParaphraseGeneration</span><span class="p">()</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">text</span> <span class="o">=</span> <span class="s2">"Dữ liệu lớn đóng vai trò then chốt trong chuyển đổi số."</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
@@ -1201,6 +1223,25 @@
 <li><code>temperature</code> (float): Sampling temperature (if <code>do_sample=True</code>).</li>
 <li><code>top_p</code> (float): Nucleus sampling cutoff.</li>
 </ul>
+<hr />
+<h3 id="single-model-paraphrasing-automodelforparaphrasegeneration">Single-Model Paraphrasing: <code>AutoModelForParaphraseGeneration</code><a class="headerlink" href="#single-model-paraphrasing-automodelforparaphrasegeneration" title="Permanent link">&para;</a></h3>
+<p>If you are loading a standalone single checkpoint from Hugging Face Hub or a local path without sentence/question routing, use <code>AutoModelForParaphraseGeneration</code>:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForParaphraseGeneration</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Loads directly from repository root</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForParaphraseGeneration</span><span class="p">(</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">hub_id</span><span class="o">=</span><span class="s2">"ngwgsang/vietquill-vit5-base-sentence-tsubaki"</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">paraphrase</span><span class="p">(</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="s2">"Dữ liệu lớn đóng vai trò then chốt trong chuyển đổi số."</span><span class="p">,</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">lexical</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">syntactic</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">semantic</span><span class="o">=</span><span class="mi">90</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">)</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></code></pre></div>
 
 
 

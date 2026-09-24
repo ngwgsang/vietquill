@@ -1033,11 +1033,11 @@
 <h1 id="quickstart">Quickstart<a class="headerlink" href="#quickstart" title="Permanent link">&para;</a></h1>
 <p>Get started with VietQuill in less than 5 minutes!</p>
 <h3 id="1-single-sentence-paraphrasing">1. Single Sentence Paraphrasing<a class="headerlink" href="#1-single-sentence-paraphrasing" title="Permanent link">&para;</a></h3>
-<p>The primary interface for paraphrase generation is <code>AutoModelForControllableParaphraseGeneration</code>.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span>
+<p>The primary interface for paraphrase generation is <code>EnsembleModelForParaphraseGeneration</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnsembleModelForParaphraseGeneration</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Initializes model and downloads weights from Hugging Face if not cached</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">()</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">EnsembleModelForParaphraseGeneration</span><span class="p">()</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">text</span> <span class="o">=</span> <span class="s2">"Hôm nay trời đẹp quá, mình muốn đi dạo công viên."</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">paraphrase</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
@@ -1062,9 +1062,9 @@
 </span></code></pre></div></p>
 <h3 id="3-using-style-presets">3. Using Style Presets<a class="headerlink" href="#3-using-style-presets" title="Permanent link">&para;</a></h3>
 <p>VietQuill provides predefined generation styles via <code>ParaphraseStyle</code>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">,</span> <span class="n">ParaphraseStyle</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnsembleModelForParaphraseGeneration</span><span class="p">,</span> <span class="n">ParaphraseStyle</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">()</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">EnsembleModelForParaphraseGeneration</span><span class="p">()</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">sentence</span> <span class="o">=</span> <span class="s2">"Mỗi ngày, có bao nhiêu người Việt Nam sử dụng mạng xã hội?"</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Conservative: High semantic similarity, low lexical modification</span>
@@ -1094,9 +1094,9 @@
 </span></code></pre></div>
 <h3 id="5-estimating-paraphrase-quality">5. Estimating Paraphrase Quality<a class="headerlink" href="#5-estimating-paraphrase-quality" title="Permanent link">&para;</a></h3>
 <p>Evaluate similarity and divergence between original and candidate sentences:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForParaphraseQualityEstimation</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnsembleModelForParaphraseQualityEstimation</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">estimator</span> <span class="o">=</span> <span class="n">AutoModelForParaphraseQualityEstimation</span><span class="p">()</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">estimator</span> <span class="o">=</span> <span class="n">EnsembleModelForParaphraseQualityEstimation</span><span class="p">()</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">original</span> <span class="o">=</span> <span class="s2">"Hôm nay trời đẹp quá, mình muốn đi dạo công viên."</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">paraphrase</span> <span class="o">=</span> <span class="s2">"Thời tiết hôm nay thật tuyệt, tôi muốn tản bộ trong công viên."</span>

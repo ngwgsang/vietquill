@@ -700,6 +700,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Official Model Hub Collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tsubaki-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tsubaki Series
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ume-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Ume Series
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -715,10 +743,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-paraphrase-generator-vietquill-vit5-base-tsubaki" class="md-nav__link">
+  <a href="#1-paraphrase-generator-vit5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Paraphrase Generator (vietquill-vit5-base-tsubaki)
+        1. Paraphrase Generator (ViT5)
       
     </span>
   </a>
@@ -726,10 +754,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-paraphrase-quality-estimator-vietquill-velectra-estimator-tsubaki" class="md-nav__link">
+  <a href="#2-paraphrase-quality-estimator-velectra" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Paraphrase Quality Estimator (vietquill-velectra-estimator-tsubaki)
+        2. Paraphrase Quality Estimator (vELECTRA)
       
     </span>
   </a>
@@ -738,17 +766,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#custom-model-checkpoints" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Custom Model Checkpoints
-      
-    </span>
-  </a>
   
 </li>
       
@@ -967,6 +984,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Official Model Hub Collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tsubaki-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Tsubaki Series
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ume-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Ume Series
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -982,10 +1027,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-paraphrase-generator-vietquill-vit5-base-tsubaki" class="md-nav__link">
+  <a href="#1-paraphrase-generator-vit5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Paraphrase Generator (vietquill-vit5-base-tsubaki)
+        1. Paraphrase Generator (ViT5)
       
     </span>
   </a>
@@ -993,10 +1038,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-paraphrase-quality-estimator-vietquill-velectra-estimator-tsubaki" class="md-nav__link">
+  <a href="#2-paraphrase-quality-estimator-velectra" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Paraphrase Quality Estimator (vietquill-velectra-estimator-tsubaki)
+        2. Paraphrase Quality Estimator (vELECTRA)
       
     </span>
   </a>
@@ -1005,17 +1050,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#custom-model-checkpoints" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Custom Model Checkpoints
-      
-    </span>
-  </a>
   
 </li>
       
@@ -1043,68 +1077,88 @@
 <p>VietQuill provides officially trained checkpoints published on the Hugging Face Hub under the <a href="https://huggingface.co/collections/ngwgsang/vietquill"><code>ngwgsang</code></a> organization.</p>
 <hr />
 <h3 id="official-model-hub-collection">Official Model Hub Collection<a class="headerlink" href="#official-model-hub-collection" title="Permanent link">&para;</a></h3>
+<p>VietQuill models are divided into two series based on training data characteristics:</p>
+<h4 id="1-tsubaki-series">1. Tsubaki Series<a class="headerlink" href="#1-tsubaki-series" title="Permanent link">&para;</a></h4>
+<p>The <strong>Tsubaki</strong> series models are trained on public research datasets (<strong>ViSP</strong> for sentences and <strong>ViQP</strong> for questions). Ideal for standard sentence rewriting, research benchmarks, and question variations:</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Model Hub ID</th>
-<th style="text-align: left;">Base Architecture</th>
-<th style="text-align: left;">Task</th>
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Class</th>
 <th style="text-align: left;">Size</th>
-<th style="text-align: left;">Status</th>
-<th style="text-align: left;">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><a href="https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki"><code>ngwgsang/vietquill-vit5-base-tsubaki</code></a></td>
-<td style="text-align: left;">ViT5-base (~440M params)</td>
-<td style="text-align: left;">Quality-Controlled Generation</td>
-<td style="text-align: left;">4.19 GB</td>
-<td style="text-align: left;">Available</td>
-<td style="text-align: left;">Bundles both <code>sentence</code> and <code>question</code> checkpoints for controllable generation.</td>
+<td style="text-align: left;"><a href="../api/generation/"><code>EnsembleModelForParaphraseGeneration</code></a></td>
+<td style="text-align: left;">4.19 GB*</td>
 </tr>
 <tr>
 <td style="text-align: left;"><a href="https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki"><code>ngwgsang/vietquill-velectra-estimator-tsubaki</code></a></td>
-<td style="text-align: left;">vELECTRA-base (~220M params)</td>
-<td style="text-align: left;">Quality Estimation</td>
-<td style="text-align: left;">1.64 GB</td>
-<td style="text-align: left;">Available</td>
-<td style="text-align: left;">Predicts Lexical, Syntactic, and Semantic quality scores.</td>
+<td style="text-align: left;"><a href="../api/evaluation/"><code>EnsembleModelForParaphraseQualityEstimation</code></a></td>
+<td style="text-align: left;">1.64 GB*</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>ngwgsang/vietquill-vit5-base-nelke</code></td>
-<td style="text-align: left;">ViT5-base (~440M params)</td>
-<td style="text-align: left;">Quality-Controlled Generation</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;"><em>Coming Soon</em></td>
-<td style="text-align: left;">Next-generation controllable paraphrase generation model.</td>
+<td style="text-align: left;"><a href="https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki"><code>ngwgsang/vietquill-vit5-base-sentence-tsubaki</code></a></td>
+<td style="text-align: left;"><a href="../api/generation/"><code>AutoModelForParaphraseGeneration</code></a></td>
+<td style="text-align: left;">2.09 GB</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>ngwgsang/vietquill-velectra-estimator-nelke</code></td>
-<td style="text-align: left;">vELECTRA-base (~220M params)</td>
-<td style="text-align: left;">Quality Estimation</td>
-<td style="text-align: left;">—</td>
-<td style="text-align: left;"><em>Coming Soon</em></td>
-<td style="text-align: left;">Next-generation paraphrase quality estimator.</td>
+<td style="text-align: left;"><a href="https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki"><code>ngwgsang/vietquill-vit5-base-question-tsubaki</code></a></td>
+<td style="text-align: left;"><a href="../api/generation/"><code>AutoModelForParaphraseGeneration</code></a></td>
+<td style="text-align: left;">2.09 GB</td>
 </tr>
 </tbody>
 </table>
+<p>* <em>The ensemble Hub repository bundles both </em><em>sentence</em><em> and </em><em>question</em><em> subfolders.</em></p>
+<h4 id="2-ume-series">2. Ume Series<a class="headerlink" href="#2-ume-series" title="Permanent link">&para;</a></h4>
+<p>The <strong>Ume</strong> series models are trained on <strong>100K synthesized data</strong> comprising longer, more structurally complex, and diverse sentence pairs (sentences: <a href="https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence"><code>ngwgsang/vietquill-qcpg-100k-synthesis-sentence</code></a>, questions: <a href="https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question"><code>ngwgsang/vietquill-qcpg-100k-synthesis-question</code></a>):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Class</th>
+<th style="text-align: left;">Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="https://huggingface.co/ngwgsang/vietquill-vit5-base-ume"><code>ngwgsang/vietquill-vit5-base-ume</code></a></td>
+<td style="text-align: left;"><a href="../api/generation/"><code>EnsembleModelForParaphraseGeneration</code></a></td>
+<td style="text-align: left;">4.19 GB*</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-ume"><code>ngwgsang/vietquill-vit5-base-sentence-ume</code></a></td>
+<td style="text-align: left;"><a href="../api/generation/"><code>AutoModelForParaphraseGeneration</code></a></td>
+<td style="text-align: left;">2.09 GB</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume"><code>ngwgsang/vietquill-vit5-base-question-ume</code></a></td>
+<td style="text-align: left;"><a href="../api/generation/"><code>AutoModelForParaphraseGeneration</code></a></td>
+<td style="text-align: left;">2.09 GB</td>
+</tr>
+</tbody>
+</table>
+<p>* <em>The ensemble Hub repository bundles both </em><em>sentence</em><em> and </em><em>question</em><em> subfolders.</em></p>
 <hr />
 <h3 id="model-architecture-details">Model Architecture Details<a class="headerlink" href="#model-architecture-details" title="Permanent link">&para;</a></h3>
-<h4 id="1-paraphrase-generator-vietquill-vit5-base-tsubaki">1. Paraphrase Generator (<code>vietquill-vit5-base-tsubaki</code>)<a class="headerlink" href="#1-paraphrase-generator-vietquill-vit5-base-tsubaki" title="Permanent link">&para;</a></h4>
+<h4 id="1-paraphrase-generator-vit5">1. Paraphrase Generator (ViT5)<a class="headerlink" href="#1-paraphrase-generator-vit5" title="Permanent link">&para;</a></h4>
+<p>Both <strong>Tsubaki</strong> (<a href="https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki"><code>vietquill-vit5-base-tsubaki</code></a>) and <strong>Ume</strong> (<a href="https://huggingface.co/ngwgsang/vietquill-vit5-base-ume"><code>vietquill-vit5-base-ume</code></a>) share the exact same ViT5 architecture, input representation, and subfolder layout, differing only in the training data:</p>
 <ul>
 <li><strong>Base Architecture</strong>: ViT5 (Vietnamese T5 pre-trained on large-scale Vietnamese corpus).</li>
-<li><strong>Subfolders</strong>:<ul>
-<li><code>sentence/</code>: Fine-tuned on the ViSP dataset for declarative and complex sentence rewriting.</li>
-<li><code>question/</code>: Fine-tuned on the ViQP dataset for question variations and inquiry rephrasing.</li>
+<li><strong>Subfolder Structure</strong>:<ul>
+<li><code>sentence/</code>: Fine-tuned for sentence rewriting (Tsubaki: ViSP dataset; Ume: <a href="https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence"><code>vietquill-qcpg-100k-synthesis-sentence</code></a> with longer, more complex sentences).</li>
+<li><code>question/</code>: Fine-tuned for question rewriting (Tsubaki: ViQP dataset; Ume: <a href="https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question"><code>vietquill-qcpg-100k-synthesis-question</code></a>).</li>
 </ul>
 </li>
 <li><strong>Input Representation</strong>:
   <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SEM_&lt;0..100&gt; SYN_&lt;0..100&gt; LEX_&lt;0..100&gt; : &lt;Input Text&gt;
 </span></code></pre></div></li>
 </ul>
-<h4 id="2-paraphrase-quality-estimator-vietquill-velectra-estimator-tsubaki">2. Paraphrase Quality Estimator (<code>vietquill-velectra-estimator-tsubaki</code>)<a class="headerlink" href="#2-paraphrase-quality-estimator-vietquill-velectra-estimator-tsubaki" title="Permanent link">&para;</a></h4>
+<h4 id="2-paraphrase-quality-estimator-velectra">2. Paraphrase Quality Estimator (vELECTRA)<a class="headerlink" href="#2-paraphrase-quality-estimator-velectra" title="Permanent link">&para;</a></h4>
 <ul>
+<li><strong>Model</strong>: <a href="https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki"><code>vietquill-velectra-estimator-tsubaki</code></a></li>
 <li><strong>Base Architecture</strong>: vELECTRA-base.</li>
 <li><strong>Output Heads</strong>: Regression heads predicting:<ol>
 <li><code>lexical_score</code>: Measures token substitution / diversity.</li>
@@ -1113,17 +1167,6 @@
 </ol>
 </li>
 </ul>
-<hr />
-<h3 id="custom-model-checkpoints">Custom Model Checkpoints<a class="headerlink" href="#custom-model-checkpoints" title="Permanent link">&para;</a></h3>
-<p>You can specify custom local paths or custom Hugging Face Hub IDs when instantiating the models:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">vietquill</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForControllableParaphraseGeneration</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Custom local checkpoint or custom Hub model</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForControllableParaphraseGeneration</span><span class="p">(</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">hub_id</span><span class="o">=</span><span class="s2">"your-username/your-custom-vietquill-model"</span><span class="p">,</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
-</span></code></pre></div>
 
 
 

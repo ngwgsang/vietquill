@@ -665,6 +665,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#3-vietquill-synthesis-100k-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. VietQuill Synthesis 100K Datasets
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -984,6 +995,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#3-vietquill-synthesis-100k-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. VietQuill Synthesis 100K Datasets
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1055,6 +1077,22 @@
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">visp_data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">visp_data</span><span class="p">)</span>
 </span></code></pre></div>
+<hr />
+<h4 id="3-vietquill-synthesis-100k-datasets">3. VietQuill Synthesis 100K Datasets<a class="headerlink" href="#3-vietquill-synthesis-100k-datasets" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Sentence Dataset</strong>: <a href="https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence"><code>ngwgsang/vietquill-qcpg-100k-synthesis-sentence</code></a></li>
+<li><strong>Question Dataset</strong>: <a href="https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question"><code>ngwgsang/vietquill-qcpg-100k-synthesis-question</code></a></li>
+<li><strong>Scale</strong>: 100,000 synthetic pairs with multi-level quality control dimensions, featuring longer and structurally complex Vietnamese sentences.</li>
+<li><strong>Loading via Hugging Face <code>datasets</code></strong>:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Load sentence synthesis dataset</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">sentence_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"ngwgsang/vietquill-qcpg-100k-synthesis-sentence"</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># Load question synthesis dataset</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">question_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">"ngwgsang/vietquill-qcpg-100k-synthesis-question"</span><span class="p">)</span>
+</span></code></pre></div></li>
+</ul>
 <hr />
 <h3 id="schema-structure">Schema &amp; Structure<a class="headerlink" href="#schema-structure" title="Permanent link">&para;</a></h3>
 <p>When using <code>.load_pairs()</code>, items are formatted with <code>vietquill.data.schema.ParaphraseSchema</code>:</p>
