@@ -31,6 +31,7 @@
   <a href="https://ieeexplore.ieee.org/document/11685721">
     <img src="https://img.shields.io/badge/IEEE%20Xplore-Paper-B7181F?logo=IEEE&logoColor=white" alt="IEEE Xplore">
   </a>
+  <img src="https://img.shields.io/github/stars/ngwgsang/vietquill?color=B7181F" alt="GitHub Stars">
 </p>
 
 <p align="center">
@@ -39,11 +40,9 @@
 
 
 
-This is the official source code accompanying our research work, `VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language`, published at MAPR 2026.
+VietQuill is a unified toolkit for quality-controlled Vietnamese paraphrase generation and evaluation. It provides datasets, generation methods, augmentation techniques, and evaluation metrics through a consistent interface for reproducible research and practical applications.
 
-We provide a unified framework for controllable Vietnamese paraphrase generation and quality estimation, integrating datasets, generation methods, augmentation techniques, and evaluation metrics into a consistent interface. VietQuill is designed to support reproducible research and practical development of high-quality Vietnamese paraphrase systems.
-
-We are committed to advancing Vietnamese paraphrase generation by making state-of-the-art methods accessible, customizable, and easy to integrate into real-world workflows.
+This repository accompanies our paper, [VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language](https://ieeexplore.ieee.org/document/11685721), published at [MAPR 2026](https://mapr.uit.edu.vn/).
 
 ---
 
@@ -196,9 +195,11 @@ Trained on public research datasets (**ViSP** for sentences, **ViQP** for questi
 | Model | Class | Size |
 | :--- | :--- | :--- |
 | [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
-| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
 | [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
 
 #### Ume Series
 Trained on **100K synthesized data** featuring longer, more structurally complex, and diverse sentences ([`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence) for sentences, [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question) for questions):
@@ -212,11 +213,13 @@ Trained on **100K synthesized data** featuring longer, more structurally complex
 \* *Each official ensemble Hub repository bundles both **sentence** and **question** subfolders in a single package.*
 > **Note:** For more information about each model, please refer to [Models & Checkpoints](https://ngwgsang.github.io/vietquill/models/).
 
-## Extensions
+## One More Thing...
 
-### Fewshot Paraphrase Generation [LLM]
+### Few-shot Controllable Paraphrasing
 
-In addition to pretrained checkpoints, VietQuill provides `FewshotModelForControllableParaphraseGeneration` using the **Mimic** paradigm. This allows you to leverage modern LLMs (GPT-4o, Claude, Qwen, Llama, DeepSeek) through OpenAI SDK or OpenRouter and define **custom control dimensions** (e.g., `formality`, `technicality`, `conciseness`) inferred from few-shot demonstrations:
+**No training. No fine-tuning. Just examples.**
+
+Bring GPT-4o, Claude, Qwen, Llama, DeepSeek, or any OpenAI-compatible LLM. Define your own control dimensions with a few demonstrations, powered by the **Mimic** paradigm.
 
 ```python
 from openai import OpenAI

@@ -31,6 +31,7 @@
   <a href="https://ieeexplore.ieee.org/document/11685721">
     <img src="https://img.shields.io/badge/IEEE%20Xplore-Paper-B7181F?logo=IEEE&logoColor=white" alt="IEEE Xplore">
   </a>
+  <img src="https://img.shields.io/github/stars/ngwgsang/vietquill?color=B7181F" alt="GitHub Stars">
 </p>
 
 <p align="center">
@@ -39,11 +40,9 @@
 
 
 
-本リポジトリは、MAPR 2026 に採択された研究論文『VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language』の公式ソースコードです。
+VietQuill は、品質制御可能なベトナム語言い換え生成および評価のための統合ツールキットです。再現性のある研究と実用的なアプリケーションのために、データセット、生成手法、データ拡張技術、評価指標を一貫したインターフェースを通じて提供します。
 
-データセット、生成手法、データ拡張技術、評価指標を一貫したインターフェースに統合し、品質制御可能なベトナム語言い換え生成（Paraphrase Generation）および品質推定（Quality Estimation）のための統一フレームワークを提供します。VietQuill は、再現性のある研究と実用的な高品質ベトナム語言い換えシステムの開発を支援するために設計されています。
-
-私たちは、最先端（State-of-the-Art）の手法を扱いやすく、カスタマイズ可能で、実際のワークフローに容易に統合できるようにすることで、ベトナム語自然言語処理の発展に貢献してまいります。
+本リポジトリは、[MAPR 2026](https://mapr.uit.edu.vn/) に採択された論文 [VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language](https://ieeexplore.ieee.org/document/11685721) の公式ソースコードです。
 
 ---
 
@@ -196,9 +195,11 @@ VietQuill は2種類のモデルローダークラスをサポートしていま
 | Model | Class | Size |
 | :--- | :--- | :--- |
 | [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
-| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
 | [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
 
 #### Ume シリーズ
 より長く、構文が複雑で多様な文で構成された **10万件の合成データ（Synthesis）** で学習（文用: [`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence)、質問用: [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question)）：
@@ -210,34 +211,15 @@ VietQuill は2種類のモデルローダークラスをサポートしていま
 | [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 
 \* *各公式アンサンブル Hub リポジトリには、**sentence** と **question** サブフォルダの両方が単一パッケージとしてバンドルされています。*
+> **注釈：** 各モデルの詳細については、[Models & Checkpoints](https://ngwgsang.github.io/vietquill/models/) を参照してください。
 
-#### クイック比較の例 (Quick Comparison Example)
+## One More Thing...
 
-```python
-# --- 言い換え生成 (Paraphrase Generation) ---
-# 1. アンサンブル生成器 (sentence と question のチェックポイントをバンドル)
-from vietquill import EnsembleModelForParaphraseGeneration
-gen_model = EnsembleModelForParaphraseGeneration("ngwgsang/vietquill-vit5-base-tsubaki")
+### Few-shot 制御可能な言い換え生成 (Few-shot Controllable Paraphrasing)
 
-# 2. 標準生成器 (リポジトリルートから直接ロード)
-from vietquill import AutoModelForParaphraseGeneration
-gen_model = AutoModelForParaphraseGeneration("ngwgsang/vit5-base-visp-s1")
+**訓練不要。ファインチューニング不要。必要なのはプロンプト例だけ。**
 
-# --- 品質評価 (Quality Estimation) ---
-# 1. アンサンブル品質評価器 (sentence と question のチェックポイントをバンドル)
-from vietquill import EnsembleModelForParaphraseQualityEstimation
-estimator = EnsembleModelForParaphraseQualityEstimation("ngwgsang/vietquill-velectra-estimator-tsubaki")
-
-# 2. 標準品質評価器 (リポジトリルートから直接ロード)
-from vietquill import AutoModelForQualityEstimation
-estimator = AutoModelForQualityEstimation("your-username/your-estimator-model")
-```
-
-## 拡張機能 (Extensions)
-
-### LLMを活用したFew-shot言い換え生成 (Fewshot Paraphrase Generation [LLM])
-
-VietQuill の事前学習モデルに加え、本ライブラリは **Mimic** パラダイムに基づく `FewshotModelForControllableParaphraseGeneration` を提供しています。OpenAI SDK または OpenRouter を経由して最新の LLM（GPT-4o、Claude、Qwen、Llama、DeepSeek など）を活用し、数件の入出力例から**任意の制御軸**（`formality`、`technicality`、`conciseness` など）を推論させて柔軟な制御が可能です：
+GPT-4o、Claude、Qwen、Llama、DeepSeek、または OpenAI 互换のあらゆる LLM を活用できます。**Mimic** パラダイムにより、わずかなデモンストレーション例を与えるだけで、独自の制御軸を定義可能です。
 
 ```python
 from openai import OpenAI

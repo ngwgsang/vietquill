@@ -31,6 +31,7 @@
   <a href="https://ieeexplore.ieee.org/document/11685721">
     <img src="https://img.shields.io/badge/IEEE%20Xplore-Paper-B7181F?logo=IEEE&logoColor=white" alt="IEEE Xplore">
   </a>
+  <img src="https://img.shields.io/github/stars/ngwgsang/vietquill?color=B7181F" alt="GitHub Stars">
 </p>
 
 <p align="center">
@@ -39,11 +40,9 @@
 
 
 
-Ceci est le code source officiel accompagnant nos travaux de recherche, `VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language`, publiés à MAPR 2026.
+VietQuill est une boîte à outils unifiée pour la génération et l'évaluation de paraphrases en vietnamien avec contrôle de la qualité. Elle fournit des jeux de données, des méthodes de génération, des techniques d'augmentation et des métriques d'évaluation au travers d'une interface cohérente pour la recherche reproductible et les applications pratiques.
 
-Nous proposons un framework unifié pour la génération contrôlable de paraphrases en vietnamien et l'évaluation de leur qualité, intégrant des jeux de données, des méthodes de génération, des techniques d'augmentation de données et des métriques d'évaluation au sein d'une interface cohérente. VietQuill est conçu pour soutenir une recherche reproductible et le développement pratique de systèmes de paraphrase en vietnamien de haute qualité.
-
-Nous nous engageons à faire progresser la génération de paraphrases en vietnamien en rendant les méthodes de pointe (*State-of-the-Art*) accessibles, personnalisables et faciles à intégrer dans des environnements réels.
+Ce dépôt accompagne notre article, [VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language](https://ieeexplore.ieee.org/document/11685721), publié à [MAPR 2026](https://mapr.uit.edu.vn/).
 
 ---
 
@@ -196,9 +195,11 @@ Entraînée sur des corpus de recherche publics (**ViSP** pour les phrases décl
 | Model | Class | Size |
 | :--- | :--- | :--- |
 | [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
-| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
 | [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
 
 #### Série Ume
 Entraînée sur **100K paires de données synthétiques** comportant des phrases plus longues, plus denses et plus complexes ([`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence) pour les phrases, [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question) pour les questions) :
@@ -210,34 +211,15 @@ Entraînée sur **100K paires de données synthétiques** comportant des phrases
 | [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 
 \* *Chaque dépôt ensemble officiel regroupe les sous-dossiers **sentence** et **question** dans un paquet unique.*
+> **Note :** Pour plus d'informations sur chaque modèle, veuillez consulter [Modèles & Points de contrôle](https://ngwgsang.github.io/vietquill/models/).
 
-#### Exemple de comparaison rapide (Quick Comparison Example)
+## One More Thing...
 
-```python
-# --- Génération de paraphrases (Paraphrase Generation) ---
-# 1. Générateur Ensemble (Regroupe les checkpoints sentence & question)
-from vietquill import EnsembleModelForParaphraseGeneration
-gen_model = EnsembleModelForParaphraseGeneration("ngwgsang/vietquill-vit5-base-tsubaki")
+### Paraphrase contrôlable Few-shot (Few-shot Controllable Paraphrasing)
 
-# 2. Générateur Standard (Charge directement depuis la racine du repo)
-from vietquill import AutoModelForParaphraseGeneration
-gen_model = AutoModelForParaphraseGeneration("ngwgsang/vit5-base-visp-s1")
+**Pas d'entraînement. Pas de fine-tuning. Juste des exemples.**
 
-# --- Estimation de la qualité (Quality Estimation) ---
-# 1. Estimateur de qualité Ensemble (Regroupe les checkpoints sentence & question)
-from vietquill import EnsembleModelForParaphraseQualityEstimation
-estimator = EnsembleModelForParaphraseQualityEstimation("ngwgsang/vietquill-velectra-estimator-tsubaki")
-
-# 2. Estimateur de qualité Standard (Charge directement depuis la racine du repo)
-from vietquill import AutoModelForQualityEstimation
-estimator = AutoModelForQualityEstimation("your-username/your-estimator-model")
-```
-
-## Extensions
-
-### Génération de paraphrases Few-shot avec LLM (Fewshot Paraphrase Generation [LLM])
-
-En plus des points de contrôle pré-entraînés, VietQuill fournit `FewshotModelForControllableParaphraseGeneration` basé sur le paradigme **Mimic**. Cela vous permet de tirer parti des LLM modernes (GPT-4o, Claude, Qwen, Llama, DeepSeek) via le SDK OpenAI ou OpenRouter, et de définir des **dimensions de contrôle personnalisées** (par ex. `formality`, `technicality`, `conciseness`) déduites à partir de quelques démonstrations :
+Utilisez GPT-4o, Claude, Qwen, Llama, DeepSeek ou tout LLM compatible avec l'API OpenAI. Définissez vos propres dimensions de contrôle à partir de quelques démonstrations, grâce au paradigme **Mimic**.
 
 ```python
 from openai import OpenAI

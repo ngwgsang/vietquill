@@ -31,6 +31,7 @@
   <a href="https://ieeexplore.ieee.org/document/11685721">
     <img src="https://img.shields.io/badge/IEEE%20Xplore-Paper-B7181F?logo=IEEE&logoColor=white" alt="IEEE Xplore">
   </a>
+  <img src="https://img.shields.io/github/stars/ngwgsang/vietquill?color=B7181F" alt="GitHub Stars">
 </p>
 
 <p align="center">
@@ -39,11 +40,9 @@
 
 
 
-Đây là mã nguồn chính thức đi kèm bài báo nghiên cứu của chúng tôi: `VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language`, được công bố tại hội nghị MAPR 2026.
+VietQuill là bộ công cụ hợp nhất cho tác vụ sinh và đánh giá chất lượng câu đồng nghĩa tiếng Việt có kiểm soát chất lượng. Bộ công cụ cung cấp các tập dữ liệu, phương pháp sinh văn bản, kỹ thuật tăng cường dữ liệu và các độ đo đánh giá thông qua một giao diện đồng nhất nhằm phục vụ nghiên cứu có khả năng tái lập cũng như các ứng dụng thực tế.
 
-Chúng tôi cung cấp một framework hợp nhất dành cho việc tạo câu đồng nghĩa (paraphrase generation) tiếng Việt có kiểm soát và đánh giá chất lượng (quality estimation), tích hợp các tập dữ liệu, phương pháp sinh văn bản, kỹ thuật tăng cường dữ liệu và các độ đo đánh giá vào một giao diện đồng nhất. VietQuill được thiết kế nhằm hỗ trợ nghiên cứu có khả năng tái lập và phát triển các hệ thống tạo câu đồng nghĩa tiếng Việt chất lượng cao trong thực tế.
-
-Chúng tôi cam kết thúc đẩy lĩnh vực tạo câu đồng nghĩa tiếng Việt bằng cách làm cho các phương pháp tiên tiến nhất (state-of-the-art) trở nên dễ tiếp cận, dễ tùy chỉnh và dễ dàng tích hợp vào quy trình làm việc thực tế.
+Kho lưu trữ này đi kèm bài báo khoa học của chúng tôi: [VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language](https://ieeexplore.ieee.org/document/11685721), được công bố tại [MAPR 2026](https://mapr.uit.edu.vn/).
 
 ---
 
@@ -196,9 +195,11 @@ Các checkpoint chính thức trên [Hugging Face](https://huggingface.co/collec
 | Model | Class | Size |
 | :--- | :--- | :--- |
 | [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
-| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
 | [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
 
 #### Dòng Ume (Ume Series)
 Được huấn luyện trên **100K dữ liệu tổng hợp (synthesis)** gồm các câu dài, cấu trúc ngữ pháp phức tạp và phong phú hơn ([`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence) cho câu trần thuật, [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question) cho câu hỏi):
@@ -210,34 +211,15 @@ Các checkpoint chính thức trên [Hugging Face](https://huggingface.co/collec
 | [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 
 \* *Mỗi repository ensemble chính thức trên Hub đóng gói cả hai thư mục con **sentence** và **question** trong cùng một gói.*
+> **Ghi chú:** Để biết thêm thông tin chi tiết về từng mô hình, vui lòng tham khảo [Mô hình & Checkpoint](https://ngwgsang.github.io/vietquill/models/).
 
-#### Ví dụ so sánh nhanh (Quick Comparison Example)
+## One More Thing...
 
-```python
-# --- Sinh câu đồng nghĩa (Paraphrase Generation) ---
-# 1. Ensemble Generator (Đóng gói checkpoint sentence & question)
-from vietquill import EnsembleModelForParaphraseGeneration
-gen_model = EnsembleModelForParaphraseGeneration("ngwgsang/vietquill-vit5-base-tsubaki")
+### Sinh câu đồng nghĩa Few-shot có kiểm soát (Few-shot Controllable Paraphrasing)
 
-# 2. Standard Generator (Tải trực tiếp từ root của repo)
-from vietquill import AutoModelForParaphraseGeneration
-gen_model = AutoModelForParaphraseGeneration("ngwgsang/vit5-base-visp-s1")
+**Không cần huấn luyện. Không cần tinh chỉnh. Chỉ cần ví dụ.**
 
-# --- Đánh giá chất lượng (Quality Estimation) ---
-# 1. Ensemble Quality Estimator (Đóng gói checkpoint sentence & question)
-from vietquill import EnsembleModelForParaphraseQualityEstimation
-estimator = EnsembleModelForParaphraseQualityEstimation("ngwgsang/vietquill-velectra-estimator-tsubaki")
-
-# 2. Standard Quality Estimator (Tải trực tiếp từ root của repo)
-from vietquill import AutoModelForQualityEstimation
-estimator = AutoModelForQualityEstimation("your-username/your-estimator-model")
-```
-
-## Mở rộng (Extensions)
-
-### Sinh câu đồng nghĩa Few-shot với LLM (Fewshot Paraphrase Generation [LLM])
-
-Bên cạnh các checkpoint tiền huấn luyện, VietQuill cung cấp `FewshotModelForControllableParaphraseGeneration` dựa trên mô thức **Mimic**. Tính năng này cho phép bạn tận dụng sức mạnh của các LLM (GPT-4o, Claude, Qwen, Llama, DeepSeek) qua OpenAI SDK hoặc OpenRouter và tự do định nghĩa các **chiều kiểm soát tùy biến** (ví dụ: `formality`, `technicality`, `conciseness`) được suy luận trực tiếp từ một vài ví dụ mẫu:
+Kết hợp GPT-4o, Claude, Qwen, Llama, DeepSeek hoặc bất kỳ LLM nào tương thích với OpenAI. Tự định nghĩa các chiều kiểm soát của riêng bạn chỉ với một vài ví dụ minh họa, được hỗ trợ bởi mô thức **Mimic**.
 
 ```python
 from openai import OpenAI

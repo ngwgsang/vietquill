@@ -31,6 +31,7 @@
   <a href="https://ieeexplore.ieee.org/document/11685721">
     <img src="https://img.shields.io/badge/IEEE%20Xplore-Paper-B7181F?logo=IEEE&logoColor=white" alt="IEEE Xplore">
   </a>
+  <img src="https://img.shields.io/github/stars/ngwgsang/vietquill?color=B7181F" alt="GitHub Stars">
 </p>
 
 <p align="center">
@@ -39,11 +40,9 @@
 
 
 
-这是我们发表于 MAPR 2026 的研究论文《VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language》的官方开源代码。
+VietQuill 是一个用于质量可控的越南语复述生成与质量评估的统一工具包。它通过一致的接口提供数据集、生成方法、数据增强技术和评估指标，以支持可复现的研究与实际应用开发。
 
-我们提供了一个用于可控越南语复述生成（Paraphrase Generation）与质量评估（Quality Estimation）的统一框架，将数据集、生成方法、数据增强技术以及评估指标集成到统一的接口中。VietQuill 旨在支持可复现的研究，并促进高质量越南语复述系统的实际应用开发。
-
-我们致力于通过使前沿算法（State-of-the-Art）易于获取、高度可定制以及易于集成到实际业务流程中，推动越南语自然语言处理的发展。
+本仓库是我们发表于 [MAPR 2026](https://mapr.uit.edu.vn/) 的研究论文 [VietQuill: Quality-Controlled Paraphrase Generation for Vietnamese Language](https://ieeexplore.ieee.org/document/11685721) 的官方代码。
 
 ---
 
@@ -196,9 +195,11 @@ VietQuill 支持两种类型的模型加载器：
 | Model | Class | Size |
 | :--- | :--- | :--- |
 | [`ngwgsang/vietquill-vit5-base-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-tsubaki) | `EnsembleModelForParaphraseGeneration` | 4.19 GB* |
-| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
 | [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
+| [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
+| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
 
 #### Ume 系列
 在 **10万条合成数据（100K Synthesis）** 上训练，包含更长、语法结构更复杂且更多样化的句对（句子：[`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence)，问题：[`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question)）：
@@ -210,34 +211,15 @@ VietQuill 支持两种类型的模型加载器：
 | [`ngwgsang/vietquill-vit5-base-question-ume`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-ume) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 
 \* *每个官方集成 Hub 仓库均将 **sentence** 和 **question** 子文件夹打包在一个统一的模型包中。*
+> **注意：** 有关各模型的更多信息，请参阅 [模型与 Checkpoints](https://ngwgsang.github.io/vietquill/models/)。
 
-#### 快速对比示例 (Quick Comparison Example)
+## One More Thing...
 
-```python
-# --- 复述生成 (Paraphrase Generation) ---
-# 1. Ensemble 生成器 (打包 sentence 与 question checkpoints)
-from vietquill import EnsembleModelForParaphraseGeneration
-gen_model = EnsembleModelForParaphraseGeneration("ngwgsang/vietquill-vit5-base-tsubaki")
+### 少样本可控复述生成 (Few-shot Controllable Paraphrasing)
 
-# 2. Standard 生成器 (直接从仓库根目录加载)
-from vietquill import AutoModelForParaphraseGeneration
-gen_model = AutoModelForParaphraseGeneration("ngwgsang/vit5-base-visp-s1")
+**无需训练。无需微调。仅需示例。**
 
-# --- 质量评估 (Quality Estimation) ---
-# 1. Ensemble 质量评估器 (打包 sentence 与 question checkpoints)
-from vietquill import EnsembleModelForParaphraseQualityEstimation
-estimator = EnsembleModelForParaphraseQualityEstimation("ngwgsang/vietquill-velectra-estimator-tsubaki")
-
-# 2. Standard 质量评估器 (直接从仓库根目录加载)
-from vietquill import AutoModelForQualityEstimation
-estimator = AutoModelForQualityEstimation("your-username/your-estimator-model")
-```
-
-## 扩展功能 (Extensions)
-
-### 基于大语言模型的少样本复述生成 (Fewshot Paraphrase Generation [LLM])
-
-除了 VietQuill 的预训练模型，本库还提供了基于 **Mimic** 规范的 `FewshotModelForControllableParaphraseGeneration`。该功能允许您通过 OpenAI SDK 或 OpenRouter 利用先进的大语言模型（如 GPT-4o、Claude、Qwen、Llama、DeepSeek），并根据少样本示例自主定义**可控维度**（例如 `formality`、`technicality`、`conciseness`）：
+接入 GPT-4o、Claude、Qwen、Llama、DeepSeek 或任何兼容 OpenAI 的大语言模型。借助 **Mimic** 范式，仅需少量示例演示即可定义专属于您的控制维度。
 
 ```python
 from openai import OpenAI
