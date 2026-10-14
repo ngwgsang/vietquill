@@ -2,11 +2,12 @@
 
 from abc import ABC, abstractmethod
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from vietquill.config import GENERATION
 from vietquill.generation.controllable_paraphraser.styles import (
     ParaphraseStyle,
+    STYLE_DECODING,
     STYLE_MAPPING,
 )
 from vietquill.utils.config import get_config
@@ -40,6 +41,9 @@ class BaseParaphraseGenerator(ABC):
             semantic = kwargs.pop("semantic", preset["semantic"])
             syntactic = kwargs.pop("syntactic", preset["syntactic"])
             lexical = kwargs.pop("lexical", preset["lexical"])
+            # Style decoding defaults; explicit keyword arguments take precedence.
+            for key, value in STYLE_DECODING[style].items():
+                kwargs.setdefault(key, value)
         else:
             semantic = kwargs.pop("semantic", 90)
             syntactic = kwargs.pop("syntactic", 85)
@@ -68,6 +72,10 @@ class BaseParaphraseGenerator(ABC):
     def _prepare_gen_kwargs(kwargs: Dict[str, Any]) -> Tuple[Dict[str, Any], int, int]:
         """
         Prepares decoding keyword arguments and returns (gen_kwargs, max_length, num_candidates).
+
+        ``num_candidates + oversample`` sequences are generated (``oversample`` defaults to 2)
+        so duplicates and the source echo can be dropped. Beam search widens ``num_beams`` to
+        at least that many; sampling with ``num_beams=1`` draws independent samples instead.
         """
         max_length = kwargs.get(
             "max_length",
@@ -82,44 +90,91 @@ class BaseParaphraseGenerator(ABC):
             get_config("generation.num_beams", GENERATION["num_beams"]),
         )
 
-        actual_num_return = num_candidates + 2
-        actual_num_beams = max(num_beams, actual_num_return)
+        oversample = kwargs.pop("oversample", 2)
+        do_sample = kwargs.pop(
+            "do_sample", get_config("generation.do_sample", GENERATION["do_sample"])
+        )
+
+        actual_num_return = num_candidates + oversample
+        if do_sample and num_beams == 1:
+            actual_num_beams = 1
+        else:
+            actual_num_beams = max(num_beams, actual_num_return)
 
         gen_kwargs = {
             "max_length": max_length,
             "num_return_sequences": actual_num_return,
             "num_beams": actual_num_beams,
-            "early_stopping": get_config(
-                "generation.early_stopping", GENERATION["early_stopping"]
-            ),
+            "do_sample": do_sample,
             "no_repeat_ngram_size": get_config(
                 "generation.no_repeat_ngram_size", GENERATION["no_repeat_ngram_size"]
             ),
         }
+        if actual_num_beams > 1:
+            gen_kwargs["early_stopping"] = get_config(
+                "generation.early_stopping", GENERATION["early_stopping"]
+            )
+        if do_sample:
+            for key in ("top_k", "top_p", "temperature"):
+                gen_kwargs[key] = get_config(f"generation.{key}", GENERATION[key])
         gen_kwargs.update(kwargs)
 
         return gen_kwargs, max_length, num_candidates
 
+    def _pop_quality_filter(self, kwargs: Dict[str, Any]) -> Tuple[Any, Optional[float]]:
+        """
+        Pops the optional semantic filter settings and returns (estimator, min_semantic).
+
+        The estimator comes from the ``estimator`` keyword argument or the generator's
+        ``estimator`` attribute; it is never loaded implicitly.
+        """
+        estimator = kwargs.pop("estimator", None) or getattr(self, "estimator", None)
+        min_semantic = kwargs.pop("min_semantic", None)
+        if min_semantic is not None and estimator is None:
+            logger.debug(
+                "min_semantic=%s ignored: no estimator supplied for filtering.", min_semantic
+            )
+        return estimator, min_semantic
+
     @staticmethod
-    def _postprocess(text: str, candidates: List[str], num_candidates: int) -> List[str]:
+    def _postprocess(
+        text: str,
+        candidates: List[str],
+        num_candidates: int,
+        estimator: Any = None,
+        min_semantic: Optional[float] = None,
+    ) -> List[str]:
         """
         Post-processes generated candidates to remove duplicates and handle identity mapping.
-        """
-        candidates = [c.strip() for c in candidates]
+        Returns at most ``num_candidates`` unique paraphrases; the source text itself is
+        returned only when the model produced nothing else.
 
-        if not candidates:
+        When both ``estimator`` and ``min_semantic`` are given, candidates whose estimated
+        ``semantic_score`` is below ``min_semantic`` are dropped; if none pass, the single
+        best-scoring candidate is returned.
+        """
+        # 1. Strip and drop empty / duplicate candidates, keeping generation order.
+        unique = list(dict.fromkeys(c.strip() for c in candidates if c.strip()))
+
+        if not unique:
             return []
 
-        # 1. If all generated candidates are identical, return just the first one.
-        if all(c == candidates[0] for c in candidates):
-            return [candidates[0]]
+        # 2. Prefer candidates that differ from the source text; fall back to the
+        #    identity paraphrase only when nothing else was generated.
+        source = text.strip()
+        different = [c for c in unique if c != source]
+        if not different:
+            return unique[:1]
 
-        # 2. If the top candidate is identical to the source text, move it to the end.
-        if candidates[0] == text.strip():
-            top_c = candidates.pop(0)
-            candidates.append(top_c)
+        # 3. Optionally drop candidates that lose too much meaning.
+        if estimator is not None and min_semantic is not None:
+            scores = [estimator.estimate(text, c)["semantic_score"] for c in different]
+            passing = [c for c, s in zip(different, scores) if s >= min_semantic]
+            if not passing:
+                return [max(zip(different, scores), key=lambda cs: cs[1])[0]]
+            different = passing
 
-        return candidates[:num_candidates]
+        return different[:num_candidates]
 
     @abstractmethod
     def paraphrase(self, text: str, **kwargs) -> List[str]:

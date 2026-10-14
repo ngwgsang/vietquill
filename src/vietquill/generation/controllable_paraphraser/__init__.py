@@ -9,6 +9,7 @@ from vietquill.generation.controllable_paraphraser.ensemble import (
 )
 from vietquill.generation.controllable_paraphraser.styles import (
     ParaphraseStyle,
+    STYLE_DECODING,
     STYLE_MAPPING,
 )
 
@@ -17,5 +18,6 @@ __all__ = [
     "EnsembleModelForParaphraseGeneration",
     "ParaphraseStyle",
     "STYLE_MAPPING",
+    "STYLE_DECODING",
     "BaseParaphraseGenerator",
 ]

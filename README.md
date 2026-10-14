@@ -142,6 +142,15 @@ print(paraphrase)
 # >>> ['Có bao nhiêu người Việt Nam sử dụng mạng xã hội mỗi ngày?']
 ```
 
+Styles also set decoding defaults: `CONSERVATIVE` uses beam search, `BALANCED` samples with `top_p=0.9, temperature=0.7`, and `DIVERSE` samples with `top_p=0.95, temperature=1.0`, so `BALANCED`/`DIVERSE` outputs vary between calls. Any decoding argument you pass explicitly overrides the preset. `DIVERSE` can lose meaning; pass an estimator to drop candidates below `min_semantic` (80 by default for `DIVERSE`). The estimator is never loaded implicitly:
+
+```python
+from vietquill import EnsembleModelForParaphraseQualityEstimation
+
+estimator = EnsembleModelForParaphraseQualityEstimation()
+paraphrase = model.paraphrase(sentence, style=ParaphraseStyle.DIVERSE, estimator=estimator)
+```
+
 ### Paraphrase Evaluate
 
 Evaluate the quality of generated paraphrases using various metrics and estimators.
@@ -198,8 +207,8 @@ Trained on public research datasets (**ViSP** for sentences, **ViQP** for questi
 | [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
-| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
-| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-sentence-tsubaki) | `AutoModelForQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-question-tsubaki) | `AutoModelForQualityEstimation` | 845 MB |
 
 #### Ume Series
 Trained on **100K synthesized data** featuring longer, more structurally complex, and diverse sentences ([`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence) for sentences, [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question) for questions):

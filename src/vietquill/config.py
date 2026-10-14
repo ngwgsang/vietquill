@@ -14,11 +14,13 @@ MODELS = {
 
 GENERATION = {
     "max_length": 128,
-    "num_beams": 10,
+    "num_beams": 5,
     "num_candidates": 1,
     "early_stopping": True,
     "no_repeat_ngram_size": 2,
-    "do_sample": True,
+    # Set to True to sample with top_k/top_p/temperature below (beam-sampling when
+    # num_beams > 1, plain sampling when num_beams == 1).
+    "do_sample": False,
     "top_k": 50,
     "top_p": 0.95,
     "temperature": 1.0,

@@ -198,8 +198,8 @@ VietQuill は2種類のモデルローダークラスをサポートしていま
 | [`ngwgsang/vietquill-vit5-base-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-sentence-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-vit5-base-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-vit5-base-question-tsubaki) | `AutoModelForParaphraseGeneration` | 2.09 GB |
 | [`ngwgsang/vietquill-velectra-estimator-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `EnsembleModelForParaphraseQualityEstimation` | 1.64 GB* |
-| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
-| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-tsubaki) | `AutoModelForParaphraseQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-sentence-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-sentence-tsubaki) | `AutoModelForQualityEstimation` | 845 MB |
+| [`ngwgsang/vietquill-velectra-estimator-question-tsubaki`](https://huggingface.co/ngwgsang/vietquill-velectra-estimator-question-tsubaki) | `AutoModelForQualityEstimation` | 845 MB |
 
 #### Ume シリーズ
 より長く、構文が複雑で多様な文で構成された **10万件の合成データ（Synthesis）** で学習（文用: [`ngwgsang/vietquill-qcpg-100k-synthesis-sentence`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-sentence)、質問用: [`ngwgsang/vietquill-qcpg-100k-synthesis-question`](https://huggingface.co/datasets/ngwgsang/vietquill-qcpg-100k-synthesis-question)）：

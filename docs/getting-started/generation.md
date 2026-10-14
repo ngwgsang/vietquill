@@ -77,11 +77,23 @@ for orig, cands in zip(sentences, batch_results):
 
 Instead of manually tuning percentages, you can use `ParaphraseStyle`:
 
-| Style Preset | Lexical | Syntactic | Semantic | Best For |
-| :--- | :--- | :--- | :--- | :--- |
-| `ParaphraseStyle.CONSERVATIVE` | 80 | 90 | 95 | Proofreading, minor rephrasing, high precision |
-| `ParaphraseStyle.BALANCED` | 65 | 85 | 85 | General-purpose paraphrasing |
-| `ParaphraseStyle.DIVERSE` | 40 | 60 | 85 | Data augmentation, creative rewriting |
+| Style Preset | Lexical | Syntactic | Semantic | Decoding | Best For |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `ParaphraseStyle.CONSERVATIVE` | 80 | 90 | 95 | Beam search | Proofreading, minor rephrasing, high precision |
+| `ParaphraseStyle.BALANCED` | 65 | 85 | 85 | Sampling, `top_p=0.9`, `temperature=0.7`, `oversample=4` | General-purpose paraphrasing |
+| `ParaphraseStyle.DIVERSE` | 40 | 60 | 85 | Sampling, `top_p=0.95`, `temperature=1.0`, `oversample=6`, `min_semantic=80` | Data augmentation, creative rewriting |
+
+The control values alone change the output of the Ume checkpoints very little, so each style also sets decoding defaults. Arguments you pass explicitly (`num_beams`, `top_p`, `do_sample`, ...) always override the preset. Sampled styles give different outputs on each call; seed with `torch.manual_seed` for reproducibility.
+
+`DIVERSE` can drift in meaning. Supply a quality estimator to drop candidates whose estimated semantic score is below `min_semantic` (the best-scoring candidate is kept if none pass). The estimator is never loaded implicitly; pass it per call or set `model.estimator` once:
+
+```python
+from vietquill import EnsembleModelForParaphraseQualityEstimation
+
+model.estimator = EnsembleModelForParaphraseQualityEstimation()
+diverse = model.paraphrase(text, style=ParaphraseStyle.DIVERSE)  # filtered, min_semantic=80
+strict = model.paraphrase(text, style=ParaphraseStyle.DIVERSE, min_semantic=90)
+```
 
 ```python
 from vietquill import EnsembleModelForParaphraseGeneration, ParaphraseStyle
@@ -101,9 +113,12 @@ diverse = model.paraphrase(text, style=ParaphraseStyle.DIVERSE)
 
 `paraphrase` and `paraphrases` forward arbitrary keyword arguments to Hugging Face `transformers.GenerationConfig`:
 
-- `max_length` (int): Maximum generated sequence length (default: 256).
-- `num_beams` (int): Number of beams for beam search.
-- `no_repeat_ngram_size` (int): Prevent repetition of n-grams (default: 3).
+- `max_length` (int): Maximum generated sequence length (default: 128).
+- `num_beams` (int): Number of beams for beam search (default: 5). With `do_sample=True`, `num_beams=1` draws independent samples.
+- `no_repeat_ngram_size` (int): Prevent repetition of n-grams (default: 2).
+- `do_sample` (bool): Sample instead of beam search (default: False).
+- `oversample` (int): Extra sequences generated beyond `num_candidates` for de-duplication and filtering (default: 2).
+- `estimator` / `min_semantic`: Optional semantic filtering, see Style Presets above.
 - `temperature` (float): Sampling temperature (if `do_sample=True`).
 - `top_p` (float): Nucleus sampling cutoff.
 

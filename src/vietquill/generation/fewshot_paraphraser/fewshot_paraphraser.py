@@ -93,10 +93,14 @@ class FewshotModelForControllableParaphraseGeneration:
         "chain-of-thought, conversational pleasantries, or markdown formatting."
     )
 
+    OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+    DEFAULT_MODEL = "gpt-4o-mini"
+    DEFAULT_OPENROUTER_MODEL = "openai/gpt-4o-mini"
+
     def __init__(
         self,
         client: Optional[Any] = None,
-        model: str = "openai/gpt-4o-mini",
+        model: Optional[str] = None,
         api_key: Optional[str] = None,
         base_url: Optional[str] = None,
         temperature: float = 0.7,
@@ -110,6 +114,7 @@ class FewshotModelForControllableParaphraseGeneration:
         Args:
             client: Pre-configured OpenAI or OpenAI-compatible client instance.
             model: Model identifier (e.g. 'gpt-4o-mini', 'qwen/qwen-2.5-72b-instruct', etc.).
+                Defaults to 'openai/gpt-4o-mini' on OpenRouter and 'gpt-4o-mini' elsewhere.
             api_key: API key if client is not directly provided.
             base_url: Base URL for OpenAI-compatible providers (e.g. 'https://openrouter.ai/api/v1').
             temperature: Sampling temperature for generation.
@@ -118,7 +123,6 @@ class FewshotModelForControllableParaphraseGeneration:
             timeout: Request timeout in seconds.
             **extra_default_kwargs: Additional parameters forwarded to client.chat.completions.create.
         """
-        self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.top_p = top_p
@@ -133,16 +137,35 @@ class FewshotModelForControllableParaphraseGeneration:
                     "The 'openai' package is required to use FewshotModelForControllableParaphraseGeneration. "
                     "Please install it with: pip install openai"
                 )
-            key = (
-                api_key
-                or os.environ.get("OPENROUTER_API_KEY")
-                or os.environ.get("OPENAI_API_KEY")
-            )
+            key = api_key
+            if key is None:
+                openrouter_key = os.environ.get("OPENROUTER_API_KEY")
+                openai_key = os.environ.get("OPENAI_API_KEY")
+                if base_url is None:
+                    # Only fall back to the OpenRouter key when we can route it to OpenRouter.
+                    if openai_key:
+                        key = openai_key
+                    elif openrouter_key:
+                        key = openrouter_key
+                        base_url = self.OPENROUTER_BASE_URL
+                elif "openrouter" in base_url:
+                    key = openrouter_key or openai_key
+                else:
+                    key = openai_key or openrouter_key
             self.client = OpenAI(
                 api_key=key,
                 base_url=base_url,
                 timeout=timeout,
             )
+
+        if model is None:
+            client_base_url = str(getattr(self.client, "base_url", "") or "")
+            model = (
+                self.DEFAULT_OPENROUTER_MODEL
+                if "openrouter" in client_base_url
+                else self.DEFAULT_MODEL
+            )
+        self.model = model
 
     @staticmethod
     def _format_control_value(value: ControlValue) -> str:

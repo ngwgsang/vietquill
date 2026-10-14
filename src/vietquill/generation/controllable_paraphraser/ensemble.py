@@ -62,9 +62,14 @@ class EnsembleModelForParaphraseGeneration(BaseParaphraseGenerator):
                 - semantic (int): Semantic control (0-100), default 90.
                 - syntactic (int): Syntactic control (0-100), default 85.
                 - lexical (int): Lexical control (0-100), default 80.
-                - style (ParaphraseStyle | str): Style preset.
+                - style (ParaphraseStyle | str): Style preset. Also sets decoding defaults
+                  (CONSERVATIVE: beam search, BALANCED/DIVERSE: nucleus sampling).
                 - num_candidates (int): Number of sequences to return.
-                - num_beams (int): Number of beams.
+                - num_beams (int): Number of beams (1 with do_sample=True = plain sampling).
+                - oversample (int): Extra sequences generated beyond num_candidates, default 2.
+                - estimator: Quality estimator used with min_semantic; never loaded implicitly.
+                - min_semantic (float): Drop candidates whose estimated semantic score is
+                  below this value (requires an estimator).
                 - max_length (int): Max length.
                 - and any other transformers.GenerationConfig parameters.
 
@@ -75,6 +80,7 @@ class EnsembleModelForParaphraseGeneration(BaseParaphraseGenerator):
         model = self.model_question if is_question else self.model_sentence
 
         sem_norm, syn_norm, lex_norm = self._resolve_controls(kwargs)
+        estimator, min_semantic = self._pop_quality_filter(kwargs)
         input_text = self._format_input_text(text, sem_norm, syn_norm, lex_norm)
         gen_kwargs, max_length, num_candidates = self._prepare_gen_kwargs(kwargs)
 
@@ -96,7 +102,9 @@ class EnsembleModelForParaphraseGeneration(BaseParaphraseGenerator):
             )
 
         candidates = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
-        return self._postprocess(text, candidates, num_candidates)
+        return self._postprocess(
+            text, candidates, num_candidates, estimator, min_semantic
+        )
 
     def paraphrases(self, texts: List[str], **kwargs) -> List[List[str]]:
         """
@@ -106,6 +114,7 @@ class EnsembleModelForParaphraseGeneration(BaseParaphraseGenerator):
         Args:
             texts: List of input texts to paraphrase.
             **kwargs: Generation parameters and control values (same as paraphrase method).
+                - batch_size (int, optional): Chunk size for batch processing.
 
         Returns:
             List of lists of paraphrased strings matching the original text order.
@@ -119,7 +128,8 @@ class EnsembleModelForParaphraseGeneration(BaseParaphraseGenerator):
         question_inputs = []
 
         sem_norm, syn_norm, lex_norm = self._resolve_controls(kwargs)
-        kwargs.pop("batch_size", None)
+        estimator, min_semantic = self._pop_quality_filter(kwargs)
+        batch_size = kwargs.pop("batch_size", None)
         gen_kwargs, max_length, num_candidates = self._prepare_gen_kwargs(kwargs)
         actual_num_return = gen_kwargs["num_return_sequences"]
 
@@ -135,10 +145,7 @@ class EnsembleModelForParaphraseGeneration(BaseParaphraseGenerator):
 
         results = [None] * len(texts)
 
-        def _generate_batch(inputs, model, indices):
-            if not inputs:
-                return
-
+        def _generate_chunk(inputs, model, indices):
             encoding = self.tokenizer(
                 inputs,
                 return_tensors="pt",
@@ -163,7 +170,16 @@ class EnsembleModelForParaphraseGeneration(BaseParaphraseGenerator):
                 end_idx = start_idx + actual_num_return
                 candidates = decoded[start_idx:end_idx]
                 results[orig_idx] = self._postprocess(
-                    texts[orig_idx], candidates, num_candidates
+                    texts[orig_idx], candidates, num_candidates, estimator, min_semantic
+                )
+
+        def _generate_batch(inputs, model, indices):
+            step = batch_size or len(inputs)
+            for start in range(0, len(inputs), step):
+                _generate_chunk(
+                    inputs[start : start + step],
+                    model,
+                    indices[start : start + step],
                 )
 
         _generate_batch(sentence_inputs, self.model_sentence, sentence_indices)

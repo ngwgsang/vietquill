@@ -59,10 +59,15 @@ class AutoModelForParaphraseGeneration(BaseParaphraseGenerator):
                 - semantic (int): Semantic control (0-100), default 90.
                 - syntactic (int): Syntactic control (0-100), default 85.
                 - lexical (int): Lexical control (0-100), default 80.
-                - style (ParaphraseStyle | str): Style preset.
+                - style (ParaphraseStyle | str): Style preset. Also sets decoding defaults
+                  (CONSERVATIVE: beam search, BALANCED/DIVERSE: nucleus sampling).
                 - control_prefix (bool): Whether to prepend control prefix SEM_ SYN_ LEX_. Default True.
                 - num_candidates (int): Number of sequences to return.
-                - num_beams (int): Number of beams.
+                - num_beams (int): Number of beams (1 with do_sample=True = plain sampling).
+                - oversample (int): Extra sequences generated beyond num_candidates, default 2.
+                - estimator: Quality estimator used with min_semantic; never loaded implicitly.
+                - min_semantic (float): Drop candidates whose estimated semantic score is
+                  below this value (requires an estimator).
                 - max_length (int): Max length.
                 - and any other transformers.GenerationConfig parameters.
 
@@ -71,6 +76,7 @@ class AutoModelForParaphraseGeneration(BaseParaphraseGenerator):
         """
         control_prefix = kwargs.pop("control_prefix", True)
         sem_norm, syn_norm, lex_norm = self._resolve_controls(kwargs)
+        estimator, min_semantic = self._pop_quality_filter(kwargs)
         input_text = self._format_input_text(
             text, sem_norm, syn_norm, lex_norm, control_prefix=control_prefix
         )
@@ -94,7 +100,9 @@ class AutoModelForParaphraseGeneration(BaseParaphraseGenerator):
             )
 
         candidates = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
-        return self._postprocess(text, candidates, num_candidates)
+        return self._postprocess(
+            text, candidates, num_candidates, estimator, min_semantic
+        )
 
     def paraphrases(self, texts: List[str], **kwargs) -> List[List[str]]:
         """
@@ -113,6 +121,7 @@ class AutoModelForParaphraseGeneration(BaseParaphraseGenerator):
 
         control_prefix = kwargs.pop("control_prefix", True)
         sem_norm, syn_norm, lex_norm = self._resolve_controls(kwargs)
+        estimator, min_semantic = self._pop_quality_filter(kwargs)
         batch_size = kwargs.pop("batch_size", None)
         gen_kwargs, max_length, num_candidates = self._prepare_gen_kwargs(kwargs)
         actual_num_return = gen_kwargs["num_return_sequences"]
@@ -154,6 +163,10 @@ class AutoModelForParaphraseGeneration(BaseParaphraseGenerator):
                 c_start = i * actual_num_return
                 c_end = c_start + actual_num_return
                 candidates = decoded[c_start:c_end]
-                results.append(self._postprocess(orig_text, candidates, num_candidates))
+                results.append(
+                    self._postprocess(
+                        orig_text, candidates, num_candidates, estimator, min_semantic
+                    )
+                )
 
         return results
