@@ -61,6 +61,8 @@ docs = [
     "mkdocs-material>=9.5.0",
     "mkdocstrings[python]>=0.24.0",
     "mkdocs-autorefs>=1.0.0",
+    # pymdown-extensions 12 changed Highlight.__init__ and breaks mkdocstrings
+    "pymdown-extensions<12",
 ]
 
 [project.urls]

@@ -60,6 +60,8 @@ print(model.paraphrase(sentence, style=ParaphraseStyle.BALANCED))
 print(model.paraphrase(sentence, style=ParaphraseStyle.DIVERSE))
 ```
 
+`BALANCED` and `DIVERSE` use sampling, so their outputs vary between calls; call `torch.manual_seed(...)` first for reproducible results. See [Style Presets](generation.md#style-presets) for the decoding settings of each style.
+
 ### 4. Fine-Grained Attribute Control
 
 You can directly control attributes on a scale of `0` to `100`:

@@ -34,8 +34,13 @@ pip install "vietquill[docs]"
 Or manually:
 
 ```bash
-pip install mkdocs-material mkdocstrings[python] mkdocs-autorefs
+pip install mkdocs-material "mkdocstrings[python]" mkdocs-autorefs "pymdown-extensions<12"
 ```
+
+Then preview with `mkdocs serve`.
+
+!!! note
+    `pymdown-extensions` 12 is not yet compatible with `mkdocstrings` (`Highlight.__init__() missing 1 required positional argument: 'md'`), so it is pinned below 12.
 
 ### GPU Acceleration Setup (PyTorch with CUDA)
 
