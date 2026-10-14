@@ -1029,8 +1029,13 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"vietquill[docs]"</span>
 </span></code></pre></div>
 <p>Or manually:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>mkdocs-material<span class="w"> </span>mkdocstrings<span class="o">[</span>python<span class="o">]</span><span class="w"> </span>mkdocs-autorefs
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>mkdocs-material<span class="w"> </span><span class="s2">"mkdocstrings[python]"</span><span class="w"> </span>mkdocs-autorefs<span class="w"> </span><span class="s2">"pymdown-extensions&lt;12"</span>
 </span></code></pre></div>
+<p>Then preview with <code>mkdocs serve</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>pymdown-extensions</code> 12 is not yet compatible with <code>mkdocstrings</code> (<code>Highlight.__init__() missing 1 required positional argument: 'md'</code>), so it is pinned below 12.</p>
+</div>
 <h3 id="gpu-acceleration-setup-pytorch-with-cuda">GPU Acceleration Setup (PyTorch with CUDA)<a class="headerlink" href="#gpu-acceleration-setup-pytorch-with-cuda" title="Permanent link">&para;</a></h3>
 <p>VietQuill models use Seq2Seq transformers (such as ViT5) and neural estimators (vELECTRA). A CUDA-enabled GPU significantly speeds up inference.</p>
 <p>If you have an NVIDIA GPU, install the appropriate PyTorch build according to your CUDA driver:</p>

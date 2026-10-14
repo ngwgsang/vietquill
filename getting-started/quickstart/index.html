@@ -1076,6 +1076,7 @@
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="c1"># Diverse: Strong structural and vocabulary variations</span>
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">paraphrase</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">ParaphraseStyle</span><span class="o">.</span><span class="n">DIVERSE</span><span class="p">))</span>
 </span></code></pre></div>
+<p><code>BALANCED</code> and <code>DIVERSE</code> use sampling, so their outputs vary between calls; call <code>torch.manual_seed(...)</code> first for reproducible results. See <a href="../generation/#style-presets">Style Presets</a> for the decoding settings of each style.</p>
 <h3 id="4-fine-grained-attribute-control">4. Fine-Grained Attribute Control<a class="headerlink" href="#4-fine-grained-attribute-control" title="Permanent link">&para;</a></h3>
 <p>You can directly control attributes on a scale of <code>0</code> to <code>100</code>:</p>
 <ul>
